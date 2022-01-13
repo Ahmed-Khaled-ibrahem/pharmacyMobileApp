@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/cubit.dart';
 import 'package:pharmacyapp/cubit/reusable/classes.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+
+import 'makeOrderPage.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -27,14 +30,16 @@ class _SecondPageState extends State<MainScreen> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children:  [
-                 Row(
-                   mainAxisAlignment: MainAxisAlignment.center,
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   children: [
-                     Text("Make an Order"),
-                     Icon(Icons.arrow_forward_ios_rounded),
-                   ],
-                 ),
+                 TextButton(onPressed: (){
+                   Navigator.push(context,
+                       PageTransition(
+                           type: PageTransitionType.rightToLeft,
+                           child: const MakeAnOrderScreen(),
+                           inheritTheme: true,
+                           ctx: context));
+
+                 },
+                   child: const Text("Make an Order"),),
 
               ],
             ),

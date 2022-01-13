@@ -6,8 +6,11 @@ import 'package:page_transition/page_transition.dart';
 import 'cubit/cubit.dart';
 import 'layouts/LoginScreen.dart';
 import 'layouts/mainScreen.dart';
+import 'layouts/makeOrderPage.dart';
+
 
 Future<void> main() async {
+
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(// navigation bar color
     statusBarColor: Color.fromRGBO(0, 0, 0, 0), // status bar color
@@ -39,7 +42,7 @@ class MyApp extends StatelessWidget {
           scaffoldBackgroundColor: const Color(0xFFFFF9F9),
 
         ),
-        home:  LoginScreen() ,
+        home: const MakeAnOrderScreen(),// const LoginScreen() ,
       ),
     );
   }
