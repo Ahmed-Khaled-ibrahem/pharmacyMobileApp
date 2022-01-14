@@ -18,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 class LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController animationController = AnimationController(
-      vsync: LoginScreenState(), duration: const Duration(seconds: 30));
+      vsync: this, duration: const Duration(seconds: 30));
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -28,7 +28,7 @@ class LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-    animationController.repeat();
+   // animationController.repeat();
   }
 
   @override
@@ -87,10 +87,10 @@ class LoginScreenState extends State<LoginScreen>
                               padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: TextFormField(
                                 onChanged: (v) {
-                                  runanimation();
+                                  //runanimation();
                                 },
                                 onTap: () {
-                                  runanimation();
+                                  //runanimation();
                                 },
                                 controller: username,
                                 validator: (value) {
@@ -118,10 +118,10 @@ class LoginScreenState extends State<LoginScreen>
                               child: TextFormField(
                                 controller: password,
                                 onChanged: (v) {
-                                  runanimation();
+                                  //runanimation();
                                 },
                                 onTap: () {
-                                  runanimation();
+                                  //runanimation();
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
@@ -189,7 +189,7 @@ class LoginScreenState extends State<LoginScreen>
                                         context: context,
                                         userName: username.text,
                                         password: password.text);
-                                    stopanimation();
+                                    //stopanimation();
                                   }
                                 }),
                             const SizedBox(
@@ -205,7 +205,7 @@ class LoginScreenState extends State<LoginScreen>
                             InkWell(
                               onTap: () {
                                 cubit.gMailRegistration(context);
-                                stopanimation();
+                                //stopanimation();
                               },
                               child: SizedBox(
                                   height: 40,
