@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
@@ -28,7 +30,9 @@ class LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-   // animationController.repeat();
+    Timer(Duration(seconds: 1),(){
+      animationController.repeat();
+    });
   }
 
   @override
