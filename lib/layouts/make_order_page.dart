@@ -41,6 +41,9 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
                 appBar: myAppBar("Make an Order", themeColor),
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () => cubit.determinePosition(),
+                ),
                 body: Column(
                   children: [
                     const SizedBox(
@@ -58,10 +61,11 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                             subtitle: Text("price : ${suggestion['price']}"),
                             leading: SizedBox(
                               width: 25,
-                              child: suggestion['img']
+                              child: suggestion['picture']
                                       .toString()
-                                      .contains("base64")
-                                  ? CircleAvatar(
+                                      .contains("dalilaldwaa")
+                                  ? Image.network(suggestion['picture'])
+                                  : CircleAvatar(
                                       backgroundColor: themeColor,
                                       child: Text(
                                         suggestion['name'].toString().length < 2
@@ -72,8 +76,7 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                                         style: const TextStyle(
                                             color: Colors.white, fontSize: 8),
                                       ),
-                                    )
-                                  : Image.network(suggestion['img']),
+                                    ),
                             ),
                           );
                         },

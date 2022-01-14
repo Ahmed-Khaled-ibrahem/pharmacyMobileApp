@@ -37,18 +37,18 @@ dependencies:
   # bloc
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
-
   # animations
   flutter_easyloading: ^3.0.3
   page_transition: ^2.0.4
-
   # other
   flutter_native_splash: ^1.3.3
   flutter_typeahead: ^3.2.4
-
   # data structure
   csv: ^5.0.1
   sqflite: ^2.0.2
+  # locations
+  geolocator: ^8.0.3
+  geocoding: ^2.0.1
 
 dev_dependencies:
   flutter_test:

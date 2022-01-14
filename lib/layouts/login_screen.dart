@@ -1,4 +1,3 @@
-import 'dart:async';
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
@@ -19,8 +18,8 @@ class LoginScreen extends StatefulWidget {
 
 class LoginScreenState extends State<LoginScreen>
     with SingleTickerProviderStateMixin {
-  late AnimationController animationController = AnimationController(
-      vsync: this, duration: const Duration(seconds: 30));
+  late AnimationController animationController =
+      AnimationController(vsync: this, duration: const Duration(seconds: 30));
   TextEditingController username = TextEditingController();
   TextEditingController password = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
