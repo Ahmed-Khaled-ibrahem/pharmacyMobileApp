@@ -4,7 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'contsants/const_colors.dart';
 import 'cubit/cubit.dart';
+import 'layouts/login_screen.dart';
 import 'layouts/make_order_page.dart';
+
+
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -15,6 +18,8 @@ Future<void> main() async {
   runApp(const MyApp());
   configLoading();
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -37,7 +42,7 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.white,
           scaffoldBackgroundColor: const Color(0xFFFFF9F9),
         ),
-        home: const MakeAnOrderScreen(), // const LoginScreen() ,
+        home:  const LoginScreen() ,//const MakeAnOrderScreen(), //
       ),
     );
   }
