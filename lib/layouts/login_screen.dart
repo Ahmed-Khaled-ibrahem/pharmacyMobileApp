@@ -31,7 +31,6 @@ class LoginScreenState extends State<LoginScreen>
     super.initState();
     WidgetsBinding.instance
         ?.addPostFrameCallback((_) => animationController.repeat());
-
   }
 
   @override
@@ -192,7 +191,7 @@ class LoginScreenState extends State<LoginScreen>
                                         context: context,
                                         userName: username.text,
                                         password: password.text);
-                                    //stopanimation();
+                                    stopanimation();
                                   }
                                 }),
                             const SizedBox(
@@ -208,7 +207,7 @@ class LoginScreenState extends State<LoginScreen>
                             InkWell(
                               onTap: () {
                                 cubit.gMailRegistration(context);
-                                //stopanimation();
+                                stopanimation();
                               },
                               child: SizedBox(
                                   height: 40,

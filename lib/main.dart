@@ -26,6 +26,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return BlocProvider(
       create: (BuildContext context) => AppCubit()..initialReadSqlData(),
       child: MaterialApp(

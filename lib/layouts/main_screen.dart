@@ -23,26 +23,54 @@ class _SecondPageState extends State<MainScreen> {
       builder: (BuildContext context, AppStates state) {
         // AppCubit cubit = AppCubit.get(context);
 
-        return Scaffold(
-          appBar: myAppBar("Tamer Deweek", themeColor),
-          body: Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        PageTransition(
-                            type: PageTransitionType.rightToLeft,
-                            child: const MakeAnOrderScreen(),
-                            inheritTheme: true,
-                            ctx: context));
-                  },
-                  child: const Text("Make an Order"),
-                ),
-              ],
+        Future<bool> showExitPopup() async {
+          AlertDialog alert = AlertDialog(
+            title: const Text("Alert"),
+            content: const Text("Are you sure tou want to exit?"),
+            actions: [
+              TextButton(
+                child: const Text("Cancel"),
+                onPressed:  () {},
+              ),
+              TextButton(
+                child: const Text("Exit"),
+                onPressed:  () {},
+              ),
+            ],
+          );
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return alert;
+            },
+          );
+          return true;
+
+        }
+        
+        return WillPopScope(
+          onWillPop: showExitPopup,
+          child: Scaffold(
+            appBar: myAppBar("Tamer Deweek", themeColor),
+            body: Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          PageTransition(
+                              type: PageTransitionType.rightToLeft,
+                              child: const MakeAnOrderScreen(),
+                              inheritTheme: true,
+                              ctx: context));
+                    },
+                    child: const Text("Make an Order"),
+                  ),
+                ],
+              ),
             ),
           ),
         );
