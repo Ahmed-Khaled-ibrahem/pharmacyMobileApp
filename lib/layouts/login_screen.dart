@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
+import 'main_screen.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
 
@@ -191,7 +192,14 @@ class LoginScreenState extends State<LoginScreen>
                                         context: context,
                                         userName: username.text,
                                         password: password.text);
+
                                     stopanimation();
+
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(builder: (context) =>  const MainScreen()),
+                                    );
+
                                   }
                                 }),
                             const SizedBox(

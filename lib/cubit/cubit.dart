@@ -36,6 +36,8 @@ class AppCubit extends Cubit<AppStates> {
       EasyLoading.show(status: 'Connecting..');
       Timer(const Duration(seconds: 1), () {
         EasyLoading.dismiss();
+
+        /*
         Navigator.pushReplacement(
           context,
           PageTransition(
@@ -44,6 +46,8 @@ class AppCubit extends Cubit<AppStates> {
               inheritTheme: true,
               ctx: context),
         );
+
+         */
       });
       emit(LogInDoneState());
     } else {
@@ -102,14 +106,21 @@ class AppCubit extends Cubit<AppStates> {
     EasyLoading.show(status: 'Connecting..');
     Timer(const Duration(seconds: 1), () {
       EasyLoading.dismiss();
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) =>  const MainScreen()),
+      );
+      /*
       Navigator.pushReplacement(
         context,
         PageTransition(
             type: PageTransitionType.rightToLeft,
             child: const MainScreen(),
-            inheritTheme: true,
             ctx: context),
       );
+
+       */
     });
     emit(GeneralState());
   }

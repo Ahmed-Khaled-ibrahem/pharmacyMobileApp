@@ -41,3 +41,4 @@ AppBar myAppBar(String text, Color color) {
         style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
       ));
 }
+

@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/cubit/cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-
+import 'package:pharmacyapp/layouts/orderSubmition.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 
@@ -17,6 +17,8 @@ class MakeAnOrderScreen extends StatefulWidget {
 
 class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
   final _searchController = TextEditingController();
+  int totalPrice = 0;
+
   @override
   void dispose() {
     _searchController.dispose();
@@ -90,6 +92,10 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                         //marginColor: Colors.deepOrange,
                       ),
                     ),
+                    const Padding(
+                      padding:  EdgeInsets.all(8.0),
+                      child:  Text("Your Order list"),
+                    ),
                     Expanded(
                       child: ListView.separated(
                           itemCount: 7,
@@ -99,14 +105,24 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                                   const SizedBox(
                                     width: 20,
                                   ),
-                                  const Text("Panadol 50g Tap "),
+                                  const SizedBox(
+                                      width:160,
+                                      child: Text("Panadol 50g Tap")),
                                   const Spacer(),
-                                  IconButton(
-                                      onPressed: () {},
-                                      color: Colors.green,
-                                      icon: const Icon(Icons.remove, size: 25)),
+
+                                  InkWell(
+                                    child: Container(
+                                        width: 40,
+                                        height: 70,
+                                        child: const Icon(
+                                          Icons.remove,
+                                          size: 25,
+                                          color: Colors.green,
+                                        )),
+                                  ),
+
                                   SizedBox(
-                                    width: 40,
+                                    width: 50,
                                     child: Padding(
                                       padding:
                                           const EdgeInsets.fromLTRB(0, 5, 0, 5),
@@ -129,34 +145,58 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                                       ),
                                     ),
                                   ),
-                                  IconButton(
-                                      color: Colors.blue,
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.add, size: 25)),
-                                  IconButton(
-                                      color: Colors.red,
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.close, size: 22)),
+                                  InkWell(
+                                    child: Container(
+                                        width: 40,
+                                        height: 70,
+                                        child: const Icon(
+                                          Icons.add,
+                                          size: 25,
+                                          color: Colors.blue,
+                                        )),
+                                  ),
+                                  InkWell(
+                                    child: Container(
+                                        width: 40,
+                                        height: 70,
+                                        child: const Icon(
+                                          Icons.close,
+                                          size: 25,
+                                          color: Colors.red,
+                                        )),
+                                  ),
                                 ],
                               )),
                     ),
-                    SizedBox(
-                      width: double.infinity,
-                      child: ElevatedButton.icon(
-                        label: const Text("Submit"),
-                        icon: const Icon(Icons.playlist_add_check),
-                        style: ElevatedButton.styleFrom(
-                          primary: themeColor,
-                          //  fixedSize: const Size(250, 35.0),
-                          // shape: RoundedRectangleBorder(
-                          //     borderRadius: BorderRadius.circular(80))
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text("Total Price",
+                          style: TextStyle(fontSize: 20) ,),
+                        Text("$totalPrice LE",
+                          style: const TextStyle(
+                            fontWeight: FontWeight.bold,fontSize: 20
+                          ),),
+                        ElevatedButton.icon(
+                          label: const Text("Submit"),
+                          icon: const Icon(Icons.playlist_add_check),
+                          style: ElevatedButton.styleFrom(
+                            primary: themeColor,
+                            //  fixedSize: const Size(250, 35.0),
+                            // shape: RoundedRectangleBorder(
+                            //     borderRadius: BorderRadius.circular(80))
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) =>  const OrderSubmitionScreen()),
+                            );
+                            //cubit.loginButtonEvent(context);
+                            //stopanimation();
+                          },
                         ),
-                        onPressed: () {
-                          cubit.swipeScreen();
-                          //cubit.loginButtonEvent(context);
-                          //stopanimation();
-                        },
-                      ),
+                      ],
                     ),
                   ],
                 )));

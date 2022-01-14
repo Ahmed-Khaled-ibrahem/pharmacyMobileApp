@@ -8,73 +8,65 @@ import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 import 'make_order_page.dart';
 
+
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
   @override
-  _SecondPageState createState() => _SecondPageState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _SecondPageState extends State<MainScreen> {
+class _MainScreenState extends State<MainScreen> {
+
+  Future<bool> onWillPop() async {
+    return (await showDialog(
+      context: context,
+      builder: (context) => AlertDialog(
+        title: const Text('Are you sure?'),
+        content : const Text('Do you want to exit the App'),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: const Text('No'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: const Text('Yes'),
+          ),
+        ],
+      ),
+    )) ??
+        false;
+  }
+
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
-      listener: (BuildContext context, AppStates state) {},
-      builder: (BuildContext context, AppStates state) {
-        // AppCubit cubit = AppCubit.get(context);
-
-        Future<bool> showExitPopup() async {
-          AlertDialog alert = AlertDialog(
-            title: const Text("Alert"),
-            content: const Text("Are you sure tou want to exit?"),
-            actions: [
+    return WillPopScope(
+      onWillPop: onWillPop,
+      child: Scaffold(
+        appBar: myAppBar("Tamer Deweek", themeColor),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
               TextButton(
-                child: const Text("Cancel"),
-                onPressed:  () {},
-              ),
-              TextButton(
-                child: const Text("Exit"),
-                onPressed:  () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: const MakeAnOrderScreen(),
+                          inheritTheme: true,
+                          ctx: context));
+                },
+                child: const Text("Make an Order"),
               ),
             ],
-          );
-          showDialog(
-            context: context,
-            builder: (BuildContext context) {
-              return alert;
-            },
-          );
-          return true;
-
-        }
-        
-        return WillPopScope(
-          onWillPop: showExitPopup,
-          child: Scaffold(
-            appBar: myAppBar("Tamer Deweek", themeColor),
-            body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: const MakeAnOrderScreen(),
-                              inheritTheme: true,
-                              ctx: context));
-                    },
-                    child: const Text("Make an Order"),
-                  ),
-                ],
-              ),
-            ),
           ),
-        );
-      },
+        ),
+      ),
     );
   }
 }
+
