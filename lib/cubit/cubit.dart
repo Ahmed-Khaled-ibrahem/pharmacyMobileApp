@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -54,18 +53,18 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  Future<List<List<dynamic>>> readCsvData() async {
-    int now = DateTime.now().millisecondsSinceEpoch;
-    String dataString =
-        await rootBundle.loadString('assets/drugs_data/data.csv');
-
-    List<List<dynamic>> dataFrame =
-        const CsvToListConverter().convert(dataString);
-    print(
-        "taken time to read data ${DateTime.now().millisecondsSinceEpoch - now} ms");
-    print(dataFrame.sublist(445, 455));
-    return dataFrame;
-  }
+  // Future<List<List<dynamic>>> readCsvData() async {
+  //   int now = DateTime.now().millisecondsSinceEpoch;
+  //   String dataString =
+  //       await rootBundle.loadString('assets/drugs_data/data.csv');
+  //
+  //   List<List<dynamic>> dataFrame =
+  //       const CsvToListConverter().convert(dataString);
+  //   print(
+  //       "taken time to read data ${DateTime.now().millisecondsSinceEpoch - now} ms");
+  //   print(dataFrame.sublist(445, 455));
+  //   return dataFrame;
+  // }
 
   void initialReadSqlData() async {
     String databasePath = await getDatabasesPath();
