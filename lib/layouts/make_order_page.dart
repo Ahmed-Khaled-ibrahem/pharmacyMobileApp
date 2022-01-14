@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/cubit/cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:searchfield/searchfield.dart';
 
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
@@ -26,20 +26,7 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
   @override
   void initState() {
     super.initState();
-    //countries = data.map((e) => Country.fromMap(e)).toList();
   }
-
-  List<String> countries = [
-    "VOLTAREN  75MG 3AMP",
-    "VOLTAREN 100 SUPP",
-    "VOLTAREN 12.5 INF SUPP.",
-    "VOLTAREN 25 mg TAB",
-    "VOLTAREN 25MG SUPP",
-    "VOLTAREN 50 mg TAB",
-    "VOLTAREN 6AMP",
-    "VOLTAREN 75 MG 4 AMP",
-    " VOLTAREN D 50 DISP TAB"
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -52,9 +39,6 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
                 appBar: myAppBar("Make an Order", themeColor),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => cubit.readSqlData(),
-                ),
                 body: Column(
                   children: [
                     const SizedBox(
@@ -62,25 +46,48 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: SearchField(
-                        suggestions: countries,
-                        suggestionState: SuggestionState.enabled,
-                        controller: _searchController,
-                        hint: 'Search For Item',
-                        maxSuggestionsInViewPort: 4,
-                        itemHeight: 45,
-                        onTap: (x) {},
+                      child: TypeAheadField<Map<String, dynamic>>(
+                        suggestionsCallback: cubit.readSqlData,
+                        onSuggestionSelected: (suggestion) => print(suggestion),
+                        itemBuilder: (context, suggestion) {
+                          return ListTile(
+                            minLeadingWidth: 25,
+                            title: Text(suggestion['name']),
+                            subtitle: Text("price : ${suggestion['price']}"),
+                            leading: SizedBox(
+                              width: 25,
+                              child: suggestion['img']
+                                      .toString()
+                                      .contains("base64")
+                                  ? CircleAvatar(
+                                      backgroundColor: themeColor,
+                                      child: Text(
+                                        suggestion['name'].toString().length < 2
+                                            ? " "
+                                            : suggestion['name']
+                                                .toString()
+                                                .substring(0, 2),
+                                        style: const TextStyle(
+                                            color: Colors.white, fontSize: 8),
+                                      ),
+                                    )
+                                  : Image.network(suggestion['img']),
+                            ),
+                          );
+                        },
+                        textFieldConfiguration: TextFieldConfiguration(
+                          decoration: InputDecoration(
+                              labelText: 'Search',
+                              prefixIcon: const Icon(Icons.search),
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: const BorderSide(
+                                    color: Colors.blueGrey, width: 1),
+                                borderRadius: BorderRadius.circular(40),
+                              )),
+                          controller: _searchController,
+                        ),
                         //hasOverlay: true,
-
                         //marginColor: Colors.deepOrange,
-                        searchInputDecoration: InputDecoration(
-                            labelText: 'Search',
-                            prefixIcon: const Icon(Icons.search),
-                            enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(
-                                  color: Colors.blueGrey, width: 1),
-                              borderRadius: BorderRadius.circular(40),
-                            )),
                       ),
                     ),
                     Expanded(
@@ -140,7 +147,7 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                         icon: const Icon(Icons.playlist_add_check),
                         style: ElevatedButton.styleFrom(
                           primary: themeColor,
-                          fixedSize: const Size(250, 35.0),
+                          //  fixedSize: const Size(250, 35.0),
                           // shape: RoundedRectangleBorder(
                           //     borderRadius: BorderRadius.circular(80))
                         ),

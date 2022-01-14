@@ -15,6 +15,8 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitial());
   static AppCubit get(context) => BlocProvider.of(context);
 
+  Database? dataBase;
+
   int counter = 0;
   // bool mobileCode = true;
   int angle1 = 0;
@@ -65,7 +67,7 @@ class AppCubit extends Cubit<AppStates> {
     return dataFrame;
   }
 
-  void readSqlData() async {
+  void initialReadSqlData() async {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
@@ -79,16 +81,23 @@ class AppCubit extends Cubit<AppStates> {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
     }
-    String subWord = "panadol";
 
-    var db = await openDatabase(path);
+    dataBase = await openDatabase(path);
+
+    // 	"price"	NUMERIC,
+    // 	"img"	TEXT,
+    // 	"details"	TEXT
+  }
+
+  Future<List<Map<String, dynamic>>> readSqlData(String subWord) async {
     List<Map<String, dynamic>> queryData =
-        await db.query("data", where: "name LIKE  \"%$subWord%\"");
+        await dataBase!.query("data", where: "name LIKE  \"%$subWord%\"");
+    //print(queryData);
     //  "name"	TEXT,
     // 	"price"	NUMERIC,
     // 	"img"	TEXT,
     // 	"details"	TEXT
-    print(queryData);
+    return queryData;
   }
 
   void gMailRegistration(BuildContext context) {
