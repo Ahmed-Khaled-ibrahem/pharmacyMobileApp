@@ -30,7 +30,7 @@ class LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 1),(){
+    Timer(const Duration(seconds: 2),(){
       animationController.repeat();
     });
   }
@@ -91,10 +91,10 @@ class LoginScreenState extends State<LoginScreen>
                               padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: TextFormField(
                                 onChanged: (v) {
-                                  //runanimation();
+                                  runanimation();
                                 },
                                 onTap: () {
-                                  //runanimation();
+                                  runanimation();
                                 },
                                 controller: username,
                                 validator: (value) {
@@ -122,10 +122,10 @@ class LoginScreenState extends State<LoginScreen>
                               child: TextFormField(
                                 controller: password,
                                 onChanged: (v) {
-                                  //runanimation();
+                                  runanimation();
                                 },
                                 onTap: () {
-                                  //runanimation();
+                                  runanimation();
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
