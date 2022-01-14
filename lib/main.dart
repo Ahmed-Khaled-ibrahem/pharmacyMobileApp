@@ -4,10 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'contsants/const_colors.dart';
 import 'cubit/cubit.dart';
-import 'layouts/login_screen.dart';
 import 'layouts/make_order_page.dart';
-
-
 
 Future<void> main() async {
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
@@ -19,16 +16,11 @@ Future<void> main() async {
   configLoading();
 }
 
-
-
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
-
-
     return BlocProvider(
       create: (BuildContext context) => AppCubit()..initialReadSqlData(),
       child: MaterialApp(
@@ -45,7 +37,7 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.white,
           scaffoldBackgroundColor: const Color(0xFFFFF9F9),
         ),
-        home:  const LoginScreen() ,//const MakeAnOrderScreen(), //
+        home: const MakeAnOrderScreen(), //const MakeAnOrderScreen(), //
       ),
     );
   }
