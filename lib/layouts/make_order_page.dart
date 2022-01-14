@@ -53,7 +53,7 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
             child: Scaffold(
                 appBar: myAppBar("Make an Order", themeColor),
                 floatingActionButton: FloatingActionButton(
-                  onPressed: () => cubit.readCsvData(),
+                  onPressed: () => cubit.readSqlData(),
                 ),
                 body: Column(
                   children: [

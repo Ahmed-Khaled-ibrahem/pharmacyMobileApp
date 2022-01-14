@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
@@ -7,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
+import 'package:sqflite/sqflite.dart';
 import 'states.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -61,6 +63,32 @@ class AppCubit extends Cubit<AppStates> {
         "taken time to read data ${DateTime.now().millisecondsSinceEpoch - now} ms");
     print(dataFrame.sublist(445, 455));
     return dataFrame;
+  }
+
+  void readSqlData() async {
+    String databasePath = await getDatabasesPath();
+    String path = "$databasePath/drugs.db";
+
+    // await deleteDatabase(path);
+
+    bool exists = await databaseExists(path);
+    if (!exists) {
+      // database read before
+      ByteData data = await rootBundle.load("assets/drugs_data/testSql.db");
+      List<int> bytes =
+          data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
+      await File(path).writeAsBytes(bytes);
+    }
+    String subWord = "panadol";
+
+    var db = await openDatabase(path);
+    List<Map<String, dynamic>> queryData =
+        await db.query("data", where: "name LIKE  \"%$subWord%\"");
+    //  "name"	TEXT,
+    // 	"price"	NUMERIC,
+    // 	"img"	TEXT,
+    // 	"details"	TEXT
+    print(queryData);
   }
 
   void gMailRegistration(BuildContext context) {
