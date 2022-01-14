@@ -1,63 +1,38 @@
 import 'dart:async';
 
+import 'package:csv/csv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:pharmacyapp/layouts/LoginScreen.dart';
-import 'package:pharmacyapp/layouts/mainScreen.dart';
+import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'states.dart';
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitial());
   static AppCubit get(context) => BlocProvider.of(context);
 
-  Color themeColor = const Color(0xFF004282);//0A6889
-
-
-  TextEditingController username = TextEditingController();
-  TextEditingController firstName = TextEditingController();
-  TextEditingController secondName = TextEditingController();
-  TextEditingController phoneNumber = TextEditingController();
-
-  TextEditingController password = TextEditingController();
-  TextEditingController passwordSignup = TextEditingController();
-  TextEditingController passwordSignupConf = TextEditingController();
-  TextEditingController mobileCodeText = TextEditingController();
-
-  bool showPassword = true;
-  bool showPasswordSignup = true;
-  bool showPasswordSignupConf = true;
-
-  GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  GlobalKey<FormState> formKeySignup = GlobalKey<FormState>();
-
-  int Counter = 0;
-  bool mobileCode = true;
+  int counter = 0;
+  // bool mobileCode = true;
   int angle1 = 0;
   int angle2 = 3;
 
+  void loginButtonEvent({
+    required BuildContext context,
+    required userName,
+    required password,
+  }) {
+    emit(LogInLoadingState());
+    /*
+     check user here
+     using username.text
+     and password.text
+    */
 
-
-  void loginButtonEvent(context){
-    formKey.currentState?.validate();
-/*
-
- check user here
- using username.text
- and password.text
-
-*/
-    bool loginSuccsesful = false;
-
-    if((username.text == "ahmed")&(password.text == "666666"))
-    {loginSuccsesful = true;}
-
-    if(loginSuccsesful){
-
+    if ((userName == "ahmed") & (password == "666666")) {
       EasyLoading.show(status: 'Connecting..');
-      Timer(
-          const Duration(seconds: 1),(){
+      Timer(const Duration(seconds: 1), () {
         EasyLoading.dismiss();
         Navigator.pushReplacement(
           context,
@@ -68,35 +43,29 @@ class AppCubit extends Cubit<AppStates> {
               ctx: context),
         );
       });
-    }
-    else{
+      emit(LogInDoneState());
+    } else {
       EasyLoading.showToast('Wrong Password user:ahmed pass:666666');
+      emit(LogInErrorState());
     }
-    emit(General());
   }
 
+  Future<List<List<dynamic>>> readCsvData() async {
+    int now = DateTime.now().millisecondsSinceEpoch;
+    String dataString =
+        await rootBundle.loadString('assets/drugs_data/data.csv');
 
-  void passwordSecuredChanged(int i) {
-    switch (i){
-      case 1:
-        showPassword = !showPassword;
-        break;
-      case 2:
-        showPasswordSignup = !showPasswordSignup;
-        break;
-      case 3:
-        showPasswordSignupConf = !showPasswordSignupConf;
-        break;
-    }
-
-    emit(General());
+    List<List<dynamic>> dataFrame =
+        const CsvToListConverter().convert(dataString);
+    print(
+        "taken time to read data ${DateTime.now().millisecondsSinceEpoch - now} ms");
+    print(dataFrame.sublist(445, 455));
+    return dataFrame;
   }
 
-  void gmailRigesteration(context) {
-
+  void gMailRegistration(BuildContext context) {
     EasyLoading.show(status: 'Connecting..');
-    Timer(
-        const Duration(seconds: 1),(){
+    Timer(const Duration(seconds: 1), () {
       EasyLoading.dismiss();
       Navigator.pushReplacement(
         context,
@@ -107,24 +76,27 @@ class AppCubit extends Cubit<AppStates> {
             ctx: context),
       );
     });
-    emit(General());
+    emit(GeneralState());
   }
 
-
-  void swipScreen() {
-  angle1 = 3;
-  angle2 = 0;
-    emit(General());
-  }
-  void swipBackScreen() {
-  angle1 = 0;
-  angle2 = 3;
-    emit(General());
+  void swipeScreen() {
+    angle1 = 3;
+    angle2 = 0;
+    emit(GeneralState());
   }
 
-  void increamentCounter() {
+  void swipeBackScreen() {
+    angle1 = 0;
+    angle2 = 3;
+    emit(GeneralState());
+  }
+
+  void incrementCounter() {
     //angle+=40;
-    emit(General());
+    emit(GeneralState());
   }
 
+  void emitGeneralState() {
+    emit(GeneralState());
+  }
 }

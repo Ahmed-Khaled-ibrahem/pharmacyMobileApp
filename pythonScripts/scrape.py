@@ -37,4 +37,4 @@ for i in range(1,2271) :
             df.to_csv("data.csv", encoding='utf-8' ,index=False)
 
 df.to_csv("data.csv", encoding='utf-8' ,index=False)
-print(errorList)       
+print(errorList)
