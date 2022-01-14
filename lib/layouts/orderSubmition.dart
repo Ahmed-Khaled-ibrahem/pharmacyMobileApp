@@ -32,10 +32,18 @@ class _OrderSubmitionScreenState extends State<OrderSubmitionScreen> {
         TextEditingController phoneNumber = TextEditingController(text: "01288534459");
         TextEditingController address = TextEditingController(text: "64 saaed elgendy st elhadara");
         GlobalKey<FormState> formKey = GlobalKey<FormState>();
+        bool locationReady = false;
 
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  backgroundColor: themeColor,
+                  child: locationReady?
+                  const Icon(Icons.location_on_sharp ,color: Colors.green,):
+                  const Icon(Icons.location_off,color: Colors.orangeAccent,),
+                  onPressed: () => cubit.determinePosition(),
+                ),
                 appBar: myAppBar("Confirm Data", themeColor),
                 body: Form(
                   key: formKey,

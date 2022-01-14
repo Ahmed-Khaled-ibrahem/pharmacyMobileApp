@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
       context: context,
       builder: (context) => AlertDialog(
         title: const Text('Are you sure?'),
-        content : const Text('Do you want to exit the App'),
+        content : const Text('Do you want to Exit'),
         actions: <Widget>[
           TextButton(
             onPressed: () => Navigator.of(context).pop(false),
@@ -35,8 +35,7 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ],
       ),
-    )) ??
-        false;
+    )) ?? false;
   }
 
   @override

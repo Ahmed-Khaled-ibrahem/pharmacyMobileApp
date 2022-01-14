@@ -41,9 +41,6 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
                 appBar: myAppBar("Make an Order", themeColor),
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () => cubit.determinePosition(),
-                ),
                 body: Column(
                   children: [
                     const SizedBox(
