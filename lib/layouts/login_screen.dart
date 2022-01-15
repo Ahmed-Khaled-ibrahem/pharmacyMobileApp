@@ -196,9 +196,10 @@ class LoginScreenState extends State<LoginScreen>
 
                                     Navigator.push(
                                       context,
-                                      MaterialPageRoute(builder: (context) =>  const MainScreen()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MainScreen()),
                                     );
-
                                   }
                                 }),
                             const SizedBox(
@@ -238,7 +239,7 @@ class LoginScreenState extends State<LoginScreen>
                                       context,
                                       PageTransition(
                                           type: PageTransitionType.rightToLeft,
-                                          child: const SignUpPage(),
+                                          child: SignUpPage(),
                                           inheritTheme: true,
                                           ctx: context));
                                 },

@@ -7,14 +7,10 @@ import 'package:pharmacyapp/cubit/states.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class SignUpPage extends StatelessWidget {
+  SignUpPage({Key? key}) : super(key: key);
 
-  @override
-  _SignUpPageState createState() => _SignUpPageState();
-}
-
-class _SignUpPageState extends State<SignUpPage> {
   TextEditingController username = TextEditingController();
   TextEditingController firstName = TextEditingController();
   TextEditingController secondName = TextEditingController();

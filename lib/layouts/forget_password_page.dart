@@ -6,14 +6,8 @@ import 'package:pharmacyapp/cubit/states.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 
-class ForgetPassPage extends StatefulWidget {
+class ForgetPassPage extends StatelessWidget {
   const ForgetPassPage({Key? key}) : super(key: key);
-
-  @override
-  _ForgetPassPageState createState() => _ForgetPassPageState();
-}
-
-class _ForgetPassPageState extends State<ForgetPassPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(

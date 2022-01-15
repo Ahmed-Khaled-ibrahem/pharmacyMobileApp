@@ -44,7 +44,6 @@ dependencies:
   flutter_native_splash: ^1.3.3
   flutter_typeahead: ^3.2.4
   # data structure
-  csv: ^5.0.1
   sqflite: ^2.0.2
   # locations
   geolocator: ^8.0.3

@@ -4,31 +4,16 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/cubit/cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:pharmacyapp/layouts/orderSubmition.dart';
+import 'package:pharmacyapp/layouts/order_submition.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 
-class MakeAnOrderScreen extends StatefulWidget {
-  const MakeAnOrderScreen({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class MakeAnOrderScreen extends StatelessWidget {
+  MakeAnOrderScreen({Key? key}) : super(key: key);
 
-  @override
-  _MakeAnOrderScreenState createState() => _MakeAnOrderScreenState();
-}
-
-class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
   final _searchController = TextEditingController();
   int totalPrice = 0;
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -49,8 +34,10 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: TypeAheadField<Map<String, dynamic>>(
-                        suggestionsCallback: cubit.readSqlData,
-                        onSuggestionSelected: (suggestion) => print(suggestion),
+                        suggestionsCallback: cubit.findInDataBase,
+                        onSuggestionSelected: (suggestion) {
+                          _searchController.text = suggestion['name'];
+                        },
                         itemBuilder: (context, suggestion) {
                           return ListTile(
                             minLeadingWidth: 25,
@@ -93,11 +80,12 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                       ),
                     ),
                     const Padding(
-                      padding:  EdgeInsets.all(8.0),
-                      child:  Text("Your Order list"),
+                      padding: EdgeInsets.all(8.0),
+                      child: Text("Your Order list"),
                     ),
                     Expanded(
                       child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
                           itemCount: 7,
                           separatorBuilder: (_, index) => const Divider(),
                           itemBuilder: (_, index) => Row(
@@ -106,21 +94,19 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                                     width: 20,
                                   ),
                                   const SizedBox(
-                                      width:160,
+                                      width: 160,
                                       child: Text("Panadol 50g Tap")),
                                   const Spacer(),
-
-                                  InkWell(
-                                    child: Container(
+                                  const InkWell(
+                                    child: SizedBox(
                                         width: 40,
                                         height: 70,
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.remove,
                                           size: 25,
                                           color: Colors.green,
                                         )),
                                   ),
-
                                   SizedBox(
                                     width: 50,
                                     child: Padding(
@@ -145,21 +131,21 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                                       ),
                                     ),
                                   ),
-                                  InkWell(
-                                    child: Container(
+                                  const InkWell(
+                                    child: SizedBox(
                                         width: 40,
                                         height: 70,
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.add,
                                           size: 25,
                                           color: Colors.blue,
                                         )),
                                   ),
-                                  InkWell(
-                                    child: Container(
+                                  const InkWell(
+                                    child: SizedBox(
                                         width: 40,
                                         height: 70,
-                                        child: const Icon(
+                                        child: Icon(
                                           Icons.close,
                                           size: 25,
                                           color: Colors.red,
@@ -168,16 +154,18 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                                 ],
                               )),
                     ),
-
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Text("Total Price",
-                          style: TextStyle(fontSize: 20) ,),
-                        Text("$totalPrice LE",
+                        const Text(
+                          "Total Price",
+                          style: TextStyle(fontSize: 20),
+                        ),
+                        Text(
+                          "$totalPrice LE",
                           style: const TextStyle(
-                            fontWeight: FontWeight.bold,fontSize: 20
-                          ),),
+                              fontWeight: FontWeight.bold, fontSize: 20),
+                        ),
                         ElevatedButton.icon(
                           label: const Text("Submit"),
                           icon: const Icon(Icons.playlist_add_check),
@@ -190,7 +178,9 @@ class _MakeAnOrderScreenState extends State<MakeAnOrderScreen> {
                           onPressed: () {
                             Navigator.push(
                               context,
-                              MaterialPageRoute(builder: (context) =>  const OrderSubmitionScreen()),
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      OrderSubmissionScreen()),
                             );
                             //cubit.loginButtonEvent(context);
                             //stopanimation();

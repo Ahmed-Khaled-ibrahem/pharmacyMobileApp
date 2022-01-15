@@ -4,7 +4,7 @@ import pandas as pd
 import sqlite3
 import time
 
-df = pd.DataFrame(columns=['name' , "price" , "pic" , "details" , "marketName" , "scientificName" ])
+df = pd.DataFrame(columns=['name' , "price" , "pic" , "details" , "marketName" , "scientificName", "companies" ])
 
 startTime=time.time()
 
@@ -30,7 +30,6 @@ for i in range(1,pagesNum) :
             print("error in {}".format(i))
             time.sleep(2)
             df.to_csv("data.csv", encoding='utf-8' ,index=False)
-            continue 
 
     for item in all_items : 
         while True :
@@ -49,7 +48,11 @@ for i in range(1,pagesNum) :
                 scieceName = (soup.find_all("div" , {"class" : "odd"})[1].text).replace("الإسم العلمي" , "").strip()
 
                 des = (soup.find("div" , {"class" : "tab-pane fade show active"}).text)
-                df2 = {'name': name , 'price': price, 'pic': img , "details" : des , "marketName":marketName , "scientificName":scieceName }
+                
+                groups = soup.find("div" , {"class" : "col mid-snipp mr-3"})
+                companies = groups.find_all("div" , {"class" : "even"})[-1].text.replace("الشركات المنتجة" , "").strip()
+
+                df2 = {'name': name , 'price': price, 'pic': img , "details" : des , "marketName":marketName , "scientificName":scieceName ,"companies":companies}
 
                 df = df.append(df2, ignore_index = True)
                 break
@@ -65,7 +68,4 @@ print('the data has {} drug'.format(df.shape[0]))
 print("data has {} duplicate drug".format(df.duplicated().sum()))
 print(df.info())
 
-conn = sqlite3.connect('data.db')
-df.to_sql('data', conn, if_exists='replace', index=False)
-
-df.to_csv("data.csv", encoding='utf-8' ,index=False)
+df.to_csv("rowData.csv", encoding='utf-8' ,index=False)

@@ -1,5 +1,34 @@
 import 'package:flutter/material.dart';
 
+Widget defaultTextField({
+  required TextEditingController controller,
+  required String validateString,
+  required String label,
+  required IconData prefixIcon,
+  TextInputType? keyboardType,
+}) {
+  return TextFormField(
+    //onChanged: (v){runanimation();},
+    //onTap: (){runanimation();},
+    controller: controller,
+    keyboardType: keyboardType,
+    validator: (value) {
+      if (value!.isEmpty) {
+        return validateString;
+      } else {
+        return null;
+      }
+    },
+    decoration: InputDecoration(
+        labelText: label,
+        prefixIcon: Icon(prefixIcon),
+        enabledBorder: OutlineInputBorder(
+          borderSide: const BorderSide(color: Colors.blueGrey, width: 1),
+          borderRadius: BorderRadius.circular(40),
+        )),
+  );
+}
+
 class OptionsWidget extends StatelessWidget {
   const OptionsWidget({Key? key}) : super(key: key);
 
@@ -41,4 +70,3 @@ AppBar myAppBar(String text, Color color) {
         style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
       ));
 }
-
