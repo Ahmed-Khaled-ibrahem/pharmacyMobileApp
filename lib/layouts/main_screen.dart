@@ -4,8 +4,9 @@ import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 import 'make_order_page.dart';
 
+
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+   MainScreen({Key? key}) : super(key: key);
 
   Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(
@@ -170,7 +171,8 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
               InkWell(
-                onTap: () {},
+                onTap: () {
+                },
                 child: Card(
                   elevation: 15,
                   shadowColor: Colors.black,
@@ -246,42 +248,16 @@ class MainScreen extends StatelessWidget {
                       mainAxisSpacing: 5,
                       crossAxisCount: 3,
                       children: [
-                        Image.network(
-                          "https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "http://assets.stickpng.com/thumbs/589a40535aa6293a4aac48a6.png",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",
-                          fit: BoxFit.cover,
-                        ),
-                        Image.network(
-                          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",
-                          fit: BoxFit.cover,
-                        ),
+                        photoWithError("https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg",""),
+                        photoWithError("https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",""),
+                        photoWithError("https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",""),
+                        photoWithError("https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",""),
+                        photoWithError("https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",""),
+                        photoWithError("http://assets.stickpng.com/thumbs/589a40535aa6293a4aac48a6.png",""),
+                        photoWithError("https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",""),
+                        photoWithError("https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",""),
+                        photoWithError("https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",""),
+
                       ],
                     ),
                   ),

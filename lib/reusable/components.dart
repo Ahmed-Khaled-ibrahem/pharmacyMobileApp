@@ -73,13 +73,14 @@ AppBar myAppBar(String text, Color color) {
 
 Widget photoWithError(String imageLink, String assetPath) {
   return FadeInImage.assetNetwork(
-    placeholder: assetPath,
+    fit: BoxFit.cover,
+    placeholder: "assets/images/loginlogo.png",
     imageErrorBuilder: (
       context,
       error,
       stackTrace,
     ) {
-      return Image.asset(assetPath);
+      return const Icon(Icons.downloading,size: 30,);
     },
     image: imageLink,
   );
