@@ -63,6 +63,7 @@ dependencies:
   #layout
   simple_grid: ^0.1.1
   carousel_slider: ^4.0.0
+  dash_chat: ^1.1.16
 
 
 dev_dependencies:

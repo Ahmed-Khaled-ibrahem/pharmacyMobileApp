@@ -8,6 +8,7 @@ import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 import 'SendPrescription.dart';
+import 'chatingPage.dart';
 import 'make_order_page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -53,7 +54,9 @@ class _MainScreenState extends State<MainScreen> {
               tooltip: "Ask the Doctor",
               elevation: 10,
               backgroundColor: themeColor,
-              onPressed: () {},
+              onPressed: () {
+                navigateTo(context, const ChatingScreen(), true);
+              },
               child: const Icon(Icons.message_outlined),
             ),
             appBar: myAppBar("Tamer Deweek", themeColor),
