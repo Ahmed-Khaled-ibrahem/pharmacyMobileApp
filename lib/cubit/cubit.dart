@@ -17,11 +17,6 @@ class AppCubit extends Cubit<AppStates> {
 
   Database? _dataBase; // SQL-LITE database object
 
-  int counter = 0;
-  // bool mobileCode = true;
-  int angle1 = 0;
-  int angle2 = 3;
-
   /// deal with data base
   void initialReadSqlData() async {
     String databasePath = await getDatabasesPath();
@@ -147,23 +142,6 @@ class AppCubit extends Cubit<AppStates> {
       EasyLoading.showToast('Wrong Password user:ahmed pass:666666');
       emit(LogInErrorState());
     }
-  }
-
-  void swipeScreen() {
-    angle1 = 3;
-    angle2 = 0;
-    emit(GeneralState());
-  }
-
-  void swipeBackScreen() {
-    angle1 = 0;
-    angle2 = 3;
-    emit(GeneralState());
-  }
-
-  void incrementCounter() {
-    //angle+=40;
-    emit(GeneralState());
   }
 
   void emitGeneralState() {
