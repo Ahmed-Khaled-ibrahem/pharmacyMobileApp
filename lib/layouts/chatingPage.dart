@@ -1,3 +1,4 @@
+import 'package:dash_chat/dash_chat.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
@@ -24,11 +25,40 @@ class _ChatingScreenState extends State<ChatingScreen> {
       builder: (BuildContext context, AppStates state) {
         SigningCubit cubit = SigningCubit.get(context);
 
+        final ChatUser user = ChatUser(
+          name: "Fayeed",
+          uid: "123456789",
+          avatar: "https://www.wrappixel.com/ampleadmin/assets/images/users/4.jpg",
+        );
+
+        List<ChatMessage> messages = <ChatMessage>[];
+        var m = <ChatMessage>[];
+
+        var i = 0;
+
+        
         return Scaffold(
             appBar: myAppBar("Direct Chatting", themeColor),
             body: InkWell(
               onTap: (){ FocusScope.of(context).requestFocus(FocusNode());},
-              child: Container()
+              child: DashChat(
+                onSend: (v){},
+                  parsePatterns: <MatchText>[
+                    MatchText(
+                      //type: "email",
+                        onTap: (String value) {}
+                    ),
+                    MatchText(
+                        pattern: r"\B#+([\w]+)\b",
+                        style: TextStyle(
+                          color: Colors.pink,
+                          fontSize: 24,
+                        ),
+                        onTap: (String value) {}
+                    ),
+                  ], messages: [],
+                user: user,
+              ),
             ));
       },
     );
