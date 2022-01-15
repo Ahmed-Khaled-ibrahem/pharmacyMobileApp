@@ -5,7 +5,7 @@ import '../reusable/components.dart';
 import 'make_order_page.dart';
 
 class MainScreen extends StatelessWidget {
-  MainScreen({Key? key}) : super(key: key);
+  const MainScreen({Key? key}) : super(key: key);
 
   Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(

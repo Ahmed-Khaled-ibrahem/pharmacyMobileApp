@@ -58,7 +58,7 @@ class SigningCubit extends Cubit<AppStates> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => MainScreen()),
+        MaterialPageRoute(builder: (context) => const MainScreen()),
       );
       /*
       Navigator.pushReplacement(
@@ -95,7 +95,7 @@ class SigningCubit extends Cubit<AppStates> {
           context,
           PageTransition(
             type: PageTransitionType.rightToLeft,
-            child: MainScreen(),
+            child: const MainScreen(),
             // inheritTheme: true,
           ),
         );
