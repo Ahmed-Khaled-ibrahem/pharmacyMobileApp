@@ -7,6 +7,7 @@ import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 
 
+
 class OffersScreen extends StatefulWidget {
   const OffersScreen({Key? key}) : super(key: key);
 
@@ -63,7 +64,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                 fontWeight: FontWeight.w500),
                           ),
                         ),
-                        
+
                         Positioned(
                           right: 0,
                           child: Container(

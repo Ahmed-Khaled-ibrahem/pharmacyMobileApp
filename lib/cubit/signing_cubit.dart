@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,10 +16,18 @@ class SigningCubit extends Cubit<AppStates> {
   int angle2 = 3;
 
   FirebaseAuth auth = FirebaseAuth.instance;
+  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+
   late String validateCode;
 
-  void sendValidationCode(String phone) {
+  Future<void> sendValidationCode(String phone) async {
     EasyLoading.show(status: 'sending code..');
+    DocumentSnapshot collectionRef =
+        await fireStore.collection('users').doc(phone).get();
+    if (collectionRef.exists) {
+      EasyLoading.showError("Phone number already exists");
+      return;
+    }
 
     auth.verifyPhoneNumber(
       phoneNumber: '+20$phone',
@@ -43,19 +52,22 @@ class SigningCubit extends Cubit<AppStates> {
     );
   }
 
-  Future<User?> otpCheck(String smsOtp) async {
+  void otpCheck(String smsOtp) async {
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: validateCode, smsCode: smsOtp);
     UserCredential userCred = await auth.signInWithCredential(credential);
-    return userCred.user;
+    if (userCred.user == null) {
+      EasyLoading.showError("wrong Code");
+    } else {
+      print("create user");
+    }
   }
 
   /// signing functions
-  void gMailRegistration(BuildContext context) {
+  void userDummyLogin(BuildContext context) {
     EasyLoading.show(status: 'Connecting..');
     Timer(const Duration(seconds: 1), () {
       EasyLoading.dismiss();
-
 
       /*
       Navigator.pushReplacement(
@@ -69,23 +81,6 @@ class SigningCubit extends Cubit<AppStates> {
        */
     });
     emit(GeneralState());
-  }
-
-  void navigateTo(context, Screen, bool push){
-    if(push){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Screen),
-      );
-    }
-    else{
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Screen),
-      );
-    }
   }
 
   void loginButtonEvent({
@@ -109,7 +104,7 @@ class SigningCubit extends Cubit<AppStates> {
           context,
           PageTransition(
             type: PageTransitionType.rightToLeft,
-            child:  MainScreen(),
+            child: const MainScreen(),
             // inheritTheme: true,
           ),
         );
