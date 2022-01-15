@@ -7,6 +7,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 import 'make_order_page.dart';
+import 'offersPage.dart';
 
 
 
@@ -88,7 +89,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   InkWell(
                     onTap: (){
-
+                    cubit.navigateTo(context, OffersScreen(), true);
                     },
                     child: CarouselSlider(
                       options: CarouselOptions(height: 200.0, autoPlay: true,),
