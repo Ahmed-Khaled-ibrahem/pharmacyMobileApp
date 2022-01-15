@@ -1,13 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/layouts/offers_page.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
+import 'SendPrescription.dart';
 import 'make_order_page.dart';
 
 
@@ -90,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   InkWell(
                     onTap: (){
-                    navigateTo(context, OffersScreen(), true);
+                    navigateTo(context, const OffersScreen(), true);
                     },
                     child: CarouselSlider(
                       options: CarouselOptions(height: 200.0, autoPlay: true,),
@@ -105,7 +105,9 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      navigateTo(context, const SendPrescriptionScreen(), true);
+                    },
                     child: Card(
                       elevation: 15,
                       shadowColor: Colors.black,
