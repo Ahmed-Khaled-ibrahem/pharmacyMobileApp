@@ -56,10 +56,7 @@ class SigningCubit extends Cubit<AppStates> {
     Timer(const Duration(seconds: 1), () {
       EasyLoading.dismiss();
 
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) =>  MainScreen()),
-      );
+
       /*
       Navigator.pushReplacement(
         context,
@@ -72,6 +69,23 @@ class SigningCubit extends Cubit<AppStates> {
        */
     });
     emit(GeneralState());
+  }
+
+  void navigateTo(context, Screen, bool push){
+    if(push){
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Screen),
+      );
+    }
+    else{
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+            builder: (context) => Screen),
+      );
+    }
   }
 
   void loginButtonEvent({

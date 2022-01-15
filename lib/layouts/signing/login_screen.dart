@@ -160,14 +160,7 @@ class LoginScreenState extends State<LoginScreen>
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      Navigator.push(
-                                        context,
-                                        PageTransition(
-                                            type: PageTransitionType
-                                                .rightToLeftWithFade,
-                                            child: const ForgetPassPage(),
-                                            ctx: context),
-                                      );
+                                      cubit.navigateTo(context, ForgetPassPage(), true);
                                     },
                                     child:
                                         const Text("Forget your Password ?")),
@@ -193,13 +186,7 @@ class LoginScreenState extends State<LoginScreen>
                                         password: password.text);
 
                                     stopanimation();
-
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                               MainScreen()),
-                                    );
+                                    cubit.navigateTo(context, MainScreen(), false);
                                   }
                                 }),
                             const SizedBox(
@@ -215,6 +202,7 @@ class LoginScreenState extends State<LoginScreen>
                             InkWell(
                               onTap: () {
                                 cubit.gMailRegistration(context);
+                                cubit.navigateTo(context, MainScreen(),false);
                                 stopanimation();
                               },
                               child: SizedBox(
@@ -235,13 +223,7 @@ class LoginScreenState extends State<LoginScreen>
                             const Text("You haven't account yet"),
                             TextButton(
                                 onPressed: () {
-                                  Navigator.push(
-                                      context,
-                                      PageTransition(
-                                          type: PageTransitionType.rightToLeft,
-                                          child: SignUpPage(),
-                                          inheritTheme: true,
-                                          ctx: context));
+                                  cubit.navigateTo(context, SignUpPage(), true);
                                 },
                                 child: const Text(
                                   "Sign up",
