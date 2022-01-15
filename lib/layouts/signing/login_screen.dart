@@ -1,11 +1,11 @@
 import 'package:page_transition/page_transition.dart';
-import 'package:pharmacyapp/cubit/cubit.dart';
+import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../contsants/const_colors.dart';
-import '../reusable/components.dart';
-import 'main_screen.dart';
+import '../../contsants/const_colors.dart';
+import '../../reusable/components.dart';
+import '../main_screen.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
 
@@ -35,10 +35,10 @@ class LoginScreenState extends State<LoginScreen>
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<SigningCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-        AppCubit cubit = AppCubit.get(context);
+        SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
             appBar: myAppBar("LOGIN", themeColor),

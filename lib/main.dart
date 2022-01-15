@@ -4,8 +4,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'contsants/const_colors.dart';
-import 'cubit/cubit.dart';
-import 'layouts/login_screen.dart';
+import 'cubit/operation_cubit.dart';
+import 'layouts/signing/login_screen.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();

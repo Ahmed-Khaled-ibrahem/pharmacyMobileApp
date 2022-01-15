@@ -1,13 +1,10 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:page_transition/page_transition.dart';
-import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'package:sqflite/sqflite.dart';
 import 'states.dart';
 
@@ -85,63 +82,6 @@ class AppCubit extends Cubit<AppStates> {
     print(place);
 
     EasyLoading.dismiss();
-  }
-
-  /// signing functions
-  void gMailRegistration(BuildContext context) {
-    EasyLoading.show(status: 'Connecting..');
-    Timer(const Duration(seconds: 1), () {
-      EasyLoading.dismiss();
-
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => const MainScreen()),
-      );
-      /*
-      Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.rightToLeft,
-            child: const MainScreen(),
-            ctx: context),
-      );
-
-       */
-    });
-    emit(GeneralState());
-  }
-
-  void loginButtonEvent({
-    required BuildContext context,
-    required userName,
-    required password,
-  }) {
-    emit(LogInLoadingState());
-    /*
-     check user here
-     using username.text
-     and password.text
-    */
-    if (((userName == "ahmed") & (password == "666666")) ||
-        (userName == "admin")) {
-      EasyLoading.show(status: 'Connecting..');
-      Timer(const Duration(seconds: 1), () {
-        EasyLoading.dismiss();
-
-        Navigator.pushReplacement(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            child: const MainScreen(),
-            // inheritTheme: true,
-          ),
-        );
-      });
-      emit(LogInDoneState());
-    } else {
-      EasyLoading.showToast('Wrong Password user:ahmed pass:666666');
-      emit(LogInErrorState());
-    }
   }
 
   void emitGeneralState() {

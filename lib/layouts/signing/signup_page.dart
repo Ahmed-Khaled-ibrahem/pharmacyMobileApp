@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmacyapp/cubit/cubit.dart';
+import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 
-import '../contsants/const_colors.dart';
-import '../reusable/components.dart';
+import '../../contsants/const_colors.dart';
+import '../../reusable/components.dart';
 
 // ignore: must_be_immutable
 class SignUpPage extends StatelessWidget {
@@ -23,15 +23,12 @@ class SignUpPage extends StatelessWidget {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool showPasswordSignUp = true;
 
-  int angle1 = 0;
-  int angle2 = 3;
-
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<SigningCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-        AppCubit cubit = AppCubit.get(context);
+        SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
           appBar: myAppBar("Sign up", themeColor),
@@ -67,7 +64,7 @@ class SignUpPage extends StatelessWidget {
                         )
                           ..rotateX(0)
                           ..rotateY(0)
-                          ..rotateZ(3.14 * angle2),
+                          ..rotateZ(3.14 * cubit.angle2),
                         child: Column(
                           children: [
                             const SizedBox(
@@ -125,7 +122,7 @@ class SignUpPage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(80))),
                               onPressed: () {
-                                incrementCounter(cubit);
+                                cubit.swipeBackScreen();
                                 // cubit.loginButtonEvent(context);
                                 //stopanimation();
                               },
@@ -142,7 +139,7 @@ class SignUpPage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(80))),
                               onPressed: () {
-                                swipeBackScreen(cubit);
+                                cubit.swipeBackScreen();
                                 // cubit.loginButtonEvent(context);
                                 //stopanimation();
                               },
@@ -171,7 +168,7 @@ class SignUpPage extends StatelessWidget {
                         )
                           ..rotateX(0)
                           ..rotateY(0)
-                          ..rotateZ(3.14 * angle1),
+                          ..rotateZ(3.14 * cubit.angle1),
                         duration: const Duration(seconds: 1),
                         child: Column(
                           children: [
@@ -305,7 +302,6 @@ class SignUpPage extends StatelessWidget {
                                       onPressed: () {
                                         showPasswordSignUp =
                                             !showPasswordSignUp;
-
                                         cubit.emitGeneralState();
                                       },
                                       icon: Icon(showPasswordSignUp
@@ -364,7 +360,8 @@ class SignUpPage extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                       borderRadius: BorderRadius.circular(80))),
                               onPressed: () {
-                                swipeScreen(cubit);
+                                //swipeScreen(cubit);
+                                cubit.swipeScreen();
                                 //cubit.loginButtonEvent(context);
                                 //stopanimation();
                               },
@@ -379,22 +376,5 @@ class SignUpPage extends StatelessWidget {
         );
       },
     );
-  }
-
-  void swipeScreen(AppCubit cubit) {
-    angle1 = 3;
-    angle2 = 0;
-    cubit.emitGeneralState();
-  }
-
-  void swipeBackScreen(AppCubit cubit) {
-    angle1 = 0;
-    angle2 = 3;
-    cubit.emitGeneralState();
-  }
-
-  void incrementCounter(AppCubit cubit) {
-    //angle+=40;
-    cubit.emitGeneralState();
   }
 }
