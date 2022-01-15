@@ -4,15 +4,10 @@ import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 import 'make_order_page.dart';
 
-class MainScreen extends StatefulWidget {
+class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
 
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  Future<bool> onWillPop() async {
+  Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
@@ -36,7 +31,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: onWillPop,
+      onWillPop: () => onWillPop(context),
       child: Scaffold(
         floatingActionButton: FloatingActionButton(
           tooltip: "Ask the Doctor",
