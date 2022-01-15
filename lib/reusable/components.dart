@@ -71,20 +71,15 @@ AppBar myAppBar(String text, Color color) {
       ));
 }
 
-Widget photoWithError(String imageLink, String assetLink) {
+Widget photoWithError(String imageLink, String assetPath) {
   return FadeInImage.assetNetwork(
-    placeholder: assetLink,
+    placeholder: assetPath,
     imageErrorBuilder: (
       context,
       error,
       stackTrace,
     ) {
-      return SizedBox(
-        height: 150,
-        child: Center(
-          child: Image.asset(assetLink),
-        ),
-      );
+      return Image.asset(assetPath);
     },
     image: imageLink,
   );
