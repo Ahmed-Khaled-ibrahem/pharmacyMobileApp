@@ -103,7 +103,7 @@ class LoginScreenState extends State<LoginScreen>
                                   }
                                 },
                                 decoration: InputDecoration(
-                                    labelText: 'User Name or Mobile phone',
+                                    labelText: 'Mobile phone',
                                     prefixIcon: const Icon(Icons.person),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -183,11 +183,9 @@ class LoginScreenState extends State<LoginScreen>
                                   if (formKey.currentState!.validate()) {
                                     cubit.loginButtonEvent(
                                         context: context,
-                                        userName: username.text,
+                                        phone: username.text,
                                         password: password.text);
                                     stopanimation();
-                                    navigateTo(
-                                        context, const MainScreen(), false);
                                   }
                                 }),
                             const SizedBox(
@@ -202,7 +200,6 @@ class LoginScreenState extends State<LoginScreen>
                             ),
                             InkWell(
                               onTap: () {
-                                cubit.userDummyLogin(context);
                                 navigateTo(context, const MainScreen(), false);
                                 stopanimation();
                               },

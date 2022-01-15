@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:lottie/lottie.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
@@ -35,20 +37,23 @@ class SignUpPage extends StatelessWidget {
 
         return Scaffold(
           appBar: myAppBar("Sign up", themeColor),
-          body: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Form(
-              key: formKey,
-              child: InkWell(
-                  onTap: () {
-                    FocusScope.of(context).requestFocus(FocusNode());
-                  },
-                  child: Stack(
-                    children: [
-                      _confirmOtpWidget(cubit, context),
-                      _inputUserWidget(cubit),
-                    ],
-                  )),
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10.0),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.vertical,
+              child: Form(
+                key: formKey,
+                child: GestureDetector(
+                    onTap: () {
+                      FocusScope.of(context).requestFocus(FocusNode());
+                    },
+                    child: Stack(
+                      children: [
+                        _confirmOtpWidget(cubit, context),
+                        _inputUserWidget(cubit),
+                      ],
+                    )),
+              ),
             ),
           ),
         );
@@ -233,63 +238,72 @@ class SignUpPage extends StatelessWidget {
       duration: const Duration(seconds: 1),
       child: Column(
         children: [
-          const SizedBox(
-            height: 30,
+          Center(
+            child: Lottie.asset(
+              'assets/lottie/login.zip',
+              height: 250,
+            ),
           ),
-          SingleChildScrollView(
-            scrollDirection: Axis.horizontal,
+          const SizedBox(
+            height: 10,
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
               children: [
-                SizedBox(
-                  width: 180,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: TextFormField(
-                      //onChanged: (v){runanimation();},
-                      //onTap: (){runanimation();},
-                      controller: firstName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'First Name cannot be Empty';
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'First Name',
-                          prefixIcon: const Icon(Icons.person),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.blueGrey, width: 1),
-                            borderRadius: BorderRadius.circular(40),
-                          )),
-                    ),
+                Expanded(
+                  child: TextFormField(
+                    //onChanged: (v){runanimation();},
+                    //onTap: (){runanimation();},
+                    controller: firstName,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'First Name cannot be Empty';
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        labelText: 'First Name',
+                        prefixIcon: Icon(Icons.person),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.blueGrey, width: 1),
+                          borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(40),
+                              bottomLeft: Radius.circular(40),
+                              topRight: Radius.circular(10),
+                              bottomRight: Radius.circular(10)),
+                        )),
                   ),
                 ),
-                SizedBox(
-                  width: 180,
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                    child: TextFormField(
-                      //onChanged: (v){runanimation();},
-                      //onTap: (){runanimation();},
-                      controller: secondName,
-                      validator: (value) {
-                        if (value!.isEmpty) {
-                          return 'Last Name cannot be Empty';
-                        } else {
-                          return null;
-                        }
-                      },
-                      decoration: InputDecoration(
-                          labelText: 'Last Name',
-                          prefixIcon: const Icon(Icons.person),
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: const BorderSide(
-                                color: Colors.blueGrey, width: 1),
-                            borderRadius: BorderRadius.circular(40),
-                          )),
-                    ),
+                const SizedBox(
+                  width: 10,
+                ),
+                Expanded(
+                  child: TextFormField(
+                    //onChanged: (v){runanimation();},
+                    //onTap: (){runanimation();},
+                    controller: secondName,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Last Name cannot be Empty';
+                      } else {
+                        return null;
+                      }
+                    },
+                    decoration: const InputDecoration(
+                        labelText: 'Last Name',
+                        prefixIcon: Icon(Icons.person),
+                        enabledBorder: OutlineInputBorder(
+                          borderSide:
+                              BorderSide(color: Colors.blueGrey, width: 1),
+                          borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(40),
+                              bottomRight: Radius.circular(40),
+                              topLeft: Radius.circular(10),
+                              bottomLeft: Radius.circular(10)),
+                        )),
                   ),
                 ),
               ],
@@ -400,27 +414,29 @@ class SignUpPage extends StatelessWidget {
           const SizedBox(
             height: 15,
           ),
-          ElevatedButton.icon(
-            label: const Text("Sign up"),
-            icon: const Icon(Icons.account_circle_sharp),
-            style: ElevatedButton.styleFrom(
-                primary: themeColor,
-                fixedSize: const Size(250, 35.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(80))),
-            onPressed: () {
-              cubit.sendValidationCode(phoneNumber.text);
-
-              // if (formKey.currentState!.validate()) {
-              //   if (passwordSignUp.text ==
-              //       passwordSignUpConf.text) {
-              //     cubit.sendValidationCode(phoneNumber.text);
-              //   } else {
-              //     EasyLoading.showToast(
-              //         "Password must be the same.");
-              //   }
-              // }
-            },
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            child: SizedBox(
+              width: double.infinity,
+              height: 50,
+              child: ElevatedButton.icon(
+                label: const Text("Sign up"),
+                icon: const Icon(Icons.account_circle_sharp),
+                style: ElevatedButton.styleFrom(
+                    primary: themeColor,
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(80))),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    if (passwordSignUp.text == passwordSignUpConf.text) {
+                      cubit.sendValidationCode(phoneNumber.text);
+                    } else {
+                      EasyLoading.showToast("Password must be the same.");
+                    }
+                  }
+                },
+              ),
+            ),
           ),
         ],
       ),

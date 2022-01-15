@@ -4,7 +4,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/pref_helper.dart';
@@ -14,7 +13,6 @@ class SigningCubit extends Cubit<AppStates> {
   SigningCubit() : super(AppInitial());
   static SigningCubit get(context) => BlocProvider.of(context);
 
-  // TODO : LOGIN WITH MOBILE AND PASS
   // TODO : FORGET PASSWORD
 
   int angle1 = 0;
@@ -93,56 +91,28 @@ class SigningCubit extends Cubit<AppStates> {
     });
   }
 
-  /// signing functions
-  void userDummyLogin(BuildContext context) {
-    EasyLoading.show(status: 'Connecting..');
-    Timer(const Duration(seconds: 1), () {
-      EasyLoading.dismiss();
-
-      /*
-      Navigator.pushReplacement(
-        context,
-        PageTransition(
-            type: PageTransitionType.rightToLeft,
-            child: const MainScreen(),
-            ctx: context),
-      );
-
-       */
-    });
-    emit(GeneralState());
-  }
-
-  void loginButtonEvent({
+  Future<void> loginButtonEvent({
     required BuildContext context,
-    required userName,
+    required phone,
     required password,
-  }) {
-    emit(LogInLoadingState());
-    /*
-     check user here
-     using username.text
-     and password.text
-    */
-    if (((userName == "ahmed") & (password == "666666")) ||
-        (userName == "admin")) {
-      EasyLoading.show(status: 'Connecting..');
-      Timer(const Duration(seconds: 1), () {
-        EasyLoading.dismiss();
-
-        Navigator.pushReplacement(
-          context,
-          PageTransition(
-            type: PageTransitionType.rightToLeft,
-            child: const MainScreen(),
-            // inheritTheme: true,
-          ),
-        );
-      });
-      emit(LogInDoneState());
+  }) async {
+    DocumentSnapshot collectionRef =
+        await _fireStore.collection('users').doc(phone).get();
+    if (!collectionRef.exists) {
+      EasyLoading.showError("Wrong phone number");
+      return;
     } else {
-      EasyLoading.showToast('Wrong Password user:ahmed pass:666666');
-      emit(LogInErrorState());
+      String rightPass = collectionRef.get("pass");
+      print(rightPass);
+      if (password == rightPass) {
+        EasyLoading.dismiss();
+        PreferenceHelper.putDataInSharedPreference(key: "phone", value: phone);
+        PreferenceHelper.putDataInSharedPreference(
+            key: "userName", value: collectionRef.get("name"));
+        navigateTo(context, const MainScreen(), false);
+      } else {
+        EasyLoading.showError("Wrong password");
+      }
     }
   }
 

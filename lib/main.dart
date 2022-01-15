@@ -25,7 +25,7 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-  print(phone);
+
   runApp(MyApp(phone));
 }
 
