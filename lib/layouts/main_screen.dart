@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import '../contsants/const_colors.dart';
@@ -37,7 +38,9 @@ class MainScreen extends StatelessWidget {
           tooltip: "Ask the Doctor",
           elevation: 10,
           backgroundColor: themeColor,
-          onPressed: () {},
+          onPressed: () {
+            FirebaseAuth auth = FirebaseAuth.instance;
+          },
           child: const Icon(Icons.message_outlined),
         ),
         appBar: myAppBar("Tamer Deweek", themeColor),

@@ -37,6 +37,12 @@ dependencies:
   # bloc
   bloc: ^8.0.2
   flutter_bloc: ^8.0.1
+  #firebase
+  firebase_database: ^9.0.5
+  firebase_core: ^1.11.0
+  cloud_firestore: ^3.1.6
+  firebase_messaging: ^11.2.5
+  firebase_auth: ^3.3.5
   # animations
   flutter_easyloading: ^3.0.3
   page_transition: ^2.0.4
