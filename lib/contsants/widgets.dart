@@ -6,3 +6,5 @@ const Widget defaultSpaceH = SizedBox(
 const Widget defaultSpaceW = SizedBox(
   width: 20,
 );
+
+const ScrollPhysics defaultScrollPhysics = BouncingScrollPhysics();

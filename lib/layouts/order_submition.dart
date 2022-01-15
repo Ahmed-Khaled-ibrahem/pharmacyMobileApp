@@ -49,7 +49,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.fromLTRB(15, 15, 15, 5),
                     child: SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
+                      physics: defaultScrollPhysics,
                       child: Column(
                         children: [
                           defaultTextField(

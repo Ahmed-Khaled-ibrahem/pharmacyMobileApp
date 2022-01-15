@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'contsants/const_colors.dart';
 import 'cubit/operation_cubit.dart';
 import 'layouts/signing/login_screen.dart';
@@ -26,8 +27,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (BuildContext context) => AppCubit()..initialReadSqlData(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+            create: (BuildContext context) => AppCubit()..initialReadSqlData()),
+        BlocProvider(create: (BuildContext context) => SigningCubit()),
+      ],
       child: MaterialApp(
         builder: EasyLoading.init(),
         title: 'Pharmacy',

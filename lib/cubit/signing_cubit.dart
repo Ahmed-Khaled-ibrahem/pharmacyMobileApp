@@ -17,24 +17,28 @@ class SigningCubit extends Cubit<AppStates> {
   FirebaseAuth auth = FirebaseAuth.instance;
   late String validateCode;
 
-  void createByMobilePhone(String phone) {
+  void sendValidationCode(String phone) {
+    EasyLoading.show(status: 'sending code..');
+
     auth.verifyPhoneNumber(
       phoneNumber: '+20$phone',
       verificationCompleted: (PhoneAuthCredential credential) async {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
-          print('The provided phone number is not valid.');
+          EasyLoading.showToast('The provided phone number is not valid.');
         } else {
           print(e.code);
+          EasyLoading.showToast(e.code);
         }
       },
       codeSent: (String verificationId, int? resendToken) {
         validateCode = verificationId;
-        print("sent successfully");
+        swipeScreen();
+        EasyLoading.showToast('Code sent check your message.');
       },
       timeout: const Duration(minutes: 2),
       codeAutoRetrievalTimeout: (String verificationId) {
-        print("timeout");
+        EasyLoading.showToast('Code expired now.');
       },
     );
   }
@@ -46,12 +50,6 @@ class SigningCubit extends Cubit<AppStates> {
     return userCred.user;
   }
 
-  Future<void> loginWithMobile(String phone) async {
-    // ConfirmationResult confirmationResult =
-    // await auth.signInWithPhoneNumber('+2$phone');
-    //  UserCredential userCredential = await confirmationResult.confirm('123456');
-  }
-
   /// signing functions
   void gMailRegistration(BuildContext context) {
     EasyLoading.show(status: 'Connecting..');
@@ -60,7 +58,7 @@ class SigningCubit extends Cubit<AppStates> {
 
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) =>  MainScreen()),
+        MaterialPageRoute(builder: (context) => MainScreen()),
       );
       /*
       Navigator.pushReplacement(
@@ -97,7 +95,7 @@ class SigningCubit extends Cubit<AppStates> {
           context,
           PageTransition(
             type: PageTransitionType.rightToLeft,
-            child:  MainScreen(),
+            child: MainScreen(),
             // inheritTheme: true,
           ),
         );
