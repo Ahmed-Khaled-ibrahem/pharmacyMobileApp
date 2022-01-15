@@ -45,7 +45,7 @@ class _MainScreenState extends State<MainScreen> {
     return BlocConsumer<SigningCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-        SigningCubit cubit = SigningCubit.get(context);
+        // SigningCubit cubit = SigningCubit.get(context);
 
         return WillPopScope(
           onWillPop: () => onWillPop(context),
@@ -153,10 +153,10 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   SizedBox(
                     width: EdgeInsetsGeometry.infinity.horizontal,
-                    child:  Padding(
+                    child: Padding(
                       padding: EdgeInsets.only(top: 5),
                       child: Padding(
-                        padding: const EdgeInsets.only(left: 15,right: 15),
+                        padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Container(
                           color: themeColor,
                           child: const Text(
@@ -175,8 +175,7 @@ class _MainScreenState extends State<MainScreen> {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: Container(
-                        decoration: const BoxDecoration(
-                            color: Colors.blueGrey),
+                        decoration: const BoxDecoration(color: Colors.blueGrey),
                         child: GridView.count(
                           primary: false,
                           padding: const EdgeInsets.all(10),
