@@ -73,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
                       width: 300,
                       child: Row(
                         children: const [
-                          Icon(Icons.view_list),
+                          Icon(Icons.shopping_cart_rounded),
                           SizedBox(
                             width: 5,
                           ),
@@ -150,15 +150,19 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   SizedBox(
                     width: EdgeInsetsGeometry.infinity.horizontal,
-                    child: const Padding(
+                    child:  Padding(
                       padding: EdgeInsets.only(top: 5),
-                      child: Center(
-                        child: Text(
-                          "Brands",
-                          style: TextStyle(
-                            fontSize: 20,
-                            color: themeColor,
-                            fontWeight: FontWeight.bold,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 15,right: 15),
+                        child: Container(
+                          color: themeColor,
+                          child: const Text(
+                            "   Brands",
+                            style: TextStyle(
+                              fontSize: 20,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w200,
+                            ),
                           ),
                         ),
                       ),
@@ -169,14 +173,10 @@ class _MainScreenState extends State<MainScreen> {
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: Container(
                         decoration: const BoxDecoration(
-                            borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                            color: Colors.teal),
+                            color: Colors.blueGrey),
                         child: GridView.count(
                           primary: false,
-                          padding: const EdgeInsets.all(20),
+                          padding: const EdgeInsets.all(10),
                           crossAxisSpacing: 5,
                           mainAxisSpacing: 5,
                           crossAxisCount: 3,
