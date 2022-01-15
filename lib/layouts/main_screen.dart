@@ -4,6 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/layouts/offers_page.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 import 'make_order_page.dart';
@@ -69,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
                       backgroundColor: MaterialStateProperty.all(themeColor),
                     ),
                     onPressed: () {
-                      cubit.navigateTo(context, MakeAnOrderScreen(), true);
+                      navigateTo(context, MakeAnOrderScreen(), true);
                     },
                     child: SizedBox(
                       width: 300,
@@ -88,7 +90,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   InkWell(
                     onTap: (){
-                    cubit.navigateTo(context, OffersScreen(), true);
+                    navigateTo(context, OffersScreen(), true);
                     },
                     child: CarouselSlider(
                       options: CarouselOptions(height: 200.0, autoPlay: true,),
