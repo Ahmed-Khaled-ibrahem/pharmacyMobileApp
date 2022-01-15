@@ -7,11 +7,15 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/reusable/pref_helper.dart';
 import 'states.dart';
 
 class SigningCubit extends Cubit<AppStates> {
   SigningCubit() : super(AppInitial());
   static SigningCubit get(context) => BlocProvider.of(context);
+
+  // TODO : LOGIN WITH MOBILE AND PASS
+  // TODO : FORGET PASSWORD
 
   int angle1 = 0;
   int angle2 = 3;
@@ -36,15 +40,16 @@ class SigningCubit extends Cubit<AppStates> {
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
           EasyLoading.showError('The provided phone number is not valid.');
+        } else if (e.code == "too-many-requests") {
+          EasyLoading.showError("please wait a moment then try again");
         } else {
-          print(e.code);
           EasyLoading.showError(e.code);
         }
       },
       codeSent: (String verificationId, int? resendToken) {
         _validateCode = verificationId;
         swipeScreen();
-        EasyLoading.showInfo('Code sent check your message.');
+        EasyLoading.showToast('Code sent check your message.');
       },
       timeout: const Duration(minutes: 2),
       codeAutoRetrievalTimeout: (String verificationId) {
@@ -75,6 +80,11 @@ class SigningCubit extends Cubit<AppStates> {
           "name": {"first": firstName, "second": secondName},
           "pass": password,
         });
+
+        PreferenceHelper.putDataInSharedPreference(key: "phone", value: phone);
+        PreferenceHelper.putDataInSharedPreference(
+            key: "userName", value: {"first": firstName, "second": secondName});
+
         navigateTo(context, const MainScreen(), false);
       }
     }).catchError((err) {

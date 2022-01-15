@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
+import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'package:pharmacyapp/reusable/pref_helper.dart';
 import 'contsants/const_colors.dart';
 import 'cubit/operation_cubit.dart';
@@ -21,13 +22,18 @@ Future<void> main() async {
 
   configLoading();
 
-  PreferenceHelper.init();
+  await PreferenceHelper.init();
 
-  runApp(const MyApp());
+  String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
+  print(phone);
+  runApp(MyApp(phone));
 }
 
+// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp(this.phone, {Key? key}) : super(key: key);
+
+  String? phone;
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +57,9 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.white,
           scaffoldBackgroundColor: const Color(0xFFFFF9F9),
         ),
-        home: const LoginScreen(), //const MakeAnOrderScreen(), //
+        home: phone == null
+            ? const LoginScreen()
+            : const MainScreen(), //const MakeAnOrderScreen(), //
       ),
     );
   }

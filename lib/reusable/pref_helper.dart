@@ -10,8 +10,8 @@ class PreferenceHelper {
   }
 
   static void putDataInSharedPreference({
-    required dynamic value,
     required String key,
+    required dynamic value,
   }) {
     if (value is String) {
       pref.setString(key, value);

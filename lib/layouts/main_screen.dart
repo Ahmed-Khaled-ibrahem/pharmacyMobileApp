@@ -10,8 +10,6 @@ import '../reusable/components.dart';
 import 'SendPrescription.dart';
 import 'make_order_page.dart';
 
-
-
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
 
@@ -20,28 +18,26 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-
   Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Are you sure?'),
-        content: const Text('Do you want to Exit'),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: const Text('No'),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Are you sure?'),
+            content: const Text('Do you want to Exit'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('No'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Yes'),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: const Text('Yes'),
-          ),
-        ],
-      ),
-    )) ??
+        )) ??
         false;
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +46,7 @@ class _MainScreenState extends State<MainScreen> {
       builder: (BuildContext context, AppStates state) {
         SigningCubit cubit = SigningCubit.get(context);
 
-        return  WillPopScope(
+        return WillPopScope(
           onWillPop: () => onWillPop(context),
           child: Scaffold(
             floatingActionButton: FloatingActionButton(
@@ -89,13 +85,15 @@ class _MainScreenState extends State<MainScreen> {
                     ),
                   ),
                   InkWell(
-                    onTap: (){
-                    navigateTo(context, const OffersScreen(), true);
+                    onTap: () {
+                      navigateTo(context, const OffersScreen(), true);
                     },
                     child: CarouselSlider(
-                      options: CarouselOptions(height: 200.0, autoPlay: true,),
-
-                      items: [1,2,3,4,5].map((i) {
+                      options: CarouselOptions(
+                        height: 200.0,
+                        autoPlay: true,
+                      ),
+                      items: [1, 2, 3, 4, 5].map((i) {
                         return Builder(
                           builder: (BuildContext context) {
                             return offerCard();
@@ -224,5 +222,3 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
-
-
