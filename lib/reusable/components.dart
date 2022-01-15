@@ -57,16 +57,35 @@ AppBar myAppBar(String text, Color color) {
         ),
       ],
       centerTitle: true,
-      toolbarHeight: 100,
+      toolbarHeight: 60,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(100),
+          bottom: Radius.circular(30),
         ),
       ),
       backgroundColor: color,
-      elevation: 10.0,
+      elevation: 0,
       title: Text(
         text,
-        style: const TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
+        style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
       ));
+}
+
+Widget photoWithError(String imageLink, String assetLink) {
+  return FadeInImage.assetNetwork(
+    placeholder: assetLink,
+    imageErrorBuilder: (
+      context,
+      error,
+      stackTrace,
+    ) {
+      return SizedBox(
+        height: 150,
+        child: Center(
+          child: Image.asset(assetLink),
+        ),
+      );
+    },
+    image: imageLink,
+  );
 }

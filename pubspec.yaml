@@ -48,7 +48,7 @@ dependencies:
   sqflite: ^2.0.2
   # locations
   geolocator: ^8.0.3
-  geocoding: ^2.0.1
+  geocoding: ^2.0.2
   #layout
   simple_grid: ^0.1.1
 
