@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
@@ -77,85 +80,129 @@ class SignUpPage extends StatelessWidget {
         ..rotateX(0)
         ..rotateY(0)
         ..rotateZ(3.14 * cubit.angle2),
-      child: Column(
-        children: [
-          const SizedBox(
-            height: 30,
-          ),
-          const SizedBox(
-              width: 320,
-              child: Text(
-                "We Send code to your mobile",
-                textAlign: TextAlign.start,
-              )),
-          const SizedBox(
-            height: 10,
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-            child: TextFormField(
-              //autovalidateMode: AutovalidateMode.always,
-              controller: mobileCodeText,
-              //onChanged: (v){runanimation();},
-              //onTap: (){runanimation();},
-              validator: (value) {
-                if (value!.isEmpty) {
-                  return 'code be Empty';
-                } else {
-                  return null;
-                }
-              },
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
-              obscureText: showPasswordSignUp,
-              decoration: InputDecoration(
-                labelText: 'Code',
-                prefixIcon: const Icon(Icons.security_rounded),
-                enabledBorder: OutlineInputBorder(
-                  borderSide:
-                      const BorderSide(color: Colors.blueGrey, width: 1),
-                  borderRadius: BorderRadius.circular(40),
-                ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            defaultSpaceH,
+            Center(
+              child: Lottie.asset(
+                'assets/lottie/otp.zip',
+                height: 250,
               ),
             ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          ElevatedButton.icon(
-            label: const Text("Confirm"),
-            icon: const Icon(Icons.done),
-            style: ElevatedButton.styleFrom(
-                primary: themeColor,
-                fixedSize: const Size(250, 35.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(80))),
-            onPressed: () {
-              cubit.swipeBackScreen();
-              // cubit.loginButtonEvent(context);
-              //stopanimation();
-            },
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          ElevatedButton.icon(
-            label: const Text("Back"),
-            icon: const Icon(Icons.arrow_back),
-            style: ElevatedButton.styleFrom(
-                primary: themeColor,
-                fixedSize: const Size(250, 35.0),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(80))),
-            onPressed: () {
-              cubit.swipeBackScreen();
-              // cubit.loginButtonEvent(context);
-              //stopanimation();
-            },
-          ),
-        ],
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8.0),
+              child: Text(
+                'Phone Number Verification',
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                textAlign: TextAlign.center,
+              ),
+            ),
+            RichText(
+              text: TextSpan(
+                  text: "Enter the code sent to ",
+                  children: [
+                    TextSpan(
+                        text: phoneNumber.text,
+                        style: const TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)),
+                  ],
+                  style: const TextStyle(color: Colors.black54, fontSize: 15)),
+              textAlign: TextAlign.center,
+            ),
+            defaultSpaceH,
+            defaultSpaceH,
+            Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: PinCodeTextField(
+                  appContext: context,
+                  pastedTextStyle: TextStyle(
+                    color: Colors.blueGrey.shade600,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  length: 6,
+                  blinkWhenObscuring: true,
+                  animationType: AnimationType.fade,
+                  pinTheme: PinTheme(
+                    shape: PinCodeFieldShape.box,
+                    borderRadius: BorderRadius.circular(5),
+                    fieldHeight: 50,
+                    fieldWidth: 40,
+                    activeFillColor: Colors.white,
+                    activeColor: themeColor,
+                    inactiveFillColor: Colors.grey,
+                    inactiveColor: Colors.blueGrey,
+                  ),
+                  cursorColor: Colors.black,
+                  animationDuration: const Duration(milliseconds: 300),
+                  enableActiveFill: true,
+                  keyboardType: TextInputType.number,
+                  boxShadows: const [
+                    BoxShadow(
+                      offset: Offset(0, 1),
+                      color: Colors.black12,
+                      blurRadius: 10,
+                    )
+                  ],
+                  onCompleted: (v) {
+                    cubit.otpCheck(
+                        context: context,
+                        smsOtp: v,
+                        phone: phoneNumber.text,
+                        firstName: firstName.text,
+                        secondName: secondName.text,
+                        password: passwordSignUp.text);
+                  },
+                  onChanged: (value) {
+                    print(value);
+                  },
+                  beforeTextPaste: (text) {
+                    print("Allowing to paste $text");
+                    return true;
+                  },
+                )),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  "Didn't receive the code? ",
+                  style: TextStyle(color: Colors.black54, fontSize: 15),
+                ),
+                TextButton(
+                    onPressed: () {
+                      cubit.sendValidationCode(phoneNumber.text);
+                    },
+                    child: const Text(
+                      "RESEND",
+                      style: TextStyle(
+                          color: themeColor,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 16),
+                    ))
+              ],
+            ),
+            Center(
+              child: ElevatedButton.icon(
+                label: const Text("Back"),
+                icon: const Icon(Icons.arrow_back),
+                style: ElevatedButton.styleFrom(
+                    primary: themeColor,
+                    fixedSize: const Size(250, 35.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(80))),
+                onPressed: () {
+                  cubit.swipeBackScreen();
+                  // cubit.loginButtonEvent(context);
+                  //stopanimation();
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -362,7 +409,8 @@ class SignUpPage extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(80))),
             onPressed: () {
-              cubit.swipeScreen();
+              cubit.sendValidationCode(phoneNumber.text);
+
               // if (formKey.currentState!.validate()) {
               //   if (passwordSignUp.text ==
               //       passwordSignUpConf.text) {

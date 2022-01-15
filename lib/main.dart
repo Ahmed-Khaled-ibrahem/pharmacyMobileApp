@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
+import 'package:pharmacyapp/reusable/pref_helper.dart';
 import 'contsants/const_colors.dart';
 import 'cubit/operation_cubit.dart';
 import 'layouts/signing/login_screen.dart';
@@ -18,8 +19,11 @@ Future<void> main() async {
     statusBarColor: Color.fromRGBO(0, 0, 0, 0), // status bar color
   ));
 
-  runApp(const MyApp());
   configLoading();
+
+  PreferenceHelper.init();
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {

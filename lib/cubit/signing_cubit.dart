@@ -6,6 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'states.dart';
 
 class SigningCubit extends Cubit<AppStates> {
@@ -15,52 +16,71 @@ class SigningCubit extends Cubit<AppStates> {
   int angle1 = 0;
   int angle2 = 3;
 
-  FirebaseAuth auth = FirebaseAuth.instance;
-  FirebaseFirestore fireStore = FirebaseFirestore.instance;
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
 
-  late String validateCode;
+  late String _validateCode;
 
   Future<void> sendValidationCode(String phone) async {
     EasyLoading.show(status: 'sending code..');
     DocumentSnapshot collectionRef =
-        await fireStore.collection('users').doc(phone).get();
+        await _fireStore.collection('users').doc(phone).get();
     if (collectionRef.exists) {
       EasyLoading.showError("Phone number already exists");
       return;
     }
 
-    auth.verifyPhoneNumber(
+    _auth.verifyPhoneNumber(
       phoneNumber: '+20$phone',
       verificationCompleted: (PhoneAuthCredential credential) async {},
       verificationFailed: (FirebaseAuthException e) {
         if (e.code == 'invalid-phone-number') {
-          EasyLoading.showToast('The provided phone number is not valid.');
+          EasyLoading.showError('The provided phone number is not valid.');
         } else {
           print(e.code);
-          EasyLoading.showToast(e.code);
+          EasyLoading.showError(e.code);
         }
       },
       codeSent: (String verificationId, int? resendToken) {
-        validateCode = verificationId;
+        _validateCode = verificationId;
         swipeScreen();
-        EasyLoading.showToast('Code sent check your message.');
+        EasyLoading.showInfo('Code sent check your message.');
       },
       timeout: const Duration(minutes: 2),
       codeAutoRetrievalTimeout: (String verificationId) {
-        EasyLoading.showToast('Code expired now.');
+        EasyLoading.showInfo('Code expired now.');
       },
     );
   }
 
-  void otpCheck(String smsOtp) async {
+  void otpCheck({
+    required BuildContext context,
+    required String smsOtp,
+    required String phone,
+    required String firstName,
+    required String secondName,
+    required String password,
+  }) async {
+    EasyLoading.show(status: 'creating user..');
+
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-        verificationId: validateCode, smsCode: smsOtp);
-    UserCredential userCred = await auth.signInWithCredential(credential);
-    if (userCred.user == null) {
-      EasyLoading.showError("wrong Code");
-    } else {
-      print("create user");
-    }
+        verificationId: _validateCode, smsCode: smsOtp);
+    await _auth.signInWithCredential(credential).then((userCred) {
+      if (userCred.user == null) {
+        EasyLoading.showError("wrong Code");
+      } else {
+        EasyLoading.dismiss();
+        print("create user");
+        _fireStore.collection("users").doc(phone).set({
+          "name": {"first": firstName, "second": secondName},
+          "pass": password,
+        });
+        navigateTo(context, const MainScreen(), false);
+      }
+    }).catchError((err) {
+      print(err);
+      EasyLoading.showInfo("wrong Code");
+    });
   }
 
   /// signing functions
