@@ -58,6 +58,7 @@ dependencies:
   geocoding: ^2.0.2
   #layout
   simple_grid: ^0.1.1
+  carousel_slider: ^4.0.0
 
 
 dev_dependencies:

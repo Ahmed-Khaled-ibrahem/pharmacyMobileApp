@@ -198,7 +198,7 @@ class LoginScreenState extends State<LoginScreen>
                                       context,
                                       MaterialPageRoute(
                                           builder: (context) =>
-                                              const MainScreen()),
+                                               MainScreen()),
                                     );
                                   }
                                 }),

@@ -1,3 +1,4 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
 import '../contsants/const_colors.dart';
@@ -5,7 +6,7 @@ import '../reusable/components.dart';
 import 'make_order_page.dart';
 
 class MainScreen extends StatelessWidget {
-  const MainScreen({Key? key}) : super(key: key);
+   MainScreen({Key? key}) : super(key: key);
 
   Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(
@@ -28,6 +29,8 @@ class MainScreen extends StatelessWidget {
         false;
   }
 
+  CarouselControllerImpl offerSlider = CarouselControllerImpl();
+
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
@@ -46,6 +49,7 @@ class MainScreen extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
+
               ElevatedButton(
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(themeColor),
@@ -74,100 +78,18 @@ class MainScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () {},
-                child: Card(
-                  elevation: 15,
-                  shadowColor: Colors.black,
-                  color: Colors.indigo,
-                  child: SizedBox(
-                    width: 300,
-                    height: 200,
-                    child: Stack(
-                      children: [
-                        Positioned(
-                          right: -20,
-                          child: ClipRRect(
-                            borderRadius: const BorderRadius.only(
-                              bottomLeft: Radius.circular(100),
-                              topLeft: Radius.circular(100),
-                            ),
-                            child: Stack(
-                              children: [
-                                SizedBox(
-                                    width: 200,
-                                    child: Image.network(
-                                        "https://m.media-amazon.com/images/I/71+Zza6xeNL._SY355_.jpg")),
-                                Positioned(
-                                  top: -20,
-                                  child: SizedBox(
-                                      child: Image.network(
-                                    "https://freepngimg.com/thumb/categories/1219.png",
-                                  )),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                            top: 10,
-                            left: 10,
-                            child: Text(
-                              "Today's Offer",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                        const Positioned(
-                          left: 20,
-                          top: 50,
-                          child: SizedBox(
-                            width: 110,
-                            child: Text(
-                              "Head and Shoulders Shampoo 400 ml",
-                              style: TextStyle(
-                                  color: Colors.orangeAccent,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.w500),
-                            ),
-                          ),
-                        ),
-                        const Positioned(
-                            left: 20,
-                            bottom: 10,
-                            child: Text(
-                              "Add to cart",
-                              style: TextStyle(
-                                  fontSize: 20,
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.w500),
-                            )),
-                        Positioned(
-                          right: -12,
-                          bottom: -12,
-                          child: Container(
-                            child: const Center(
-                              child: Text(
-                                "30%",
-                                style: TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900),
-                              ),
-                            ),
-                            width: 80,
-                            height: 80,
-                            decoration: BoxDecoration(
-                              color: Colors.orangeAccent,
-                              borderRadius: BorderRadius.circular(200),
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
-                  ), //SizedBox
-                ),
+              CarouselSlider(
+                carouselController: offerSlider,
+                options: CarouselOptions(height: 200.0),
+                items: [1,2,3,4,5].map((i) {
+                  return Builder(
+                    builder: (BuildContext context) {
+                      return InkWell(
+                          onTap: () {},
+                          child: offerCard());
+                    },
+                  );
+                }).toList(),
               ),
               InkWell(
                 onTap: () {},
