@@ -1,8 +1,8 @@
-import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 import '../main_screen.dart';
@@ -160,7 +160,8 @@ class LoginScreenState extends State<LoginScreen>
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      cubit.navigateTo(context, ForgetPassPage(), true);
+                                      navigateTo(context,
+                                          const ForgetPassPage(), true);
                                     },
                                     child:
                                         const Text("Forget your Password ?")),
@@ -184,9 +185,9 @@ class LoginScreenState extends State<LoginScreen>
                                         context: context,
                                         userName: username.text,
                                         password: password.text);
-
                                     stopanimation();
-                                    cubit.navigateTo(context, MainScreen(), false);
+                                    navigateTo(
+                                        context, const MainScreen(), false);
                                   }
                                 }),
                             const SizedBox(
@@ -201,8 +202,8 @@ class LoginScreenState extends State<LoginScreen>
                             ),
                             InkWell(
                               onTap: () {
-                                cubit.gMailRegistration(context);
-                                cubit.navigateTo(context, MainScreen(),false);
+                                cubit.userDummyLogin(context);
+                                navigateTo(context, const MainScreen(), false);
                                 stopanimation();
                               },
                               child: SizedBox(
@@ -223,7 +224,7 @@ class LoginScreenState extends State<LoginScreen>
                             const Text("You haven't account yet"),
                             TextButton(
                                 onPressed: () {
-                                  cubit.navigateTo(context, SignUpPage(), true);
+                                  navigateTo(context, SignUpPage(), true);
                                 },
                                 child: const Text(
                                   "Sign up",

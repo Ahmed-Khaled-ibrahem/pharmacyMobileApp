@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -88,22 +87,4 @@ class AppCubit extends Cubit<AppStates> {
   void emitGeneralState() {
     emit(GeneralState());
   }
-
-  void navigateTo(context, Screen, bool push){
-    if(push){
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Screen),
-      );
-    }
-    else{
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) => Screen),
-      );
-    }
-  }
-
 }

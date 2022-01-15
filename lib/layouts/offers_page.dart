@@ -1,12 +1,9 @@
-import 'package:page_transition/page_transition.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
-
-
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({Key? key}) : super(key: key);
@@ -24,22 +21,8 @@ class _OffersScreenState extends State<OffersScreen> {
         SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
-            appBar: myAppBar("Current Offers", themeColor),
-        body: Container(
-
-        ));
+            appBar: myAppBar("Current Offers", themeColor), body: Container());
       },
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
