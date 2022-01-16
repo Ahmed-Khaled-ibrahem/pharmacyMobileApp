@@ -2,8 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-
-import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 
 class ForgetPassPage extends StatelessWidget {
@@ -16,7 +14,7 @@ class ForgetPassPage extends StatelessWidget {
           // AppCubit cubit = AppCubit.get(context);
 
           return Scaffold(
-            appBar: myAppBar("Forget Password", themeColor),
+            appBar: myAppBar(text: "Forget Password", context: context),
           );
         });
   }

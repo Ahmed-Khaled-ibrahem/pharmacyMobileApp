@@ -35,7 +35,7 @@ class SignUpPage extends StatelessWidget {
         SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
-          appBar: myAppBar("Sign up", themeColor),
+          appBar: myAppBar(text: "Sign up", context: context),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SingleChildScrollView(

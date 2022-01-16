@@ -3,7 +3,6 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 
 class ChattingScreen extends StatefulWidget {
@@ -33,7 +32,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
         // int i = 0;
 
         return Scaffold(
-            appBar: myAppBar("Direct Chatting", themeColor),
+            appBar: myAppBar(text: "Direct Chatting", context: context),
             body: InkWell(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());

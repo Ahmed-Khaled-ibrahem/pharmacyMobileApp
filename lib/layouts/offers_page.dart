@@ -21,7 +21,7 @@ class _OffersScreenState extends State<OffersScreen> {
         // SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
-            appBar: myAppBar("Current Offers", themeColor),
+            appBar: myAppBar(text: "Current Offers", context: context),
             body: Column(
               children: [
                 Expanded(

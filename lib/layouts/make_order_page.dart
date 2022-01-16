@@ -25,7 +25,7 @@ class MakeAnOrderScreen extends StatelessWidget {
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-                appBar: myAppBar("Make an Order", themeColor),
+                appBar: myAppBar(text: "Make an Order", context: context),
                 body: Column(
                   children: [
                     const SizedBox(

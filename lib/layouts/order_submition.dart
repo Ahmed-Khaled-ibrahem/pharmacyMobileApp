@@ -43,7 +43,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                         ),
                   onPressed: () => cubit.determinePosition(),
                 ),
-                appBar: myAppBar("Confirm Data", themeColor),
+                appBar: myAppBar(text: "Confirm Data", context: context),
                 body: Form(
                   key: formKey,
                   child: Padding(

@@ -41,7 +41,7 @@ class LoginScreenState extends State<LoginScreen>
         SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
-            appBar: myAppBar("LOGIN", themeColor),
+            appBar: myAppBar(text: "LOGIN", context: context),
             body: Stack(
               children: [
                 SingleChildScrollView(

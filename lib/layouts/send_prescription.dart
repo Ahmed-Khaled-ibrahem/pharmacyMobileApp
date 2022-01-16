@@ -18,7 +18,7 @@ class SendPrescriptionScreen extends StatelessWidget {
         //AppCubit cubit = AppCubit.get(context);
 
         return Scaffold(
-            appBar: myAppBar("Send Prescription", themeColor),
+            appBar: myAppBar(text: "Send Prescription", context: context),
             body: InkWell(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
