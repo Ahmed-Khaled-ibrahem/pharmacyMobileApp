@@ -34,10 +34,6 @@ class AppCubit extends Cubit<AppStates> {
     }
 
     _dataBase = await openDatabase(path);
-
-    // 	"price"	NUMERIC,
-    // 	"img"	TEXT,
-    // 	"details"	TEXT
   }
 
   Future<List<Map<String, dynamic>>> findInDataBase(String subWord) async {
