@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -73,12 +74,11 @@ class SigningCubit extends Cubit<AppStates> {
         EasyLoading.showError("wrong Code");
       } else {
         EasyLoading.dismiss();
-        print("create user");
         _fireStore.collection("users").doc(phone).set({
           "name": {"first": firstName, "second": secondName},
           "pass": password,
         });
-
+        FirebaseMessaging.instance.subscribeToTopic(phone);
         PreferenceHelper.putDataInSharedPreference(key: "phone", value: phone);
         PreferenceHelper.putDataInSharedPreference(
             key: "userName", value: {"first": firstName, "second": secondName});
@@ -89,6 +89,11 @@ class SigningCubit extends Cubit<AppStates> {
       print(err);
       EasyLoading.showInfo("wrong Code");
     });
+  }
+
+  void logout(String phone) {
+    FirebaseMessaging.instance.unsubscribeFromTopic(phone);
+    PreferenceHelper.clearDataFromSharedPreference(key: "phone");
   }
 
   Future<void> loginButtonEvent({
@@ -106,6 +111,7 @@ class SigningCubit extends Cubit<AppStates> {
       print(rightPass);
       if (password == rightPass) {
         EasyLoading.dismiss();
+        FirebaseMessaging.instance.subscribeToTopic(phone);
         PreferenceHelper.putDataInSharedPreference(key: "phone", value: phone);
         PreferenceHelper.putDataInSharedPreference(
             key: "userName", value: collectionRef.get("name"));

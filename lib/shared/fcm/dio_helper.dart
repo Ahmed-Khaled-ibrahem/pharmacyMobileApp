@@ -1,5 +1,8 @@
 import 'package:dio/dio.dart';
 
+const String messagingToken =
+    "AAAAyMrFWo8:APA91bH8m3qp5wlwMPpWW8yoMM4S7rM_RWRIpIXuVxH1IBfLbrKeW_df5o7ElMY2NBL-890z6FsFfkHm-FFwVNt5dQEHq-VO_t9R7-kVwO0QgOYFios21boreCVWGrefV6mL9dXCJrNf";
+
 class DioHelper {
   late Dio dio;
 
@@ -8,7 +11,7 @@ class DioHelper {
 //                     sendData: {"Test": "hehe"},
 //                     title: "Test From Flutter",
 //                     body: "Click here",
-//                     receiverUId: "mmDJrD7W0EfN5iVEsGDt2uu8jik2"));
+//                     receiverUId: "-----"));
 
   DioHelper() {
     dio = Dio(BaseOptions(
@@ -31,8 +34,7 @@ class DioHelper {
   }) async {
     dio.options.headers = {
       'Content-Type': 'application/json',
-      'Authorization':
-          'key=AAAAFDmawUc:APA91bEe5C8DtnJNVOJyrVsGNuNLNusZfRAi6Vw1C6JaECac6BrErx_vp__xVrk51qDlR7DFxaWHkfib4BgxdaYYi16_yZTmJqKIEJ-lJ7F1hrOdFsslV9UMDtV2pR4FlSqX1f3o0CEM',
+      'Authorization': 'key=$messagingToken',
     };
 
     Map<String, dynamic> data = {
