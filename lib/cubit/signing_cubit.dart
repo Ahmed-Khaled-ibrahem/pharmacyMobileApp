@@ -6,7 +6,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
-import 'package:pharmacyapp/reusable/pref_helper.dart';
+import '../shared/pref_helper.dart';
 import 'states.dart';
 
 class SigningCubit extends Cubit<AppStates> {

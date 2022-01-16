@@ -1,75 +1,77 @@
-import 'package:page_transition/page_transition.dart';
-import 'package:pharmacyapp/cubit/signing_cubit.dart';
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
-import 'make_order_page.dart';
 
-
-
-
-class SendPrescriptionScreen extends StatefulWidget {
-  const SendPrescriptionScreen({Key? key}) : super(key: key);
-
-  @override
-  _SendPrescriptionScreenState createState() => _SendPrescriptionScreenState();
-}
-
-class _SendPrescriptionScreenState extends State<SendPrescriptionScreen> {
-
- TextEditingController descriptionText = TextEditingController();
+// ignore: must_be_immutable
+class SendPrescriptionScreen extends StatelessWidget {
+  SendPrescriptionScreen({Key? key}) : super(key: key);
+  TextEditingController descriptionText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SigningCubit, AppStates>(
+    return BlocConsumer<AppCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-        SigningCubit cubit = SigningCubit.get(context);
+        //AppCubit cubit = AppCubit.get(context);
 
         return Scaffold(
             appBar: myAppBar("Send Prescription", themeColor),
             body: InkWell(
-              onTap: (){ FocusScope.of(context).requestFocus(FocusNode());},
+              onTap: () {
+                FocusScope.of(context).requestFocus(FocusNode());
+              },
               child: SingleChildScrollView(
                 scrollDirection: Axis.vertical,
                 child: Column(
-                  children:  [
-                    const SizedBox(height: 10,),
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Card(
                       color: Colors.amber,
                       child: SizedBox(
                         width: 350,
                         height: 200,
                         child: Stack(
-                          children:  [
+                          children: [
                             Positioned(
                                 top: 25,
                                 right: 15,
                                 child: Transform.rotate(
                                     angle: 0.5,
-                                    child: const Icon(Icons.photo_camera_rounded,size: 120,color: Colors.black26,))),
+                                    child: const Icon(
+                                      Icons.photo_camera_rounded,
+                                      size: 120,
+                                      color: Colors.black26,
+                                    ))),
                             const Positioned(
                                 right: 10,
                                 bottom: 10,
-                                child: Icon(Icons.qr_code_scanner,size: 50,color: Colors.black26,)),
+                                child: Icon(
+                                  Icons.qr_code_scanner,
+                                  size: 50,
+                                  color: Colors.black26,
+                                )),
                             Positioned(
                               bottom: 15,
                               left: 10,
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(themeColor),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(themeColor),
                                 ),
-                                onPressed: () {
-                                },
+                                onPressed: () {},
                                 child: SizedBox(
                                   width: 200,
                                   child: Row(
                                     children: const [
                                       Icon(Icons.camera),
-                                      SizedBox(width: 5,),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
                                       Text("Scan by Camera"),
                                     ],
                                   ),
@@ -81,16 +83,18 @@ class _SendPrescriptionScreenState extends State<SendPrescriptionScreen> {
                               left: 10,
                               child: ElevatedButton(
                                 style: ButtonStyle(
-                                  backgroundColor: MaterialStateProperty.all(themeColor),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(themeColor),
                                 ),
-                                onPressed: () {
-                                },
+                                onPressed: () {},
                                 child: SizedBox(
                                   width: 200,
                                   child: Row(
                                     children: const [
                                       Icon(Icons.photo),
-                                      SizedBox(width: 5,),
+                                      SizedBox(
+                                        width: 5,
+                                      ),
                                       Text("Pick from Gallery"),
                                     ],
                                   ),
@@ -100,22 +104,24 @@ class _SendPrescriptionScreenState extends State<SendPrescriptionScreen> {
                             const Positioned(
                               top: 15,
                               left: 10,
-                              child: Text("Take a picture then\n get the order",
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 30
-                              ),),),
+                              child: Text(
+                                "Take a picture then\n get the order",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 30),
+                              ),
+                            ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20,),
-                    const Text("Send a description with image",
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w300
-                    ),),
-
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    const Text(
+                      "Send a description with image",
+                      style:
+                          TextStyle(fontSize: 20, fontWeight: FontWeight.w300),
+                    ),
                     Padding(
                       padding: const EdgeInsets.all(10),
                       child: TextField(
@@ -124,34 +130,36 @@ class _SendPrescriptionScreenState extends State<SendPrescriptionScreen> {
                             labelText: "Description",
                             prefixIcon: const Icon(Icons.description),
                             enabledBorder: OutlineInputBorder(
-                              borderSide: const BorderSide(color: Colors.blueGrey, width: 3),
+                              borderSide: const BorderSide(
+                                  color: Colors.blueGrey, width: 3),
                               borderRadius: BorderRadius.circular(20),
                             )),
                         keyboardType: TextInputType.multiline,
                         maxLines: 5,
                       ),
                     ),
-
-                    const SizedBox(height: 20,),
+                    const SizedBox(
+                      height: 20,
+                    ),
                     ElevatedButton(
                       style: ButtonStyle(
                         backgroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      onPressed: () {
-                      },
+                      onPressed: () {},
                       child: SizedBox(
                         width: 200,
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: const [
                             Text("Send"),
-                            SizedBox(width: 20,),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Icon(Icons.send_sharp),
                           ],
                         ),
                       ),
                     ),
-
                   ],
                 ),
               ),
@@ -160,15 +168,3 @@ class _SendPrescriptionScreenState extends State<SendPrescriptionScreen> {
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-

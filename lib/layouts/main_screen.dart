@@ -7,8 +7,8 @@ import 'package:pharmacyapp/layouts/offers_page.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
-import 'SendPrescription.dart';
-import 'chatingPage.dart';
+import 'send_prescription.dart';
+import 'chating_page.dart';
 import 'make_order_page.dart';
 
 class MainScreen extends StatefulWidget {
@@ -55,7 +55,7 @@ class _MainScreenState extends State<MainScreen> {
               elevation: 10,
               backgroundColor: themeColor,
               onPressed: () {
-                navigateTo(context, const ChatingScreen(), true);
+                navigateTo(context, const ChattingScreen(), true);
               },
               child: const Icon(Icons.message_outlined),
             ),
@@ -107,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
                   ),
                   InkWell(
                     onTap: () {
-                      navigateTo(context, const SendPrescriptionScreen(), true);
+                      navigateTo(context, SendPrescriptionScreen(), true);
                     },
                     child: Card(
                       elevation: 15,
@@ -154,7 +154,7 @@ class _MainScreenState extends State<MainScreen> {
                   SizedBox(
                     width: EdgeInsetsGeometry.infinity.horizontal,
                     child: Padding(
-                      padding: EdgeInsets.only(top: 5),
+                      padding: const EdgeInsets.only(top: 5),
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Container(
