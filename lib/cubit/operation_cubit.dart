@@ -1,10 +1,15 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:sqflite/sqflite.dart';
 import 'states.dart';
 
@@ -82,6 +87,73 @@ class AppCubit extends Cubit<AppStates> {
     print(place);
 
     EasyLoading.dismiss();
+  }
+
+  Future<XFile?> takePhoto(BuildContext context) async {
+    if (await Permission.camera.request().isGranted) {
+      ImageSource? source = await showGeneralDialog<ImageSource>(
+        barrierLabel: "Barrier",
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: const Duration(milliseconds: 700),
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: Material(
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                height: 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    OutlinedButton.icon(
+                      label: const Text("Gallery"),
+                      onPressed: () =>
+                          Navigator.pop(context, ImageSource.gallery),
+                      icon: const Icon(
+                        Icons.image,
+                        size: 35,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    OutlinedButton.icon(
+                      label: const Text("Camera"),
+                      onPressed: () =>
+                          Navigator.pop(context, ImageSource.camera),
+                      icon: const Icon(
+                        Icons.camera_alt_outlined,
+                        size: 35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        transitionBuilder: (_, anim, __, child) {
+          return SlideTransition(
+            position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0))
+                .animate(anim),
+            child: child,
+          );
+        },
+      );
+      if (source != null) {
+        XFile? pickedFile = await ImagePicker().pickImage(source: source);
+        return pickedFile;
+      }
+    } else {
+      EasyLoading.showToast("Can't open camera");
+    }
   }
 
   void emitGeneralState() {
