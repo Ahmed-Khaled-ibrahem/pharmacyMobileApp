@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/layouts/models/drug_model.dart';
 import 'package:pharmacyapp/layouts/order_submition.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
@@ -25,6 +26,12 @@ class MakeAnOrderScreen extends StatelessWidget {
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
+                floatingActionButton: FloatingActionButton(
+                  onPressed: () {
+                    print("hehe");
+                    //print(await cubit.findInDataBase(id: 1700));
+                  },
+                ),
                 appBar: myAppBar(text: "Make an Order", context: context),
                 body: Column(
                   children: [
@@ -33,28 +40,46 @@ class MakeAnOrderScreen extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                      child: TypeAheadField<Map<String, dynamic>>(
-                        suggestionsCallback: cubit.findInDataBase,
+                      child: TypeAheadField<Drug>(
+                        suggestionsCallback: (text) =>
+                            cubit.findInDataBase(subName: text),
                         onSuggestionSelected: (suggestion) {
-                          _searchController.text = suggestion['name'];
+                          _searchController.text = suggestion.name;
                         },
-                        itemBuilder: (context, suggestion) {
+                        itemBuilder: (context, drug) {
                           return ListTile(
                             minLeadingWidth: 25,
-                            title: Text(suggestion['name']),
-                            subtitle: Text("price : ${suggestion['price']}"),
+                            title: Text(drug.name),
+                            subtitle: Text("price : ${drug.price}"),
                             leading: SizedBox(
                               width: 25,
-                              child: suggestion['picture']
+                              child: drug.picture
                                       .toString()
                                       .contains("dalilaldwaa")
-                                  ? Image.network(suggestion['picture'])
+                                  ? Image.network(
+                                      drug.picture!,
+                                      errorBuilder: (_, __, ___) {
+                                        return CircleAvatar(
+                                          backgroundColor: themeColor,
+                                          child: Text(
+                                            drug.name.toString().length < 2
+                                                ? " "
+                                                : drug.name
+                                                    .toString()
+                                                    .substring(0, 2),
+                                            style: const TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 8),
+                                          ),
+                                        );
+                                      },
+                                    )
                                   : CircleAvatar(
                                       backgroundColor: themeColor,
                                       child: Text(
-                                        suggestion['name'].toString().length < 2
+                                        drug.name.toString().length < 2
                                             ? " "
-                                            : suggestion['name']
+                                            : drug.name
                                                 .toString()
                                                 .substring(0, 2),
                                         style: const TextStyle(

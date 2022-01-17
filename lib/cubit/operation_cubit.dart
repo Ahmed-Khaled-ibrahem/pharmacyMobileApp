@@ -10,6 +10,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pharmacyapp/layouts/models/drug_model.dart';
 import 'package:pharmacyapp/layouts/signing/login_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
@@ -20,7 +21,7 @@ class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitial());
   static AppCubit get(context) => BlocProvider.of(context);
 
-  Database? _dataBase; // SQL-LITE database object
+  late Database _dataBase; // SQL-LITE database object
   static late String phone; // userId
 
   /// deal with data base
@@ -28,6 +29,7 @@ class AppCubit extends Cubit<AppStates> {
     if (uPhone != null) {
       phone = uPhone;
     }
+
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
@@ -45,10 +47,31 @@ class AppCubit extends Cubit<AppStates> {
     _dataBase = await openDatabase(path);
   }
 
-  Future<List<Map<String, dynamic>>> findInDataBase(String subWord) async {
+  void makeFavorites(int id, {bool remove = false}) {
+    _dataBase.update("data", {"favorite": !remove}, where: "id = $id");
+  }
+
+  Future<List<Drug>> favoriteList() async {
     List<Map<String, dynamic>> queryData =
-        await _dataBase!.query("data", where: "name LIKE  \"%$subWord%\"");
-    return queryData;
+        await _dataBase.query("data", where: "favorite = 1");
+    return queryData.map((e) => Drug(drudData: e)).toList();
+  }
+
+  Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
+    List<Map<String, dynamic>> queryData;
+
+    if (subName != null) {
+      queryData =
+          await _dataBase.query("data", where: "name LIKE  \"%$subName%\"");
+    } else {
+      print("here");
+      queryData = await _dataBase.query("data", where: "id =  $id");
+      print(queryData);
+    }
+
+    print("here");
+
+    return queryData.map((e) => Drug(drudData: e)).toList();
   }
 
   /// helper for make order
