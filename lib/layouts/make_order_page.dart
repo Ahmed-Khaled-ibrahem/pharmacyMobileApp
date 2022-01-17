@@ -26,12 +26,6 @@ class MakeAnOrderScreen extends StatelessWidget {
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  onPressed: () {
-                    print("hehe");
-                    //print(await cubit.findInDataBase(id: 1700));
-                  },
-                ),
                 appBar: myAppBar(text: "Make an Order", context: context),
                 body: Column(
                   children: [

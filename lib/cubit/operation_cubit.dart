@@ -48,10 +48,10 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void makeFavorites(int id, {bool remove = false}) {
-    _dataBase.update("data", {"favorite": !remove}, where: "id = $id");
+    _dataBase.update("data", {"favorite": !remove ? 1 : 0}, where: "id = $id");
   }
 
-  Future<List<Drug>> favoriteList() async {
+  Future<List<Drug>> getFavoriteList() async {
     List<Map<String, dynamic>> queryData =
         await _dataBase.query("data", where: "favorite = 1");
     return queryData.map((e) => Drug(drudData: e)).toList();
@@ -64,13 +64,8 @@ class AppCubit extends Cubit<AppStates> {
       queryData =
           await _dataBase.query("data", where: "name LIKE  \"%$subName%\"");
     } else {
-      print("here");
       queryData = await _dataBase.query("data", where: "id =  $id");
-      print(queryData);
     }
-
-    print("here");
-
     return queryData.map((e) => Drug(drudData: e)).toList();
   }
 
