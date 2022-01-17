@@ -28,7 +28,7 @@ Future<void> main() async {
     statusBarColor: Color.fromRGBO(0, 0, 0, 0), // status bar color
   ));
 
-  configLoading();
+  // configLoading();
 
   await PreferenceHelper.init();
 

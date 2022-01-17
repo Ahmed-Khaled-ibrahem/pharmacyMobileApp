@@ -31,7 +31,7 @@ class SendPrescriptionScreen extends StatelessWidget {
 
                 XFile? file = await cubit.takePhoto(context);
                 if (file != null) {
-                  cubit.uploadPhoto(file);
+                  print(await cubit.uploadPhoto(file));
                 }
               },
             ),

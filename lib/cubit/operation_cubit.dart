@@ -52,19 +52,20 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   /// helper for make order
-  Future<void> uploadPhoto(XFile file) async {
-    EasyLoading.show(status: "uploading ...");
-
+  Future<String> uploadPhoto(XFile file) async {
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
         storage.ref().child("test").child("image1" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(File(file.path));
-    uploadTask.then((res) async {
-      print(await res.ref.getDownloadURL());
-      EasyLoading.dismiss();
-    }).catchError((err) {
-      EasyLoading.showToast("enable to upload photo");
+
+    uploadTask.snapshotEvents.listen((event) async {
+      double percentage = event.bytesTransferred / event.totalBytes;
+      EasyLoading.showProgress(percentage, status: 'uploading...');
     });
+
+    TaskSnapshot task = await uploadTask;
+    EasyLoading.dismiss();
+    return task.ref.getDownloadURL();
   }
 
   Future<void> determinePosition() async {
