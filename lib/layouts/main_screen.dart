@@ -1,13 +1,13 @@
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/layouts/offers_page.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
-import 'send_prescription.dart';
 import 'chating_page.dart';
 import 'make_order_page.dart';
 
@@ -79,54 +79,55 @@ class MainScreen extends StatelessWidget {
                       }).toList(),
                     ),
                   ),
-                  InkWell(
-                    onTap: () {
-                      navigateTo(context, SendPrescriptionScreen(), true);
-                    },
-                    child: Card(
-                      elevation: 15,
-                      shadowColor: Colors.black,
-                      color: const Color(0xff254ea6),
-                      child: SizedBox(
-                        width: 300,
-                        height: 120,
-                        child: Stack(
-                          children: [
-                            const Positioned(
-                                right: 10,
-                                top: 10,
-                                child: Icon(
-                                  Icons.document_scanner,
-                                  color: Colors.white,
-                                  size: 60.0,
-                                )),
-                            Positioned(
-                              left: 0,
-                              child: Image.network(
-                                "https://mir-s3-cdn-cf.behance.net/projects/404/7cb21683865409.Y3JvcCwyNzQ4LDIxNTAsMTIyLDA.jpg",
-                                width: 160,
-                              ),
-                            ),
-                            const Positioned(
-                                right: 35,
-                                top: 25,
-                                child: SizedBox(
-                                  width: 120,
-                                  child: Text(
-                                    "Send Doctor's Prescription",
-                                    style: TextStyle(
-                                        fontSize: 20,
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w500),
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ),
+                  defaultSpaceH,
+                  // InkWell(
+                  //   onTap: () {
+                  //     navigateTo(context, SendPrescriptionScreen(), true);
+                  //   },
+                  //   child: Card(
+                  //     elevation: 15,
+                  //     shadowColor: Colors.black,
+                  //     color: const Color(0xff254ea6),
+                  //     child: SizedBox(
+                  //       width: 300,
+                  //       height: 120,
+                  //       child: Stack(
+                  //         children: [
+                  //           const Positioned(
+                  //               right: 10,
+                  //               top: 10,
+                  //               child: Icon(
+                  //                 Icons.document_scanner,
+                  //                 color: Colors.white,
+                  //                 size: 60.0,
+                  //               )),
+                  //           Positioned(
+                  //             left: 0,
+                  //             child: Image.network(
+                  //               "https://mir-s3-cdn-cf.behance.net/projects/404/7cb21683865409.Y3JvcCwyNzQ4LDIxNTAsMTIyLDA.jpg",
+                  //               width: 160,
+                  //             ),
+                  //           ),
+                  //           const Positioned(
+                  //               right: 35,
+                  //               top: 25,
+                  //               child: SizedBox(
+                  //                 width: 120,
+                  //                 child: Text(
+                  //                   "Send Doctor's Prescription",
+                  //                   style: TextStyle(
+                  //                       fontSize: 20,
+                  //                       color: Colors.white,
+                  //                       fontWeight: FontWeight.w500),
+                  //                 ),
+                  //               )),
+                  //         ],
+                  //       ),
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(
-                    width: EdgeInsetsGeometry.infinity.horizontal,
+                    width: double.infinity,
                     child: Padding(
                       padding: const EdgeInsets.only(top: 5),
                       child: Padding(
@@ -149,8 +150,9 @@ class MainScreen extends StatelessWidget {
                     child: Padding(
                       padding: const EdgeInsets.only(left: 15, right: 15),
                       child: Container(
-                        decoration: const BoxDecoration(color: Colors.blueGrey),
+                        decoration: const BoxDecoration(color: Colors.black12),
                         child: GridView.count(
+                          physics: defaultScrollPhysics,
                           primary: false,
                           padding: const EdgeInsets.all(10),
                           crossAxisSpacing: 5,
@@ -158,32 +160,40 @@ class MainScreen extends StatelessWidget {
                           crossAxisCount: 3,
                           children: [
                             photoWithError(
-                                "https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg",
-                                ""),
+                                imageLink:
+                                    "https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg"),
                             photoWithError(
-                                "https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",
-                                ""),
+                              imageLink:
+                                  "https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",
+                            ),
                             photoWithError(
-                                "https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",
-                                ""),
+                              imageLink:
+                                  "https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",
+                            ),
                             photoWithError(
-                                "https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",
-                                ""),
+                              imageLink:
+                                  "https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",
+                            ),
                             photoWithError(
-                                "https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",
-                                ""),
+                              imageLink:
+                                  "https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",
+                            ),
                             photoWithError(
-                                "http://assets.stickpng.com/thumbs/589a40535aa6293a4aac48a6.png",
-                                ""),
+                              imageLink:
+                                  "http://assets.stickpng.com/thumbs/589a40535aa6293a4aac48a6.png",
+                            ),
                             photoWithError(
-                                "https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",
-                                ""),
+                              imageLink:
+                                  "https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",
+                            ),
                             photoWithError(
-                                "https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",
-                                ""),
+                              imageLink:
+                                  "https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",
+                            ),
                             photoWithError(
-                                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",
-                                ""),
+                              imageLink:
+                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",
+                            ),
                           ],
                         ),
                       ),

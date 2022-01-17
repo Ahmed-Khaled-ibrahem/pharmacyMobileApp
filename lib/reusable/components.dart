@@ -86,10 +86,12 @@ AppBar myAppBar(
       ));
 }
 
-Widget photoWithError(String imageLink, String assetPath) {
+Widget photoWithError(
+    {required String imageLink,
+    String assetPath = "assets/images/loginlogo.png"}) {
   return FadeInImage.assetNetwork(
     fit: BoxFit.cover,
-    placeholder: "assets/images/loginlogo.png",
+    placeholder: assetPath,
     imageErrorBuilder: (
       context,
       error,
