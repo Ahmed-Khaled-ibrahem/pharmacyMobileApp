@@ -73,7 +73,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                           ),
                           defaultSpaceH,
                           defaultTextField(
-                            controller: phoneNumber,
+                            controller: address,
                             validateString: 'address cannot be Empty',
                             label: 'Address',
                             prefixIcon: Icons.home_filled,

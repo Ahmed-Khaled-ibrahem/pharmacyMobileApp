@@ -17,3 +17,9 @@ class Drug {
     details = drudData['details'];
   }
 }
+
+class OrderItem {
+  Drug drug;
+  int quantity;
+  OrderItem(this.drug, this.quantity);
+}

@@ -6,6 +6,7 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/layouts/models/drug_model.dart';
 import 'package:pharmacyapp/layouts/order_submition.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 
@@ -14,7 +15,7 @@ class MakeAnOrderScreen extends StatelessWidget {
   MakeAnOrderScreen({Key? key}) : super(key: key);
 
   final _searchController = TextEditingController();
-  int totalPrice = 0;
+  List<OrderItem> orderItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +29,7 @@ class MakeAnOrderScreen extends StatelessWidget {
             child: Scaffold(
                 appBar: myAppBar(text: "Make an Order", context: context),
                 body: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const SizedBox(
                       height: 20,
@@ -39,6 +41,8 @@ class MakeAnOrderScreen extends StatelessWidget {
                             cubit.findInDataBase(subName: text),
                         onSuggestionSelected: (suggestion) {
                           _searchController.text = suggestion.name;
+                          orderItems.add(OrderItem(suggestion, 1));
+                          cubit.emitGeneralState();
                         },
                         itemBuilder: (context, drug) {
                           return ListTile(
@@ -87,6 +91,10 @@ class MakeAnOrderScreen extends StatelessWidget {
                           decoration: InputDecoration(
                               labelText: 'Search',
                               prefixIcon: const Icon(Icons.search),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.cancel_outlined),
+                                onPressed: () => _searchController.text = "",
+                              ),
                               enabledBorder: OutlineInputBorder(
                                 borderSide: const BorderSide(
                                     color: Colors.blueGrey, width: 1),
@@ -98,80 +106,124 @@ class MakeAnOrderScreen extends StatelessWidget {
                         //marginColor: Colors.deepOrange,
                       ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text("Your Order list"),
-                    ),
                     Expanded(
-                      child: ListView.separated(
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: 7,
-                          separatorBuilder: (_, index) => const Divider(),
-                          itemBuilder: (_, index) => Row(
-                                children: [
-                                  const SizedBox(
-                                    width: 20,
+                      child: orderItems.isEmpty
+                          ? Center(
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Icon(
+                                    Icons.remove_shopping_cart,
+                                    color: Colors.grey,
+                                    size: 100,
                                   ),
-                                  const SizedBox(
-                                      width: 160,
-                                      child: Text("Panadol 50g Tap")),
-                                  const Spacer(),
-                                  const InkWell(
-                                    child: SizedBox(
-                                        width: 40,
-                                        height: 70,
-                                        child: Icon(
-                                          Icons.remove,
-                                          size: 25,
-                                          color: Colors.green,
-                                        )),
-                                  ),
-                                  SizedBox(
-                                    width: 50,
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.fromLTRB(0, 5, 0, 5),
-                                      child: TextField(
-                                        decoration: const InputDecoration(
-                                            enabledBorder: OutlineInputBorder(
-                                          borderSide: BorderSide(
-                                              color: Colors.blueGrey, width: 0),
-                                        )),
-                                        textAlign: TextAlign.center,
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        controller: TextEditingController(
-                                            text: (index + 1).toString()),
-                                        inputFormatters: [
-                                          FilteringTextInputFormatter.digitsOnly
-                                        ],
-                                        keyboardType: TextInputType.number,
-                                      ),
-                                    ),
-                                  ),
-                                  const InkWell(
-                                    child: SizedBox(
-                                        width: 40,
-                                        height: 70,
-                                        child: Icon(
-                                          Icons.add,
-                                          size: 25,
-                                          color: Colors.blue,
-                                        )),
-                                  ),
-                                  const InkWell(
-                                    child: SizedBox(
-                                        width: 40,
-                                        height: 70,
-                                        child: Icon(
-                                          Icons.close,
-                                          size: 25,
-                                          color: Colors.red,
-                                        )),
-                                  ),
+                                  Text(
+                                    'No items in cart',
+                                    style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.grey),
+                                  )
                                 ],
-                              )),
+                              ),
+                            )
+                          : ListView.separated(
+                              physics: const BouncingScrollPhysics(),
+                              itemCount: orderItems.length,
+                              separatorBuilder: (_, index) => const Divider(),
+                              itemBuilder: (_, index) => Row(
+                                    children: [
+                                      const SizedBox(
+                                        width: 20,
+                                      ),
+                                      SizedBox(
+                                          width: 160,
+                                          child: Text(
+                                            orderItems[index].drug.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          )),
+                                      const Spacer(),
+                                      InkWell(
+                                        onTap: () {
+                                          if (orderItems[index].quantity > 1) {
+                                            orderItems[index].quantity--;
+                                            cubit.emitGeneralState();
+                                          }
+                                        },
+                                        child: const SizedBox(
+                                            width: 40,
+                                            height: 70,
+                                            child: Icon(
+                                              Icons.remove,
+                                              size: 25,
+                                              color: Colors.green,
+                                            )),
+                                      ),
+                                      SizedBox(
+                                        width: 50,
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              0, 5, 0, 5),
+                                          child: TextField(
+                                            onSubmitted: (v) {
+                                              orderItems[index].quantity =
+                                                  int.parse(v);
+                                              cubit.emitGeneralState();
+                                            },
+                                            decoration: const InputDecoration(
+                                                enabledBorder:
+                                                    OutlineInputBorder(
+                                              borderSide: BorderSide(
+                                                  color: Colors.blueGrey,
+                                                  width: 0),
+                                            )),
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold),
+                                            controller: TextEditingController(
+                                                text:
+                                                    (orderItems[index].quantity)
+                                                        .toString()),
+                                            inputFormatters: [
+                                              FilteringTextInputFormatter
+                                                  .digitsOnly
+                                            ],
+                                            keyboardType: TextInputType.number,
+                                          ),
+                                        ),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          orderItems[index].quantity++;
+                                          cubit.emitGeneralState();
+                                        },
+                                        child: const SizedBox(
+                                            width: 40,
+                                            height: 70,
+                                            child: Icon(
+                                              Icons.add,
+                                              size: 25,
+                                              color: Colors.blue,
+                                            )),
+                                      ),
+                                      InkWell(
+                                        onTap: () {
+                                          orderItems.removeAt(index);
+                                          cubit.emitGeneralState();
+                                        },
+                                        child: const SizedBox(
+                                            width: 40,
+                                            height: 70,
+                                            child: Icon(
+                                              Icons.close,
+                                              size: 25,
+                                              color: Colors.red,
+                                            )),
+                                      ),
+                                    ],
+                                  )),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -181,7 +233,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "$totalPrice LE",
+                          "${calcOrderPrice()} LE",
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -195,14 +247,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                             //     borderRadius: BorderRadius.circular(80))
                           ),
                           onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      OrderSubmissionScreen()),
-                            );
-                            //cubit.loginButtonEvent(context);
-                            //stopanimation();
+                            navigateTo(context, OrderSubmissionScreen(), true);
                           },
                         ),
                       ],
@@ -211,5 +256,14 @@ class MakeAnOrderScreen extends StatelessWidget {
                 )));
       },
     );
+  }
+
+  double calcOrderPrice() {
+    double price = 0;
+    for (OrderItem item in orderItems) {
+      price += item.quantity * item.drug.price;
+    }
+    print(price);
+    return price;
   }
 }

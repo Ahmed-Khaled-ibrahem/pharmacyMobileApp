@@ -10,6 +10,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/layouts/models/drug_model.dart';
 import 'package:pharmacyapp/layouts/signing/login_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
@@ -154,6 +155,9 @@ class AppCubit extends Cubit<AppStates> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     OutlinedButton.icon(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                      ),
                       label: const Text("Gallery"),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.gallery),
@@ -166,6 +170,9 @@ class AppCubit extends Cubit<AppStates> {
                       width: 10,
                     ),
                     OutlinedButton.icon(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                      ),
                       label: const Text("Camera"),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.camera),
