@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -51,9 +52,19 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   /// helper for make order
-  void uploadPhoto(XFile file) {
-    print(file.path);
-    print(file.name);
+  Future<void> uploadPhoto(XFile file) async {
+    EasyLoading.show(status: "uploading ...");
+
+    FirebaseStorage storage = FirebaseStorage.instance;
+    Reference ref =
+        storage.ref().child("test").child("image1" + DateTime.now().toString());
+    UploadTask uploadTask = ref.putFile(File(file.path));
+    uploadTask.then((res) async {
+      print(await res.ref.getDownloadURL());
+      EasyLoading.dismiss();
+    }).catchError((err) {
+      EasyLoading.showToast("enable to upload photo");
+    });
   }
 
   Future<void> determinePosition() async {
