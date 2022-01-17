@@ -2,6 +2,7 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/shared/fcm/dio_helper.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 
@@ -18,6 +19,17 @@ class SendPrescriptionScreen extends StatelessWidget {
         //AppCubit cubit = AppCubit.get(context);
 
         return Scaffold(
+            floatingActionButton: FloatingActionButton(
+              child: const Text("test"),
+              onPressed: () async {
+                DioHelper dioHelper = DioHelper();
+                print(await dioHelper.postData(
+                    sendData: {"Test": "data"},
+                    title: "Test From app",
+                    body: "Click here",
+                    receiverUId: "01201838240"));
+              },
+            ),
             appBar: myAppBar(text: "Send Prescription", context: context),
             body: InkWell(
               onTap: () {

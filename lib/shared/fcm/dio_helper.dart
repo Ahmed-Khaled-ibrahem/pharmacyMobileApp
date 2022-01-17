@@ -1,17 +1,11 @@
 import 'package:dio/dio.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 const String messagingToken =
     "AAAAyMrFWo8:APA91bH8m3qp5wlwMPpWW8yoMM4S7rM_RWRIpIXuVxH1IBfLbrKeW_df5o7ElMY2NBL-890z6FsFfkHm-FFwVNt5dQEHq-VO_t9R7-kVwO0QgOYFios21boreCVWGrefV6mL9dXCJrNf";
 
 class DioHelper {
   late Dio dio;
-
-//                 DioHelper dioHelper = DioHelper();
-//                 print(await dioHelper.postData(
-//                     sendData: {"Test": "hehe"},
-//                     title: "Test From Flutter",
-//                     body: "Click here",
-//                     receiverUId: "-----"));
 
   DioHelper() {
     dio = Dio(BaseOptions(
@@ -54,7 +48,7 @@ class DioHelper {
     };
 
     return await dio.post(path, data: data).catchError((err) {
-      print(exceptionsHandle(error: err));
+      EasyLoading.showError(exceptionsHandle(error: err));
     });
   }
 

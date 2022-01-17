@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,6 +9,9 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pharmacyapp/layouts/signing/login_screen.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'states.dart';
 
@@ -16,9 +20,13 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   Database? _dataBase; // SQL-LITE database object
+  static late String phone; // userId
 
   /// deal with data base
-  void initialReadSqlData() async {
+  void initialReadSqlData(String? uPhone) async {
+    if (uPhone != null) {
+      phone = uPhone;
+    }
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
@@ -43,6 +51,11 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   /// helper for make order
+  void uploadPhoto(XFile file) {
+    print(file.path);
+    print(file.name);
+  }
+
   Future<void> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
@@ -148,6 +161,33 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       EasyLoading.showToast("Can't open camera");
     }
+  }
+
+  /// logOut
+  void logout(BuildContext context) {
+    customChoiceDialog(context,
+        title: "Logout",
+        content: "Are you sure you want to logout ?", yesFunction: () {
+      EasyLoading.show(status: "logging out...");
+      try {
+        if (phone != "notYet") {
+          FirebaseMessaging.instance.unsubscribeFromTopic(phone);
+          PreferenceHelper.clearDataFromSharedPreference(key: "phone");
+          EasyLoading.dismiss();
+          phone = "notYet";
+          navigateTo(context, const LoginScreen(), false);
+        } else {
+          EasyLoading.showToast("You must login first");
+        }
+      } catch (err) {
+        if (err.toString() ==
+            "LateInitializationError: Field 'phone' has not been initialized.") {
+          EasyLoading.showToast("You must login first");
+        } else {
+          EasyLoading.showToast("An error happened at logout");
+        }
+      }
+    });
   }
 
   void emitGeneralState() {

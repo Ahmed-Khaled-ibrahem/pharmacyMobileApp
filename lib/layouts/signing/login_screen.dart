@@ -160,8 +160,8 @@ class LoginScreenState extends State<LoginScreen>
                                 ),
                                 TextButton(
                                     onPressed: () {
-                                      navigateTo(context,
-                                          const ForgetPassPage(), true);
+                                      navigateTo(
+                                          context, ForgetPassPage(), true);
                                     },
                                     child:
                                         const Text("Forget your Password ?")),

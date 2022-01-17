@@ -15,7 +15,6 @@ import '../../reusable/components.dart';
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
 
-  TextEditingController username = TextEditingController();
   TextEditingController firstName = TextEditingController();
   TextEditingController secondName = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();

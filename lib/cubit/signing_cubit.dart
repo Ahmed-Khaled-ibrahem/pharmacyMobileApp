@@ -5,7 +5,9 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
+import 'package:pharmacyapp/layouts/signing/login_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../shared/pref_helper.dart';
 import 'states.dart';
@@ -13,8 +15,6 @@ import 'states.dart';
 class SigningCubit extends Cubit<AppStates> {
   SigningCubit() : super(AppInitial());
   static SigningCubit get(context) => BlocProvider.of(context);
-
-  // TODO : FORGET PASSWORD
 
   int angle1 = 0;
   int angle2 = 3;
@@ -24,12 +24,15 @@ class SigningCubit extends Cubit<AppStates> {
 
   late String _validateCode;
 
-  Future<void> sendValidationCode(String phone) async {
+  Future<void> sendValidationCode(String phone, {bool create = true}) async {
     EasyLoading.show(status: 'sending code..');
     DocumentSnapshot collectionRef =
         await _fireStore.collection('users').doc(phone).get();
-    if (collectionRef.exists) {
+    if (collectionRef.exists && create) {
       EasyLoading.showError("Phone number already exists");
+      return;
+    } else if (!collectionRef.exists && !create) {
+      EasyLoading.showError("Phone number doesn't exists");
       return;
     }
 
@@ -57,14 +60,14 @@ class SigningCubit extends Cubit<AppStates> {
     );
   }
 
-  void otpCheck({
-    required BuildContext context,
-    required String smsOtp,
-    required String phone,
-    required String firstName,
-    required String secondName,
-    required String password,
-  }) async {
+  void otpCheck(
+      {required BuildContext context,
+      required String smsOtp,
+      required String phone,
+      String? firstName,
+      String? secondName,
+      required String password,
+      bool create = true}) async {
     EasyLoading.show(status: 'creating user..');
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
@@ -74,16 +77,26 @@ class SigningCubit extends Cubit<AppStates> {
         EasyLoading.showError("wrong Code");
       } else {
         EasyLoading.dismiss();
-        _fireStore.collection("users").doc(phone).set({
-          "name": {"first": firstName, "second": secondName},
-          "pass": password,
-        });
-        FirebaseMessaging.instance.subscribeToTopic(phone);
-        PreferenceHelper.putDataInSharedPreference(key: "phone", value: phone);
-        PreferenceHelper.putDataInSharedPreference(
-            key: "userName", value: {"first": firstName, "second": secondName});
-
-        navigateTo(context, const MainScreen(), false);
+        if (create) {
+          _fireStore.collection("users").doc(phone).set({
+            "name": {"first": firstName, "second": secondName},
+            "pass": password,
+          });
+          FirebaseMessaging.instance.subscribeToTopic(phone);
+          PreferenceHelper.putDataInSharedPreference(
+              key: "phone", value: phone);
+          PreferenceHelper.putDataInSharedPreference(
+              key: "userName",
+              value: {"first": firstName, "second": secondName});
+          AppCubit.phone = phone;
+          navigateTo(context, const MainScreen(), false);
+        } else {
+          EasyLoading.showToast("password changed successfully");
+          navigateTo(context, const LoginScreen(), false);
+          _fireStore.collection("users").doc(phone).update({
+            "pass": password,
+          });
+        }
       }
     }).catchError((err) {
       print(err);
@@ -91,16 +104,13 @@ class SigningCubit extends Cubit<AppStates> {
     });
   }
 
-  void logout(String phone) {
-    FirebaseMessaging.instance.unsubscribeFromTopic(phone);
-    PreferenceHelper.clearDataFromSharedPreference(key: "phone");
-  }
-
   Future<void> loginButtonEvent({
     required BuildContext context,
     required phone,
     required password,
   }) async {
+    EasyLoading.show(status: 'Please wait...');
+
     DocumentSnapshot collectionRef =
         await _fireStore.collection('users').doc(phone).get();
     if (!collectionRef.exists) {
@@ -115,6 +125,8 @@ class SigningCubit extends Cubit<AppStates> {
         PreferenceHelper.putDataInSharedPreference(key: "phone", value: phone);
         PreferenceHelper.putDataInSharedPreference(
             key: "userName", value: collectionRef.get("name"));
+        EasyLoading.dismiss();
+        AppCubit.phone = phone;
         navigateTo(context, const MainScreen(), false);
       } else {
         EasyLoading.showError("Wrong password");

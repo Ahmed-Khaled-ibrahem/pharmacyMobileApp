@@ -3,23 +3,21 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
 
 class FireNotificationHelper {
+  static Future<String?> token() => FirebaseMessaging.instance.getToken();
+  // String? token = await FireNotificationHelper.token() ;
+
   FireNotificationHelper() {
-    getToken();
-
-    print("Firebase messaging initialize");
-
-    // app opened now
     FirebaseMessaging.onMessage
         .listen(_firebaseMessagingForegroundHandler)
         .onError((err) {
-      print("err");
+      print(err);
     });
 
     // app on back ground
     FirebaseMessaging.onMessageOpenedApp
         .listen(_firebaseMessagingBackgroundHandler)
         .onError((err) {
-      print("err");
+      print(err);
     });
 
     FirebaseMessaging.onBackgroundMessage(
@@ -35,11 +33,6 @@ class FireNotificationHelper {
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
     print("here when back ${message.data}");
-  }
-
-  void getToken() async {
-    String? token = await FirebaseMessaging.instance.getToken();
-    print("token : " + token!);
   }
 }
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 
 Widget defaultTextField({
   required TextEditingController controller,
@@ -9,8 +10,6 @@ Widget defaultTextField({
   TextInputType? keyboardType,
 }) {
   return TextFormField(
-    //onChanged: (v){runanimation();},
-    //onTap: (){runanimation();},
     controller: controller,
     keyboardType: keyboardType,
     validator: (value) {
@@ -31,8 +30,25 @@ Widget defaultTextField({
 }
 
 Widget optionsWidget(BuildContext context) {
+  AppCubit cubit = AppCubit.get(context);
+
   return PopupMenuButton<String>(
-    onSelected: (index) {},
+    onSelected: (index) {
+      switch (index) {
+        case 'Settings':
+          print("settings");
+          break;
+        case 'Help':
+          print("Help");
+          break;
+        case 'about us':
+          print("about us");
+          break;
+        case 'logout':
+          cubit.logout(context);
+          break;
+      }
+    },
     itemBuilder: (BuildContext context) {
       return {'Settings', 'Help', 'about us', 'logout'}.map((String choice) {
         return PopupMenuItem<String>(

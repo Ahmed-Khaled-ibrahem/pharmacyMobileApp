@@ -12,6 +12,8 @@ import 'contsants/const_colors.dart';
 import 'cubit/operation_cubit.dart';
 import 'layouts/signing/login_screen.dart';
 
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -31,7 +33,6 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-
   runApp(MyApp(phone));
 }
 
@@ -46,10 +47,12 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (BuildContext context) => AppCubit()..initialReadSqlData()),
+            create: (BuildContext context) =>
+                AppCubit()..initialReadSqlData(phone)),
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
+        navigatorKey: navigatorKey,
         builder: EasyLoading.init(),
         title: 'Pharmacy',
         debugShowCheckedModeBanner: false,
