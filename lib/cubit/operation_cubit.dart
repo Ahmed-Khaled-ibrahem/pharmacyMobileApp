@@ -53,6 +53,9 @@ class AppCubit extends Cubit<AppStates> {
 
   /// helper for make order
   Future<String> uploadPhoto(XFile file) async {
+    // to show the photo professional use Future builder this
+    // https://stackoverflow.com/questions/51983011/when-should-i-use-a-futurebuilder
+
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
         storage.ref().child("test").child("image1" + DateTime.now().toString());
@@ -64,8 +67,9 @@ class AppCubit extends Cubit<AppStates> {
     });
 
     TaskSnapshot task = await uploadTask;
+    String link = await task.ref.getDownloadURL();
     EasyLoading.dismiss();
-    return task.ref.getDownloadURL();
+    return link;
   }
 
   Future<void> determinePosition() async {
