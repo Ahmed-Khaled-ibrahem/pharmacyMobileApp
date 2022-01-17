@@ -247,7 +247,8 @@ class MakeAnOrderScreen extends StatelessWidget {
                             //     borderRadius: BorderRadius.circular(80))
                           ),
                           onPressed: () {
-                            navigateTo(context, OrderSubmissionScreen(), true);
+                            navigateTo(context,
+                                OrderSubmissionScreen(orderItems), true);
                           },
                         ),
                       ],
@@ -263,7 +264,6 @@ class MakeAnOrderScreen extends StatelessWidget {
     for (OrderItem item in orderItems) {
       price += item.quantity * item.drug.price;
     }
-    print(price);
     return price;
   }
 }

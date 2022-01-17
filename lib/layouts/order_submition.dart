@@ -1,20 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import '../contsants/const_colors.dart';
 import '../contsants/widgets.dart';
 import '../reusable/components.dart';
+import 'models/drug_model.dart';
 
 // ignore: must_be_immutable
 class OrderSubmissionScreen extends StatelessWidget {
-  OrderSubmissionScreen({Key? key}) : super(key: key);
+  OrderSubmissionScreen(this.orderItems, {Key? key}) : super(key: key);
+
+  List<OrderItem> orderItems = [];
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController firstName = TextEditingController(text: "Ahmed");
-  TextEditingController secondName = TextEditingController(text: "Khaled");
+  TextEditingController name = TextEditingController(text: "Ahmed");
   TextEditingController phoneNumber =
-      TextEditingController(text: "01288534459");
+      TextEditingController(text: AppCubit.phone);
   TextEditingController address =
       TextEditingController(text: "64 saaed elgendy st elhadara");
   bool locationReady = false;
@@ -53,15 +56,9 @@ class OrderSubmissionScreen extends StatelessWidget {
                       child: Column(
                         children: [
                           defaultTextField(
-                              controller: firstName,
+                              controller: name,
                               validateString: 'First Name cannot be Empty',
                               label: 'First Name',
-                              prefixIcon: Icons.person),
-                          defaultSpaceH,
-                          defaultTextField(
-                              controller: secondName,
-                              validateString: 'Last Name cannot be Empty',
-                              label: 'Last Name',
                               prefixIcon: Icons.person),
                           defaultSpaceH,
                           defaultTextField(
@@ -93,32 +90,62 @@ class OrderSubmissionScreen extends StatelessWidget {
                           defaultSpaceH,
                           const Text("Order List"),
                           defaultSpaceH,
-                          SizedBox(
-                            height: 6 * 30, // itemCount * itemLength
-                            child: ListView.separated(
-                                physics: const NeverScrollableScrollPhysics(),
-                                itemCount: 6,
-                                separatorBuilder: (_, index) => const Divider(),
-                                itemBuilder: (_, index) => SizedBox(
-                                      width: double.infinity,
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text("$index. Panadol 50g"),
-                                          defaultSpaceW,
-                                          const Text("5"),
-                                        ],
+                          orderItems.isEmpty
+                              ? Center(
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(
+                                        Icons.remove_shopping_cart,
+                                        color: Colors.grey,
+                                        size: 100,
                                       ),
-                                    )),
-                          ),
+                                      Text(
+                                        'No items in cart',
+                                        style: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.grey),
+                                      ),
+                                      defaultSpaceH,
+                                    ],
+                                  ),
+                                )
+                              : SizedBox(
+                                  height: orderItems.length *
+                                      30, // itemCount * itemLength
+                                  child: ListView.separated(
+                                      physics:
+                                          const NeverScrollableScrollPhysics(),
+                                      itemCount: orderItems.length,
+                                      separatorBuilder: (_, index) =>
+                                          const Divider(),
+                                      itemBuilder: (_, index) => SizedBox(
+                                            width: double.infinity,
+                                            child: Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                Text(
+                                                    "$index. ${orderItems[index].drug.name}"),
+                                                defaultSpaceW,
+                                                Text(
+                                                    "${orderItems[index].quantity}"),
+                                              ],
+                                            ),
+                                          )),
+                                ),
                           ElevatedButton.icon(
                             label: const Text("Confirm"),
                             icon: const Icon(Icons.playlist_add_check),
                             style: ElevatedButton.styleFrom(
                               primary: themeColor,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (orderItems.isEmpty) {
+                                EasyLoading.showToast("No Items in the cart.");
+                              } else {}
+                            },
                           ),
                         ],
                       ),

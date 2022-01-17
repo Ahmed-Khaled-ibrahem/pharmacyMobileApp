@@ -99,7 +99,7 @@ class AppCubit extends Cubit<AppStates> {
 
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      EasyLoading.showToast('Location services are disabled.');
+      EasyLoading.showError('Location services are disabled.');
       return;
     }
 
@@ -108,12 +108,12 @@ class AppCubit extends Cubit<AppStates> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        EasyLoading.showToast('Location permissions are denied',
+        EasyLoading.showError('Location permissions are denied',
             maskType: EasyLoadingMaskType.clear);
         return;
       }
     } else if (permission == LocationPermission.deniedForever) {
-      EasyLoading.showToast(
+      EasyLoading.showError(
           'Location permissions are permanently denied, we cannot request permissions.');
       return;
     }
@@ -121,7 +121,11 @@ class AppCubit extends Cubit<AppStates> {
     Position pos = await Geolocator.getCurrentPosition();
 
     List<Placemark> placeMarks =
-        await placemarkFromCoordinates(pos.latitude, pos.longitude);
+        await placemarkFromCoordinates(pos.latitude, pos.longitude)
+            .catchError((err) {
+      print(err);
+      EasyLoading.dismiss();
+    });
     Placemark place = placeMarks[0];
 
     print(pos.longitude);
