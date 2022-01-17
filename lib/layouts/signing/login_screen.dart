@@ -2,6 +2,7 @@ import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/layouts/settings.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
@@ -41,7 +42,28 @@ class LoginScreenState extends State<LoginScreen>
         SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
-            appBar: myAppBar(text: "LOGIN", context: context),
+            appBar: AppBar(
+                actions:  [
+                  IconButton(
+                    onPressed: (){
+                      navigateTo(context,  const SettingsScreen(), true);
+                    },
+                    icon: const Icon(Icons.settings),
+                  ),
+                ],
+                centerTitle: true,
+                toolbarHeight: 60,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
+                backgroundColor: themeColor,
+                elevation: 0,
+                title: const Text(
+                  "LOGIN",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
             body: Stack(
               children: [
                 SingleChildScrollView(

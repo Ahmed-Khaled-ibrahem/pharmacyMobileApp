@@ -68,6 +68,7 @@ dependencies:
   simple_grid: ^0.1.1
   carousel_slider: ^4.0.0
   dash_chat: ^1.1.16
+  easy_dynamic_theme: ^2.2.0
 
 
 dev_dependencies:

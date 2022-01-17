@@ -1,3 +1,4 @@
+import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -33,7 +34,9 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-  runApp(MyApp(phone));
+  runApp(
+      EasyDynamicThemeWidget(child: MyApp(phone))
+      );
 }
 
 // ignore: must_be_immutable
@@ -52,10 +55,14 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
+        theme: ThemeData.light(),
+        darkTheme: ThemeData.dark(),
+        themeMode: EasyDynamicTheme.of(context).themeMode,
         navigatorKey: navigatorKey,
         builder: EasyLoading.init(),
         title: 'Pharmacy',
         debugShowCheckedModeBanner: false,
+        /*
         theme: ThemeData(
           backgroundColor: themeColor,
           appBarTheme: const AppBarTheme(backgroundColor: themeColor),
@@ -66,6 +73,8 @@ class MyApp extends StatelessWidget {
           splashColor: Colors.white,
           scaffoldBackgroundColor: const Color(0xFFFFF9F9),
         ),
+
+         */
         home: phone == null
             ? const LoginScreen()
             : const MainScreen(), //const MakeAnOrderScreen(), //

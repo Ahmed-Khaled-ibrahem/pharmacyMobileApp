@@ -24,6 +24,21 @@ class AppCubit extends Cubit<AppStates> {
 
   late Database _dataBase; // SQL-LITE database object
   static late String phone; // userId
+  bool language = true;   // english > true   , arabic > false
+  bool theme = true;   // light > true  ,  dark > false
+
+  //List<List<int>> cartList = [[],[]];
+  //Map<List<int>, List<int>> cartList =  <List<int>, List<int>>{};
+  //var twoDList = List.generate(row, (i) => List(col), growable: false);
+
+  // order
+  List<int> cartItemsIds =[3,300,200];
+  List<int> cartItemsQuantity =[3,2,3];
+  // offers
+  List<int> offersItemsID =[1,10,5];
+  List<bool> priceOrPercentage =[true,true,true];
+  List<int> priceValue =[1,10,5];
+
 
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
+import 'package:pharmacyapp/layouts/settings.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 
 Widget defaultTextField({
   required TextEditingController controller,
@@ -36,13 +38,7 @@ Widget optionsWidget(BuildContext context) {
     onSelected: (index) {
       switch (index) {
         case 'Settings':
-          print("settings");
-          break;
-        case 'Help':
-          print("Help");
-          break;
-        case 'about us':
-          print("about us");
+          navigateTo(context, const SettingsScreen(), true);
           break;
         case 'logout':
           cubit.logout(context);
@@ -50,10 +46,16 @@ Widget optionsWidget(BuildContext context) {
       }
     },
     itemBuilder: (BuildContext context) {
-      return {'Settings', 'Help', 'about us', 'logout'}.map((String choice) {
+      return {'Settings', 'logout'}.map((String choice) {
         return PopupMenuItem<String>(
           value: choice,
-          child: Text(choice),
+          child: Row(
+            children: [
+              choice=="Settings"?const Icon(Icons.settings,color: Colors.black,):const Icon(Icons.logout,color: Colors.black,),
+              const SizedBox(width: 10,),
+              Text(choice),
+            ],
+          ),
         );
       }).toList();
     },
