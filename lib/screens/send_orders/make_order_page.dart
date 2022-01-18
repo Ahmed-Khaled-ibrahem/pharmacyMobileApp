@@ -31,6 +31,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                     text: "Make an Order",
                     context: context,
                     actionIcon: IconButton(
+                        tooltip: "Archived Orders",
                         onPressed: () {
                           navigateTo(context, const ArchiveOrders(), true);
                         },

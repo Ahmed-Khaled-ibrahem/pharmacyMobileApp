@@ -1,20 +1,16 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
-import 'package:pharmacyapp/reusable/funcrions.dart';
-import 'package:pharmacyapp/screens/show_screens/favoriates_items.dart';
-import '../../../contsants/const_colors.dart';
-import '../../../reusable/components.dart';
+import '../../reusable/components.dart';
 
 // ignore: must_be_immutable
-class SearchResultsScreen extends StatelessWidget {
-  SearchResultsScreen({Key? key}) : super(key: key);
-  final _searchController = TextEditingController();
-  String? text;
+class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,88 +19,55 @@ class SearchResultsScreen extends StatelessWidget {
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
 
-        return GestureDetector(
-            onTap: () => FocusScope.of(context).unfocus(),
-            child: Scaffold(
-                appBar: myAppBar(
-                    text: "Search",
-                    context: context,
-                    actionIcon: IconButton(
-                        tooltip: "Favorites Screen",
-                        onPressed: () {
-                          navigateTo(context, const FavoritesScreen(), true);
-                        },
-                        icon: const Icon(Icons.star))),
-                body: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                        child: TextFormField(
-                          onChanged: (String v) {
-                            text = v;
-                            print(text);
-                            cubit.emitGeneralState();
-                          },
-                          decoration: InputDecoration(
-                              labelText: 'Search',
-                              prefixIcon: const Icon(Icons.search),
-                              suffixIcon: IconButton(
-                                icon: const Icon(Icons.cancel_outlined),
-                                onPressed: () => _searchController.text = "",
+        return Scaffold(
+            appBar: myAppBar(
+              text: "Favorites Items",
+              context: context,
+            ),
+            body: Padding(
+              padding: const EdgeInsets.all(15),
+              child: FutureBuilder<List<Drug>>(
+                future: cubit.getFavoriteList(),
+                builder:
+                    (BuildContext context, AsyncSnapshot<List<Drug>> snapshot) {
+                  switch (snapshot.connectionState) {
+                    case ConnectionState.waiting:
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    default:
+                      print(snapshot.data);
+                      if (snapshot.hasError) {
+                        print(snapshot.error);
+                        return const Center(child: Text('Error'));
+                      } else if (snapshot.data != null &&
+                          snapshot.data!.isNotEmpty) {
+                        return list(context, snapshot.data!, cubit);
+                      } else {
+                        return Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: const [
+                              Icon(
+                                Icons.shopping_bag_outlined,
+                                color: Colors.grey,
+                                size: 100,
                               ),
-                              enabledBorder: OutlineInputBorder(
-                                borderSide: const BorderSide(
-                                    color: Colors.blueGrey, width: 1),
-                                borderRadius: BorderRadius.circular(40),
-                              )),
-                          controller: _searchController,
-                        )),
-                    Expanded(
-                      child: FutureBuilder<List<Drug>>(
-                        future: cubit.findInDataBase(subName: text),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<Drug>> snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            default:
-                              print(snapshot.data);
-                              if (snapshot.hasError) {
-                                print(snapshot.error);
-                                return const Center(child: Text('Error'));
-                              } else if (snapshot.data != null &&
-                                  snapshot.data!.isNotEmpty) {
-                                return list(context, snapshot.data!, cubit);
-                              } else {
-                                return Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.shopping_bag_outlined,
-                                        color: Colors.grey,
-                                        size: 100,
-                                      ),
-                                      Text(
-                                        'No items',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }
-                          }
-                        },
-                      ),
-                    ),
-                  ],
-                )));
+                              Text(
+                                'No favorite items',
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.grey),
+                              )
+                            ],
+                          ),
+                        );
+                      }
+                  }
+                },
+              ),
+            ));
       },
     );
   }

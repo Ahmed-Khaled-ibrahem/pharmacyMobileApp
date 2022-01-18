@@ -35,7 +35,8 @@ class ArchiveOrders extends StatelessWidget {
                       if (snapshot.hasError) {
                         print(snapshot.error);
                         return const Center(child: Text('Error'));
-                      } else if (snapshot.data != null) {
+                      } else if (snapshot.data != null &&
+                          snapshot.data!.isNotEmpty) {
                         return ListView.separated(
                             itemBuilder: (BuildContext _, int index) {
                               return ListTile(
@@ -55,7 +56,7 @@ class ArchiveOrders extends StatelessWidget {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: const [
                               Icon(
-                                Icons.document_scanner,
+                                Icons.archive,
                                 color: Colors.grey,
                                 size: 100,
                               ),

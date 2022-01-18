@@ -6,7 +6,7 @@ class Drug {
   late String? details;
   late double price;
   late int id;
-  late bool idFav;
+  late bool isFav;
 
   Drug({required Map<String, dynamic> drudData}) {
     name = drudData['name'];
@@ -16,7 +16,7 @@ class Drug {
     companies = drudData['companies'].toString().split(",");
     picture = drudData['picture'];
     details = drudData['details'];
-    idFav = drudData['favorite'] == 1;
+    isFav = drudData['favorite'] == 1;
   }
 }
 

@@ -198,8 +198,11 @@ class AppCubit extends Cubit<AppStates> {
     _dataBase = await openDatabase(path);
   }
 
-  void makeFavorites(int id, {bool remove = false}) {
-    _dataBase.update("data", {"favorite": !remove ? 1 : 0}, where: "id = $id");
+  void reverseFavorites(Drug drug) {
+    drug.isFav = !drug.isFav;
+    emit(ChangeFavState());
+    _dataBase.update("data", {"favorite": drug.isFav ? 1 : 0},
+        where: "id = ${drug.id}");
   }
 
   Future<List<Drug>> getFavoriteList() async {
