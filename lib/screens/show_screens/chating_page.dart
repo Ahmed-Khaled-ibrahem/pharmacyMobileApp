@@ -1,7 +1,3 @@
-import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dash_chat/dash_chat.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
@@ -16,13 +12,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:mime/mime.dart';
 import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
-
-
 
 class ChattingScreen extends StatefulWidget {
   const ChattingScreen({Key? key}) : super(key: key);
@@ -32,7 +25,6 @@ class ChattingScreen extends StatefulWidget {
 }
 
 class _ChattingScreenState extends State<ChattingScreen> {
-
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
   @override
@@ -63,10 +55,14 @@ class _ChattingScreenState extends State<ChattingScreen> {
                     _handleImageSelection();
                   },
                   child: Row(
-                    children:  const [
-                      SizedBox(width: 20,),
+                    children: const [
+                      SizedBox(
+                        width: 20,
+                      ),
                       Icon(Icons.photo),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text('Photo'),
                     ],
                   ),
@@ -76,22 +72,30 @@ class _ChattingScreenState extends State<ChattingScreen> {
                     Navigator.pop(context);
                     _handleFileSelection();
                   },
-                  child:  Row(
+                  child: Row(
                     children: const [
-                      SizedBox(width: 20,),
+                      SizedBox(
+                        width: 20,
+                      ),
                       Icon(Icons.file_copy_outlined),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text('File'),
                     ],
                   ),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
-                  child:  Row(
+                  child: Row(
                     children: const [
-                      SizedBox(width: 20,),
+                      SizedBox(
+                        width: 20,
+                      ),
                       Icon(Icons.close),
-                      SizedBox(width: 5,),
+                      SizedBox(
+                        width: 5,
+                      ),
                       Text('Cancel'),
                     ],
                   ),
@@ -157,9 +161,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   void _handlePreviewDataFetched(
-      types.TextMessage message,
-      types.PreviewData previewData,
-      ) {
+    types.TextMessage message,
+    types.PreviewData previewData,
+  ) {
     final index = _messages.indexWhere((element) => element.id == message.id);
     final updatedMessage = _messages[index].copyWith(previewData: previewData);
 
@@ -182,7 +186,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/chat_messages/messages.json');
+    final response =
+        await rootBundle.loadString('assets/chat_messages/messages.json');
     final messages = (jsonDecode(response) as List)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -198,33 +203,32 @@ class _ChattingScreenState extends State<ChattingScreen> {
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
-            appBar: myAppBar(text: "Direct Chatting", context: context),
-            body:  SafeArea(
-              bottom: false,
-              child: Chat(
-                emptyState: Column(
-                  children: const [
-                    Icon(Icons.chat),
-                    Text("No Chat messages yet"),
-                  ],
-                ),
-                onAvatarTap: (img){
-                  navigateTo(context,  ViewPhoto(img.imageUrl.toString()), true);
-                  print(_messages);},
-                showUserAvatars: true,
-                showUserNames: true,
-                messages: _messages,
-                onAttachmentPressed: _handleAtachmentPressed,
-                onMessageTap: _handleMessageTap,
-                onPreviewDataFetched: _handlePreviewDataFetched,
-                onSendPressed: _handleSendPressed,
-                user: _user,
+          appBar: myAppBar(text: "Direct Chatting", context: context),
+          body: SafeArea(
+            bottom: false,
+            child: Chat(
+              emptyState: Column(
+                children: const [
+                  Icon(Icons.chat),
+                  Text("No Chat messages yet"),
+                ],
               ),
-            ),);
+              onAvatarTap: (img) {
+                navigateTo(context, ViewPhoto(img.imageUrl.toString()), true);
+                print(_messages);
+              },
+              showUserAvatars: true,
+              showUserNames: true,
+              messages: _messages,
+              onAttachmentPressed: _handleAtachmentPressed,
+              onMessageTap: _handleMessageTap,
+              onPreviewDataFetched: _handlePreviewDataFetched,
+              onSendPressed: _handleSendPressed,
+              user: _user,
+            ),
+          ),
+        );
       },
     );
   }
 }
-
-
-

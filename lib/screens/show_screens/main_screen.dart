@@ -33,18 +33,18 @@ class MainScreen extends StatelessWidget {
                     navigateTo(context, MakeAnOrderScreen(), true);
                   },
                   child: Container(
-                    width: 55,height: 55,
+                    width: 55,
+                    height: 55,
                     decoration: BoxDecoration(
                         color: themeColor,
-                      borderRadius: BorderRadius.circular(60)
-                    ),
+                        borderRadius: BorderRadius.circular(60)),
                     child: Stack(
                       children: [
                         const Center(
                             child: Icon(
                           Icons.shopping_cart,
                           size: 30,
-                              color: Colors.white,
+                          color: Colors.white,
                         )),
                         cubit.cartItems.isNotEmpty
                             ? Container(
@@ -57,7 +57,8 @@ class MainScreen extends StatelessWidget {
                                     child: Text(
                                   cubit.cartItems.length.toString(),
                                   style: const TextStyle(
-                                      fontSize: 10, fontWeight: FontWeight.bold),
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.bold),
                                 )),
                               )
                             : Container()
@@ -65,7 +66,9 @@ class MainScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 FloatingActionButton(
                   tooltip: "Ask the Doctor",
                   elevation: 10,
@@ -131,9 +134,9 @@ class MainScreen extends StatelessWidget {
                           },
                           child: CarouselSlider(
                             options: CarouselOptions(
-                              height: 200.0,
-                              autoPlay: true,
-                            ),
+                                height: 200.0,
+                                autoPlay: true,
+                                enableInfiniteScroll: false),
                             items: [1, 2, 3, 4, 5].map((i) {
                               return Builder(
                                 builder: (BuildContext context) {

@@ -59,10 +59,14 @@ class OrderList extends StatelessWidget {
                                   children: [
                                     SizedBox(
                                         width: 160,
-                                        child: Text(
-                                          cubit.cartItems[index].drug.name,
-                                          maxLines: 1,
-                                          overflow: TextOverflow.ellipsis,
+                                        child: Tooltip(
+                                          message:
+                                              cubit.cartItems[index].drug.name,
+                                          child: Text(
+                                            cubit.cartItems[index].drug.name,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                          ),
                                         )),
                                     const Spacer(),
                                     InkWell(
@@ -125,6 +129,9 @@ class OrderList extends StatelessWidget {
                                         color: Colors.blue,
                                       ),
                                     ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
                                     InkWell(
                                       onTap: () {
                                         cubit.removeFromCart(index);
@@ -142,7 +149,6 @@ class OrderList extends StatelessWidget {
               case 1:
                 return Container(
                   decoration: BoxDecoration(
-                      color: Colors.white,
                       border: Border.all(
                         color: Colors.grey,
                       ),
