@@ -18,6 +18,7 @@ import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/main_screen.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
+import 'package:pharmacyapp/shared/fcm/dio_helper.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'states.dart';
@@ -112,6 +113,10 @@ class AppCubit extends Cubit<AppStates> {
       EasyLoading.showToast("No items in cart");
     } else {
       EasyLoading.show(status: "sending order..");
+      List<Map<String, dynamic>> orderDrugs = cartItems
+          .map((e) => {"id": e.drug.id, "quantity": e.quantity})
+          .toList();
+
       Map<String, dynamic> orderData = {
         "Name": userName,
         "ContactPhone": userPhone,
@@ -119,15 +124,11 @@ class AppCubit extends Cubit<AppStates> {
         "UserAddress": userAddress,
         "ItemsCount": cartItems.length,
         "ImagesCount": orderImages.length,
-        "Items Price": calcOrderPrice()
+        "Items Price": calcOrderPrice(),
+        "time": DateTime.now().toString(),
+        "OrderDrugs": orderDrugs,
+        "OrderImages": orderImages
       };
-
-      List<Map<String, dynamic>> orderDrugs = cartItems
-          .map((e) => {"id": e.drug.id, "quantity": e.quantity})
-          .toList();
-
-      orderData['OrderDrugs'] = orderDrugs;
-      orderData['OrderImages'] = orderImages;
 
       print(orderData);
 
@@ -136,7 +137,7 @@ class AppCubit extends Cubit<AppStates> {
           .doc("current")
           .collection(userData.phone)
           .add(orderData)
-          .then((value) {
+          .then((value) async {
         _fireStore
             .collection("users")
             .doc(userData.phone)
@@ -145,6 +146,19 @@ class AppCubit extends Cubit<AppStates> {
             .set({"state": "waiting"});
         cartItems = [];
         orderImages = [];
+        _dataBase.insert("orders", {
+          "id": value.id,
+          "price": orderData['Items Price'],
+          "itemsCount": cartItems.length,
+          "imageCount": orderImages.length,
+          "time": orderData['Items Price'],
+        });
+        DioHelper dioHelper = DioHelper();
+        print(await dioHelper.postData(
+            sendData: {"type": "newOrder", "orderId": value.id},
+            title: "New order",
+            body: "Order received from ${userData.phone}",
+            receiverUId: "admin"));
         emit(SendOrderState());
         EasyLoading.dismiss();
         navigateTo(context, const MainScreen(), false);
@@ -157,6 +171,7 @@ class AppCubit extends Cubit<AppStates> {
 
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {
+    // read user data
     if (uPhone != null) {
       String name =
           PreferenceHelper.getDataFromSharedPreference(key: "userName");
