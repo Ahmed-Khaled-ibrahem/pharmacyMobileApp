@@ -25,7 +25,8 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   late Database _dataBase; // SQL-LITE database object
-  final FirebaseFirestore _fireStore = FirebaseFirestore.instance; // fire-store database object
+  final FirebaseFirestore _fireStore =
+      FirebaseFirestore.instance; // fire-store database object
   static late String phone; // userId
 
   bool isEnglish = true; // english -> true   , arabic -> false
@@ -47,9 +48,36 @@ class AppCubit extends Cubit<AppStates> {
   // List<int> priceValue = [1, 10, 5];
 
   List<OrderItem> cartItems = [];
+  List<String> orderImages = [];
   List<OfferItem> offerItems = [];
 
   /// cart functions
+  Future<void> addOrderImage(BuildContext context) async {
+    XFile? file = await takePhoto(context);
+    if (file != null) {
+      String image = await uploadPhoto(file, "prec");
+      print(image);
+      orderImages.add(image);
+      emit(AddCartItemState());
+    }
+  }
+
+  void removeOrderImage(int index) {
+    String filePath = orderImages[index].replaceAll(
+        r'https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/',
+        '');
+    print(filePath);
+
+    // orderImages.removeAt(index);
+    emit(AddCartItemState());
+
+    FirebaseStorage.instance
+        .refFromURL(orderImages[index])
+        .delete()
+        .then((value) => print("deleted successful"))
+        .catchError((err) => print(err));
+  }
+
   void addToCart(Drug drug) {
     cartItems.add(OrderItem(drug, 1));
     emit(AddCartItemState());
@@ -81,6 +109,7 @@ class AppCubit extends Cubit<AppStates> {
     for (OrderItem item in cartItems) {
       price += item.quantity * item.drug.price;
     }
+    price = double.parse(price.toStringAsFixed(2));
     return price;
   }
 
@@ -100,7 +129,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
-     await deleteDatabase(path);
+    await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {
@@ -136,21 +165,25 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   /// helper for make order
-  Future<String> uploadPhoto(XFile file) async {
+  Future<String> uploadPhoto(XFile file, String place) async {
     // to show the photo professional use Future builder this
     // https://stackoverflow.com/questions/51983011/when-should-i-use-a-futurebuilder
 
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
-        storage.ref().child("test").child("image1" + DateTime.now().toString());
+        storage.ref().child(place).child("image1" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(File(file.path));
 
     uploadTask.snapshotEvents.listen((event) async {
       double percentage = event.bytesTransferred / event.totalBytes;
       EasyLoading.showProgress(percentage, status: 'uploading...');
+    }).onError((err) {
+      EasyLoading.showError("Error while uploading the photo..");
     });
 
-    TaskSnapshot task = await uploadTask;
+    TaskSnapshot task = await uploadTask.catchError((err) {
+      EasyLoading.showError("Error while uploading the photo..");
+    });
     String link = await task.ref.getDownloadURL();
     EasyLoading.dismiss();
     return link;
