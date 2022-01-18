@@ -7,6 +7,13 @@ const String messagingToken =
 class DioHelper {
   late Dio dio;
 
+  // DioHelper dioHelper = DioHelper();
+  // print(await dioHelper.postData(
+  //     sendData: {"Test": "data"},
+  //     title: "Test From app",
+  //     body: "Click here",
+  //     receiverUId: "01201838240"));
+
   DioHelper() {
     dio = Dio(BaseOptions(
       baseUrl: 'https://fcm.googleapis.com/fcm/',
