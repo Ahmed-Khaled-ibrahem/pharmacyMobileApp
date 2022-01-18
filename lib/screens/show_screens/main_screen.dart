@@ -140,7 +140,6 @@ class MainScreen extends StatelessWidget {
                             }).toList(),
                           ),
                         ),
-                        defaultSpaceH,
                         // InkWell(
                         //   onTap: () {
                         //     navigateTo(context, SendPrescriptionScreen(), true);
@@ -190,17 +189,17 @@ class MainScreen extends StatelessWidget {
                         SizedBox(
                           width: double.infinity,
                           child: Padding(
-                            padding: const EdgeInsets.only(top: 5),
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.only(left: 15, right: 15),
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(5),
-                                  color: themeColor,
-                                ),
-                                child: const Text(
-                                  "   Brands",
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: themeColor,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Brands",
                                   style: TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
@@ -213,7 +212,8 @@ class MainScreen extends StatelessWidget {
                         ),
                         Expanded(
                           child: Padding(
-                            padding: const EdgeInsets.only(left: 15, right: 15),
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 20),
                             child: Container(
                               decoration:
                                   const BoxDecoration(color: Colors.black12),
@@ -353,15 +353,18 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Positioned(
-                left: 20,
-                bottom: 10,
-                child: Text(
-                  "Add to cart",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500),
+            Positioned(
+                left: 2,
+                bottom: 4,
+                child: TextButton(
+                  onPressed: () => print("add to cart"),
+                  child: const Text(
+                    "Add to cart",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500),
+                  ),
                 )),
             Positioned(
               right: -12,

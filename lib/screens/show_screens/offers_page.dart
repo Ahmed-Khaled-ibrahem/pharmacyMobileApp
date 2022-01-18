@@ -44,7 +44,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                               MaterialStateProperty.all(
                                                   themeColor),
                                         ),
-                                        onPressed: () {},
+                                        onPressed: () => print("add to cart"),
                                         child: Row(
                                           children: const [
                                             Icon(Icons.shopping_cart),
