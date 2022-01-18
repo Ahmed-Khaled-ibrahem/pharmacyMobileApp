@@ -64,8 +64,12 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void addToCart(Drug drug) {
-    cartItems.add(OrderItem(drug, 1));
-    emit(AddCartItemState());
+    if (cartItems.map((e) => e.drug.id).toList().contains(drug.id)) {
+      EasyLoading.showToast("Item already in cart");
+    } else {
+      cartItems.add(OrderItem(drug, 1));
+      emit(AddCartItemState());
+    }
   }
 
   void removeFromCart(int index) {

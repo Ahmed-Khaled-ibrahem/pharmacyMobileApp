@@ -42,7 +42,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                             suggestionsCallback: (text) =>
                                 cubit.findInDataBase(subName: text),
                             onSuggestionSelected: (suggestion) {
-                              _searchController.text = suggestion.name;
+                              _searchController.clear();
                               cubit.addToCart(suggestion);
                             },
                             itemBuilder: (context, drug) {
