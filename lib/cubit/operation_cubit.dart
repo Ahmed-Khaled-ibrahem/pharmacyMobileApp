@@ -194,7 +194,7 @@ class AppCubit extends Cubit<AppStates> {
     return link;
   }
 
-  Future<void> determinePosition() async {
+  Future<String?> determinePosition() async {
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -203,7 +203,7 @@ class AppCubit extends Cubit<AppStates> {
     serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       EasyLoading.showError('Location services are disabled.');
-      return;
+      return null;
     }
 
     permission = await Geolocator.checkPermission();
@@ -213,12 +213,12 @@ class AppCubit extends Cubit<AppStates> {
       if (permission == LocationPermission.denied) {
         EasyLoading.showError('Location permissions are denied',
             maskType: EasyLoadingMaskType.clear);
-        return;
+        return null;
       }
     } else if (permission == LocationPermission.deniedForever) {
       EasyLoading.showError(
           'Location permissions are permanently denied, we cannot request permissions.');
-      return;
+      return null;
     }
 
     Position pos = await Geolocator.getCurrentPosition();
@@ -233,9 +233,21 @@ class AppCubit extends Cubit<AppStates> {
 
     print(pos.longitude);
     print(pos.latitude);
-    print(place);
+
+    String fullLocation = place.subThoroughfare ?? '';
+    fullLocation += ' ';
+    fullLocation += place.thoroughfare ?? '';
+    fullLocation += ' ';
+    fullLocation += place.locality ?? '';
+    fullLocation += ' ';
+    fullLocation += place.subAdministrativeArea ?? '';
+    fullLocation += ' ';
+    fullLocation += place.administrativeArea ?? '';
+    fullLocation += ' ';
+    fullLocation += place.country ?? '';
 
     EasyLoading.dismiss();
+    return fullLocation;
   }
 
   Future<XFile?> takePhoto(BuildContext context) async {

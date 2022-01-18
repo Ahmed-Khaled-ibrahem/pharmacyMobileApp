@@ -62,7 +62,13 @@ class OrderSubmissionScreen extends StatelessWidget {
                                 prefixIcon: Icons.home_filled,
                               ),
                               TextButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  String? fullAddress =
+                                      await cubit.determinePosition();
+                                  if (fullAddress != null) {
+                                    address.text = fullAddress;
+                                  }
+                                },
                                 child: const Text("use current Location"),
                               ),
                             ],
