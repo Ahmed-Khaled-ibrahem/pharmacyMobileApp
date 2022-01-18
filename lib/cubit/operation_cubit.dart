@@ -25,8 +25,7 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   late Database _dataBase; // SQL-LITE database object
-  final FirebaseFirestore _fireStore =
-      FirebaseFirestore.instance; // fire-store database object
+  final FirebaseFirestore _fireStore = FirebaseFirestore.instance; // fire-store database object
   static late String phone; // userId
 
   bool isEnglish = true; // english -> true   , arabic -> false
@@ -101,7 +100,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
-    // await deleteDatabase(path);
+     await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {
@@ -111,7 +110,6 @@ class AppCubit extends Cubit<AppStates> {
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
       await File(path).writeAsBytes(bytes);
     }
-
     _dataBase = await openDatabase(path);
   }
 

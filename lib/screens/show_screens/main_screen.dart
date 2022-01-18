@@ -5,6 +5,7 @@ import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/show_screens/search_reasults.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 import 'chating_page.dart';
@@ -19,19 +20,59 @@ class MainScreen extends StatelessWidget {
     return BlocConsumer<SigningCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-        // SigningCubit cubit = SigningCubit.get(context);
+         SigningCubit cubit = SigningCubit.get(context);
 
         return WillPopScope(
           onWillPop: () => onWillPop(context),
           child: Scaffold(
-            floatingActionButton: FloatingActionButton(
-              tooltip: "Ask the Doctor",
-              elevation: 10,
-              backgroundColor: themeColor,
-              onPressed: () {
-                navigateTo(context, const ChattingScreen(), true);
-              },
-              child: const Icon(Icons.message_outlined),
+            floatingActionButton: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                FloatingActionButton(
+                  tooltip: "My Cart",
+                  elevation: 10,
+                  backgroundColor: themeColor,
+                  onPressed: () {
+                    navigateTo(context, const SearchResultsScreen(), true);
+                  },
+                  child: Stack(
+                    children:  [
+                      const Center(child: Icon(Icons.shopping_cart,size: 30,)),
+                       cubit.cartItems>0? Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(20)
+                        ),
+                        child: Center(child: Text(cubit.cartItems.toString(),style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)),
+                      ):Container()
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 5,),
+                FloatingActionButton(
+                  tooltip: "Ask the Doctor",
+                  elevation: 10,
+                  backgroundColor: themeColor,
+                  onPressed: () {
+                    navigateTo(context, const ChattingScreen(), true);
+                  },
+                  child: Stack(
+                    children:  [
+                      const Center(child: Icon(Icons.message_outlined,size: 30,)),
+                      cubit.newMessage? Container(
+                        width: 20,
+                        height: 20,
+                        decoration: BoxDecoration(
+                            color: Colors.orange,
+                            borderRadius: BorderRadius.circular(20)
+                        ),
+                      ):Container()
+                    ],
+                  ),
+                ),
+              ],
             ),
             appBar: myAppBar(text: "Tamer Deweek", context: context),
             body: Center(
