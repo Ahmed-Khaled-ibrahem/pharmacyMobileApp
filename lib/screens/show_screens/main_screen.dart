@@ -28,41 +28,44 @@ class MainScreen extends StatelessWidget {
             floatingActionButton: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                FloatingActionButton(
-                  tooltip: "My Cart",
-                  elevation: 10,
-                  backgroundColor: themeColor,
-                  onPressed: () {
+                InkWell(
+                  onTap: () {
                     navigateTo(context, MakeAnOrderScreen(), true);
                   },
-                  child: Stack(
-                    children: [
-                      const Center(
-                          child: Icon(
-                        Icons.shopping_cart,
-                        size: 30,
-                      )),
-                      cubit.cartItems.isNotEmpty
-                          ? Container(
-                              width: 20,
-                              height: 20,
-                              decoration: BoxDecoration(
-                                  color: Colors.orange,
-                                  borderRadius: BorderRadius.circular(20)),
-                              child: Center(
-                                  child: Text(
-                                cubit.cartItems.length.toString(),
-                                style: const TextStyle(
-                                    fontSize: 10, fontWeight: FontWeight.bold),
-                              )),
-                            )
-                          : Container()
-                    ],
+                  child: Container(
+                    width: 55,height: 55,
+                    decoration: BoxDecoration(
+                        color: themeColor,
+                      borderRadius: BorderRadius.circular(60)
+                    ),
+                    child: Stack(
+                      children: [
+                        const Center(
+                            child: Icon(
+                          Icons.shopping_cart,
+                          size: 30,
+                              color: Colors.white,
+                        )),
+                        cubit.cartItems.isNotEmpty
+                            ? Container(
+                                width: 20,
+                                height: 20,
+                                decoration: BoxDecoration(
+                                    color: Colors.orange,
+                                    borderRadius: BorderRadius.circular(20)),
+                                child: Center(
+                                    child: Text(
+                                  cubit.cartItems.length.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 10, fontWeight: FontWeight.bold),
+                                )),
+                              )
+                            : Container()
+                      ],
+                    ),
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                const SizedBox(height: 5,),
                 FloatingActionButton(
                   tooltip: "Ask the Doctor",
                   elevation: 10,
