@@ -6,11 +6,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
-import 'package:pharmacyapp/layouts/main_screen.dart';
+import 'screens/show_screens/main_screen.dart';
+import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'shared/pref_helper.dart';
 import 'cubit/operation_cubit.dart';
-import 'layouts/signing/login_screen.dart';
 
 // GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 

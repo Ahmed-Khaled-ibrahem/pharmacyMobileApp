@@ -6,6 +6,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 
+/// TODO : THIS WILL BE REPLACED IN THE SEND ORDER
+
 // ignore: must_be_immutable
 class SendPrescriptionScreen extends StatelessWidget {
   SendPrescriptionScreen({Key? key}) : super(key: key);

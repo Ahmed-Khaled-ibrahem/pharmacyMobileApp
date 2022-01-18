@@ -2,10 +2,10 @@ import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmacyapp/layouts/settings.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../contsants/const_colors.dart';
-import '../main_screen.dart';
+import '../show_screens/main_screen.dart';
+import '../settings.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
 

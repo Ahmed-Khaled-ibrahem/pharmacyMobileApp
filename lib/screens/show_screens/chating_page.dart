@@ -3,7 +3,7 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../reusable/components.dart';
+import '../../../reusable/components.dart';
 
 class ChattingScreen extends StatelessWidget {
   const ChattingScreen({Key? key}) : super(key: key);

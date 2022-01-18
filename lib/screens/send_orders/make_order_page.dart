@@ -5,11 +5,11 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:pharmacyapp/layouts/order_submition.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
-import '../contsants/const_colors.dart';
-import '../reusable/components.dart';
+import '../../contsants/const_colors.dart';
+import '../../reusable/components.dart';
+import 'order_submition.dart';
 
 // ignore: must_be_immutable
 class MakeAnOrderScreen extends StatelessWidget {

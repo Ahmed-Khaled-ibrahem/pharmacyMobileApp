@@ -4,12 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:pharmacyapp/layouts/offers_page.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
-import '../contsants/const_colors.dart';
-import '../reusable/components.dart';
+import '../../contsants/const_colors.dart';
+import '../../reusable/components.dart';
 import 'chating_page.dart';
-import 'make_order_page.dart';
+import '../send_orders/make_order_page.dart';
+import 'offers_page.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
