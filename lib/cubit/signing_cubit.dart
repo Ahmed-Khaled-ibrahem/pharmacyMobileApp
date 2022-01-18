@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
+import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../screens/show_screens/main_screen.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
@@ -92,7 +93,7 @@ class SigningCubit extends Cubit<AppStates> {
           PreferenceHelper.putDataInSharedPreference(
               key: "userName",
               value: {"first": firstName, "second": secondName});
-          AppCubit.phone = phone;
+          AppCubit.userData = AppUser(phone, firstName!, secondName!);
           navigateTo(context, const MainScreen(), false);
         } else {
           EasyLoading.showToast("password changed successfully");
@@ -130,7 +131,8 @@ class SigningCubit extends Cubit<AppStates> {
         PreferenceHelper.putDataInSharedPreference(
             key: "userName", value: collectionRef.get("name"));
         EasyLoading.dismiss();
-        AppCubit.phone = phone;
+        Map<String, dynamic> name = collectionRef.get("name");
+        AppCubit.userData = AppUser(phone, name['first']!, name['second']!);
         navigateTo(context, const MainScreen(), false);
       } else {
         EasyLoading.showError("Wrong password");

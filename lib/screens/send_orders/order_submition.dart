@@ -12,11 +12,11 @@ class OrderSubmissionScreen extends StatelessWidget {
   OrderSubmissionScreen({Key? key}) : super(key: key);
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  TextEditingController name = TextEditingController(text: "Ahmed");
+  TextEditingController name =
+      TextEditingController(text: AppCubit.userData.fullName());
   TextEditingController phoneNumber =
-      TextEditingController(text: AppCubit.phone);
-  TextEditingController address =
-      TextEditingController(text: "64 saaed elgendy st elhadara");
+      TextEditingController(text: AppCubit.userData.phone);
+  TextEditingController address = TextEditingController();
   bool locationReady = false;
 
   @override
@@ -30,19 +30,6 @@ class OrderSubmissionScreen extends StatelessWidget {
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  backgroundColor: themeColor,
-                  child: locationReady
-                      ? const Icon(
-                          Icons.location_on_sharp,
-                          color: Colors.green,
-                        )
-                      : const Icon(
-                          Icons.location_off,
-                          color: Colors.orangeAccent,
-                        ),
-                  onPressed: () => cubit.determinePosition(),
-                ),
                 appBar: myAppBar(text: "Confirm Data", context: context),
                 body: Form(
                   key: formKey,

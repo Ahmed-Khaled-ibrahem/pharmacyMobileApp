@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -14,6 +15,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
+import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
@@ -27,7 +29,7 @@ class AppCubit extends Cubit<AppStates> {
   late Database _dataBase; // SQL-LITE database object
   final FirebaseFirestore _fireStore =
       FirebaseFirestore.instance; // fire-store database object
-  static late String phone; // userId
+  static late AppUser userData; // userId
 
   bool isEnglish = true; // english -> true   , arabic -> false
   bool isLight = true; // light -> true  ,  dark -> false
@@ -123,7 +125,10 @@ class AppCubit extends Cubit<AppStates> {
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {
     if (uPhone != null) {
-      phone = uPhone;
+      String name =
+          PreferenceHelper.getDataFromSharedPreference(key: "userName");
+      Map<String, dynamic> name_ = json.decode(name);
+      userData = AppUser(uPhone, name_['first']!, name_['second']!);
     }
 
     String databasePath = await getDatabasesPath();
@@ -313,19 +318,19 @@ class AppCubit extends Cubit<AppStates> {
         content: "Are you sure you want to logout ?", yesFunction: () {
       EasyLoading.show(status: "logging out...");
       try {
-        if (phone != "notYet") {
-          FirebaseMessaging.instance.unsubscribeFromTopic(phone);
+        if (userData.phone != "notYet") {
+          FirebaseMessaging.instance.unsubscribeFromTopic(userData.phone);
           PreferenceHelper.clearDataFromSharedPreference(key: "phone");
           EasyLoading.dismiss();
-          phone = "notYet";
+          userData.phone = "notYet";
           cartItems = [];
+          orderImages = [];
           navigateTo(context, const LoginScreen(), false);
         } else {
           EasyLoading.showToast("You must login first");
         }
       } catch (err) {
-        if (err.toString() ==
-            "LateInitializationError: Field 'phone' has not been initialized.") {
+        if (err.toString().contains("LateInitializationError")) {
           EasyLoading.showToast("You must login first");
         } else {
           EasyLoading.showToast("An error happened at logout");
