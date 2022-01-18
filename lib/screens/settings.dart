@@ -355,12 +355,22 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   void sendMessage() {
     EasyLoading.show(status: "sending message...");
+    String phone;
+    String name;
+
+    try {
+      phone = AppCubit.userData.phone;
+      name = AppCubit.userData.fullName();
+    } catch (err) {
+      phone = "visitor";
+      name = "visitor";
+    }
+
     final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
     _fireStore.collection("dev messages").add({
-      // TODO : Add user real information
       "body": message.text,
-      "phone": "userPhone",
-      "name": "name",
+      "phone": phone,
+      "name": name,
       "read": false
     }).then((value) {
       EasyLoading.showToast("message sent successfully");
