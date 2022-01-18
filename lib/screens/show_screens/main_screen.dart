@@ -2,7 +2,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
-import 'package:pharmacyapp/cubit/signing_cubit.dart';
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/search_reasults.dart';
@@ -17,10 +17,10 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SigningCubit, AppStates>(
+    return BlocConsumer<AppCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-         SigningCubit cubit = SigningCubit.get(context);
+        AppCubit cubit = AppCubit.get(context);
 
         return WillPopScope(
           onWillPop: () => onWillPop(context),
@@ -33,24 +33,36 @@ class MainScreen extends StatelessWidget {
                   elevation: 10,
                   backgroundColor: themeColor,
                   onPressed: () {
-                    navigateTo(context,  MakeAnOrderScreen(), true);
+                    navigateTo(context, MakeAnOrderScreen(), true);
                   },
                   child: Stack(
-                    children:  [
-                      const Center(child: Icon(Icons.shopping_cart,size: 30,)),
-                       cubit.cartItems>0? Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                          color: Colors.orange,
-                          borderRadius: BorderRadius.circular(20)
-                        ),
-                        child: Center(child: Text(cubit.cartItems.toString(),style: const TextStyle(fontSize: 10,fontWeight: FontWeight.bold),)),
-                      ):Container()
+                    children: [
+                      const Center(
+                          child: Icon(
+                        Icons.shopping_cart,
+                        size: 30,
+                      )),
+                      cubit.cartItems.isNotEmpty
+                          ? Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: Colors.orange,
+                                  borderRadius: BorderRadius.circular(20)),
+                              child: Center(
+                                  child: Text(
+                                cubit.cartItems.length.toString(),
+                                style: const TextStyle(
+                                    fontSize: 10, fontWeight: FontWeight.bold),
+                              )),
+                            )
+                          : Container()
                     ],
                   ),
                 ),
-                const SizedBox(height: 5,),
+                const SizedBox(
+                  height: 5,
+                ),
                 FloatingActionButton(
                   tooltip: "Ask the Doctor",
                   elevation: 10,
@@ -59,16 +71,21 @@ class MainScreen extends StatelessWidget {
                     navigateTo(context, const ChattingScreen(), true);
                   },
                   child: Stack(
-                    children:  [
-                      const Center(child: Icon(Icons.message_outlined,size: 30,)),
-                      cubit.newMessage? Container(
-                        width: 20,
-                        height: 20,
-                        decoration: BoxDecoration(
-                            color: Colors.orange,
-                            borderRadius: BorderRadius.circular(20)
-                        ),
-                      ):Container()
+                    children: [
+                      const Center(
+                          child: Icon(
+                        Icons.message_outlined,
+                        size: 30,
+                      )),
+                      cubit.newMessage
+                          ? Container(
+                              width: 20,
+                              height: 20,
+                              decoration: BoxDecoration(
+                                  color: Colors.orange,
+                                  borderRadius: BorderRadius.circular(20)),
+                            )
+                          : Container()
                     ],
                   ),
                 ),
@@ -178,7 +195,6 @@ class MainScreen extends StatelessWidget {
                             borderRadius: BorderRadius.circular(5),
                             color: themeColor,
                           ),
-
                           child: const Text(
                             "   Brands",
                             style: TextStyle(

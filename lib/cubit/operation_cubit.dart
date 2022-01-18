@@ -14,9 +14,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
-import 'package:pharmacyapp/models/offer_model.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/show_screens/main_screen.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:sqflite/sqflite.dart';
@@ -34,24 +34,11 @@ class AppCubit extends Cubit<AppStates> {
   bool isEnglish = true; // english -> true   , arabic -> false
   bool isLight = true; // light -> true  ,  dark -> false
 
-  //List<List<int>> cartList = [[],[]];
-  //Map<List<int>, List<int>> cartList =  <List<int>, List<int>>{};
-  //var twoDList = List.generate(row, (i) => List(col), growable: false);
-
-  /// replaced with cartItems
-  // order
-  // List<int> cartItemsIds = [3, 300, 200];
-  // List<int> cartItemsQuantity = [3, 2, 3];
-
-  /// with offerItems
-  //  offers
-  // List<int> offersItemsID = [1, 10, 5];
-  // List<bool> priceOrPercentage = [true, true, true];
-  // List<int> priceValue = [1, 10, 5];
+  bool newMessage = true;
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
-  List<OfferItem> offerItems = [];
+  // List<OfferItem> offerItems = [];
 
   /// cart functions
   Future<void> addOrderImage(BuildContext context) async {
@@ -115,10 +102,56 @@ class AppCubit extends Cubit<AppStates> {
     return price;
   }
 
-  void submitOrder() {
-    if (cartItems.isNotEmpty) {
-    } else {
+  void submitOrder({
+    required BuildContext context,
+    required String userName,
+    required String userPhone,
+    required String userAddress,
+  }) {
+    if (cartItems.isEmpty && orderImages.isEmpty) {
       EasyLoading.showToast("No items in cart");
+    } else {
+      EasyLoading.show(status: "sending order..");
+      Map<String, dynamic> orderData = {
+        "Name": userName,
+        "ContactPhone": userPhone,
+        "UserPhone": userData.phone,
+        "UserAddress": userAddress,
+        "ItemsCount": cartItems.length,
+        "ImagesCount": orderImages.length,
+        "Items Price": calcOrderPrice()
+      };
+
+      List<Map<String, dynamic>> orderDrugs = cartItems
+          .map((e) => {"id": e.drug.id, "quantity": e.quantity})
+          .toList();
+
+      orderData['OrderDrugs'] = orderDrugs;
+      orderData['OrderImages'] = orderImages;
+
+      print(orderData);
+
+      _fireStore
+          .collection("active orders")
+          .doc("current")
+          .collection(userData.phone)
+          .add(orderData)
+          .then((value) {
+        _fireStore
+            .collection("users")
+            .doc(userData.phone)
+            .collection("orders")
+            .doc(value.id)
+            .set({"state": "waiting"});
+        cartItems = [];
+        orderImages = [];
+        emit(SendOrderState());
+        EasyLoading.dismiss();
+        navigateTo(context, const MainScreen(), false);
+      }).catchError((err) {
+        print(err);
+        EasyLoading.showError("Error happened while sending ");
+      });
     }
   }
 

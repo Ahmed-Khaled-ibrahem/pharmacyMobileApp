@@ -7,3 +7,5 @@ class GeneralState extends AppStates {}
 class AddCartItemState extends AppStates {}
 
 class ChangeCartItemState extends AppStates {}
+
+class SendOrderState extends AppStates {}

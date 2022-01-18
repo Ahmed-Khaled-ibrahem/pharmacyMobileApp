@@ -85,7 +85,13 @@ class OrderSubmissionScreen extends StatelessWidget {
                             primary: themeColor,
                           ),
                           onPressed: () {
-                            cubit.submitOrder();
+                            if (formKey.currentState!.validate()) {
+                              cubit.submitOrder(
+                                  context: context,
+                                  userPhone: phoneNumber.text,
+                                  userAddress: address.text,
+                                  userName: name.text);
+                            }
                           },
                         ),
                       ],
