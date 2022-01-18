@@ -1,18 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import '../contsants/const_colors.dart';
 import '../contsants/widgets.dart';
 import '../reusable/components.dart';
-import 'models/drug_model.dart';
 
 // ignore: must_be_immutable
 class OrderSubmissionScreen extends StatelessWidget {
-  OrderSubmissionScreen(this.orderItems, {Key? key}) : super(key: key);
-
-  List<OrderItem> orderItems = [];
+  OrderSubmissionScreen({Key? key}) : super(key: key);
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   TextEditingController name = TextEditingController(text: "Ahmed");
@@ -90,7 +86,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                           defaultSpaceH,
                           const Text("Order List"),
                           defaultSpaceH,
-                          orderItems.isEmpty
+                          cubit.cartItems.isEmpty
                               ? Center(
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -112,12 +108,12 @@ class OrderSubmissionScreen extends StatelessWidget {
                                   ),
                                 )
                               : SizedBox(
-                                  height: orderItems.length *
+                                  height: cubit.cartItems.length *
                                       30, // itemCount * itemLength
                                   child: ListView.separated(
                                       physics:
                                           const NeverScrollableScrollPhysics(),
-                                      itemCount: orderItems.length,
+                                      itemCount: cubit.cartItems.length,
                                       separatorBuilder: (_, index) =>
                                           const Divider(),
                                       itemBuilder: (_, index) => SizedBox(
@@ -127,10 +123,10 @@ class OrderSubmissionScreen extends StatelessWidget {
                                                   MainAxisAlignment.center,
                                               children: [
                                                 Text(
-                                                    "$index. ${orderItems[index].drug.name}"),
+                                                    "$index. ${cubit.cartItems[index].drug.name}"),
                                                 defaultSpaceW,
                                                 Text(
-                                                    "${orderItems[index].quantity}"),
+                                                    "${cubit.cartItems[index].quantity}"),
                                               ],
                                             ),
                                           )),
@@ -142,9 +138,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                               primary: themeColor,
                             ),
                             onPressed: () {
-                              if (orderItems.isEmpty) {
-                                EasyLoading.showToast("No Items in the cart.");
-                              } else {}
+                              cubit.submitOrder();
                             },
                           ),
                         ],

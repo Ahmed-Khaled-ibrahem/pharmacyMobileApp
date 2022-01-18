@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -12,6 +13,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/layouts/models/drug_model.dart';
+import 'package:pharmacyapp/layouts/models/offer_model.dart';
 import 'package:pharmacyapp/layouts/signing/login_screen.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
@@ -23,22 +25,72 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   late Database _dataBase; // SQL-LITE database object
+  final FirebaseFirestore _fireStore =
+      FirebaseFirestore.instance; // fire-store database object
   static late String phone; // userId
-  bool language = true;   // english > true   , arabic > false
-  bool theme = true;   // light > true  ,  dark > false
+
+  bool isEnglish = true; // english -> true   , arabic -> false
+  bool isLight = true; // light -> true  ,  dark -> false
 
   //List<List<int>> cartList = [[],[]];
   //Map<List<int>, List<int>> cartList =  <List<int>, List<int>>{};
   //var twoDList = List.generate(row, (i) => List(col), growable: false);
 
+  /// replaced with cartItems
   // order
-  List<int> cartItemsIds =[3,300,200];
-  List<int> cartItemsQuantity =[3,2,3];
-  // offers
-  List<int> offersItemsID =[1,10,5];
-  List<bool> priceOrPercentage =[true,true,true];
-  List<int> priceValue =[1,10,5];
+  // List<int> cartItemsIds = [3, 300, 200];
+  // List<int> cartItemsQuantity = [3, 2, 3];
 
+  /// with offerItems
+  //  offers
+  // List<int> offersItemsID = [1, 10, 5];
+  // List<bool> priceOrPercentage = [true, true, true];
+  // List<int> priceValue = [1, 10, 5];
+
+  List<OrderItem> cartItems = [];
+  List<OfferItem> offerItems = [];
+
+  /// cart functions
+  void addToCart(Drug drug) {
+    cartItems.add(OrderItem(drug, 1));
+    emit(AddCartItemState());
+  }
+
+  void removeFromCart(int index) {
+    cartItems.removeAt(index);
+    emit(AddCartItemState());
+  }
+
+  void changeCartQuantity(
+      {required int index, bool increase = true, int? newValue}) {
+    if (newValue == null) {
+      if (increase) {
+        cartItems[index].quantity++;
+      } else {
+        if (cartItems[index].quantity > 1) {
+          cartItems[index].quantity--;
+        }
+      }
+    } else {
+      cartItems[index].quantity = newValue;
+    }
+    emit(ChangeCartItemState());
+  }
+
+  double calcOrderPrice() {
+    double price = 0;
+    for (OrderItem item in cartItems) {
+      price += item.quantity * item.drug.price;
+    }
+    return price;
+  }
+
+  void submitOrder() {
+    if (cartItems.isNotEmpty) {
+    } else {
+      EasyLoading.showToast("No items in cart");
+    }
+  }
 
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {
@@ -235,6 +287,7 @@ class AppCubit extends Cubit<AppStates> {
           PreferenceHelper.clearDataFromSharedPreference(key: "phone");
           EasyLoading.dismiss();
           phone = "notYet";
+          cartItems = [];
           navigateTo(context, const LoginScreen(), false);
         } else {
           EasyLoading.showToast("You must login first");

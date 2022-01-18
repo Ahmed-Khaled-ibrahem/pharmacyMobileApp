@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
@@ -15,7 +16,6 @@ class MakeAnOrderScreen extends StatelessWidget {
   MakeAnOrderScreen({Key? key}) : super(key: key);
 
   final _searchController = TextEditingController();
-  List<OrderItem> orderItems = [];
 
   @override
   Widget build(BuildContext context) {
@@ -41,8 +41,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                             cubit.findInDataBase(subName: text),
                         onSuggestionSelected: (suggestion) {
                           _searchController.text = suggestion.name;
-                          orderItems.add(OrderItem(suggestion, 1));
-                          cubit.emitGeneralState();
+                          cubit.addToCart(suggestion);
                         },
                         itemBuilder: (context, drug) {
                           return ListTile(
@@ -107,7 +106,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: orderItems.isEmpty
+                      child: cubit.cartItems.isEmpty
                           ? Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +128,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                             )
                           : ListView.separated(
                               physics: const BouncingScrollPhysics(),
-                              itemCount: orderItems.length,
+                              itemCount: cubit.cartItems.length,
                               separatorBuilder: (_, index) => const Divider(),
                               itemBuilder: (_, index) => Row(
                                     children: [
@@ -139,17 +138,15 @@ class MakeAnOrderScreen extends StatelessWidget {
                                       SizedBox(
                                           width: 160,
                                           child: Text(
-                                            orderItems[index].drug.name,
+                                            cubit.cartItems[index].drug.name,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
                                           )),
                                       const Spacer(),
                                       InkWell(
                                         onTap: () {
-                                          if (orderItems[index].quantity > 1) {
-                                            orderItems[index].quantity--;
-                                            cubit.emitGeneralState();
-                                          }
+                                          cubit.changeCartQuantity(
+                                              index: index, increase: false);
                                         },
                                         child: const SizedBox(
                                             width: 40,
@@ -165,11 +162,16 @@ class MakeAnOrderScreen extends StatelessWidget {
                                         child: Padding(
                                           padding: const EdgeInsets.fromLTRB(
                                               0, 5, 0, 5),
-                                          child: TextField(
-                                            onSubmitted: (v) {
-                                              orderItems[index].quantity =
-                                                  int.parse(v);
-                                              cubit.emitGeneralState();
+                                          child: TextFormField(
+                                            onFieldSubmitted: (v) {
+                                              int? q = int.tryParse(v);
+                                              if (q == null) {
+                                                EasyLoading.showError(
+                                                    "Invalid quantity at item ${index + 1}");
+                                              } else {
+                                                cubit.changeCartQuantity(
+                                                    index: index, newValue: q);
+                                              }
                                             },
                                             decoration: const InputDecoration(
                                                 enabledBorder:
@@ -183,9 +185,9 @@ class MakeAnOrderScreen extends StatelessWidget {
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold),
                                             controller: TextEditingController(
-                                                text:
-                                                    (orderItems[index].quantity)
-                                                        .toString()),
+                                                text: (cubit.cartItems[index]
+                                                        .quantity)
+                                                    .toString()),
                                             inputFormatters: [
                                               FilteringTextInputFormatter
                                                   .digitsOnly
@@ -196,8 +198,8 @@ class MakeAnOrderScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          orderItems[index].quantity++;
-                                          cubit.emitGeneralState();
+                                          cubit.changeCartQuantity(
+                                              index: index, increase: true);
                                         },
                                         child: const SizedBox(
                                             width: 40,
@@ -210,8 +212,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                                       ),
                                       InkWell(
                                         onTap: () {
-                                          orderItems.removeAt(index);
-                                          cubit.emitGeneralState();
+                                          cubit.removeFromCart(index);
                                         },
                                         child: const SizedBox(
                                             width: 40,
@@ -233,7 +234,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                           style: TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "${calcOrderPrice()} LE",
+                          "${cubit.calcOrderPrice()} LE",
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
@@ -247,8 +248,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                             //     borderRadius: BorderRadius.circular(80))
                           ),
                           onPressed: () {
-                            navigateTo(context,
-                                OrderSubmissionScreen(orderItems), true);
+                            navigateTo(context, OrderSubmissionScreen(), true);
                           },
                         ),
                       ],
@@ -257,13 +257,5 @@ class MakeAnOrderScreen extends StatelessWidget {
                 )));
       },
     );
-  }
-
-  double calcOrderPrice() {
-    double price = 0;
-    for (OrderItem item in orderItems) {
-      price += item.quantity * item.drug.price;
-    }
-    return price;
   }
 }

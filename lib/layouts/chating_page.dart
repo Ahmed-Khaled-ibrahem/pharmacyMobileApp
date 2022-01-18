@@ -5,14 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../reusable/components.dart';
 
-class ChattingScreen extends StatefulWidget {
+class ChattingScreen extends StatelessWidget {
   const ChattingScreen({Key? key}) : super(key: key);
 
-  @override
-  _ChattingScreenState createState() => _ChattingScreenState();
-}
-
-class _ChattingScreenState extends State<ChattingScreen> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
@@ -33,12 +28,14 @@ class _ChattingScreenState extends State<ChattingScreen> {
 
         return Scaffold(
             appBar: myAppBar(text: "Direct Chatting", context: context),
-            body: InkWell(
+            body: GestureDetector(
               onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
               },
               child: DashChat(
-                onSend: (v) {},
+                onSend: (v) {
+                  print(v.text);
+                },
                 parsePatterns: <MatchText>[
                   MatchText(
                       //type: "email",

@@ -9,11 +9,10 @@ import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/layouts/main_screen.dart';
 import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'shared/pref_helper.dart';
-import 'contsants/const_colors.dart';
 import 'cubit/operation_cubit.dart';
 import 'layouts/signing/login_screen.dart';
 
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+// GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,9 +33,7 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-  runApp(
-      EasyDynamicThemeWidget(child: MyApp(phone))
-      );
+  runApp(EasyDynamicThemeWidget(child: MyApp(phone)));
 }
 
 // ignore: must_be_immutable
@@ -58,7 +55,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: EasyDynamicTheme.of(context).themeMode,
-        navigatorKey: navigatorKey,
+        // navigatorKey: navigatorKey,
         builder: EasyLoading.init(),
         title: 'Pharmacy',
         debugShowCheckedModeBanner: false,
@@ -83,18 +80,18 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void configLoading() {
-  EasyLoading.instance
-    ..displayDuration = const Duration(milliseconds: 2000)
-    ..indicatorType = EasyLoadingIndicatorType.wanderingCubes
-    ..loadingStyle = EasyLoadingStyle.dark
-    ..indicatorSize = 45.0
-    ..radius = 10.0
-    ..progressColor = Colors.yellow
-    ..backgroundColor = Colors.green
-    ..indicatorColor = Colors.yellow
-    ..textColor = Colors.yellow
-    ..maskColor = Colors.blue.withOpacity(0.5)
-    ..userInteractions = true
-    ..dismissOnTap = false;
-}
+// void configLoading() {
+//   EasyLoading.instance
+//     ..displayDuration = const Duration(milliseconds: 2000)
+//     ..indicatorType = EasyLoadingIndicatorType.wanderingCubes
+//     ..loadingStyle = EasyLoadingStyle.dark
+//     ..indicatorSize = 45.0
+//     ..radius = 10.0
+//     ..progressColor = Colors.yellow
+//     ..backgroundColor = Colors.green
+//     ..indicatorColor = Colors.yellow
+//     ..textColor = Colors.yellow
+//     ..maskColor = Colors.blue.withOpacity(0.5)
+//     ..userInteractions = true
+//     ..dismissOnTap = false;
+// }

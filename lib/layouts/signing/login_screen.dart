@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/layouts/settings.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../contsants/const_colors.dart';
-import '../../reusable/components.dart';
 import '../main_screen.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
@@ -43,10 +42,10 @@ class LoginScreenState extends State<LoginScreen>
 
         return Scaffold(
             appBar: AppBar(
-                actions:  [
+                actions: [
                   IconButton(
-                    onPressed: (){
-                      navigateTo(context,  const SettingsScreen(), true);
+                    onPressed: () {
+                      navigateTo(context, const SettingsScreen(), true);
                     },
                     icon: const Icon(Icons.settings),
                   ),

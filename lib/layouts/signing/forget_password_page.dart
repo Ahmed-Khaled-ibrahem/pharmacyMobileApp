@@ -6,10 +6,11 @@ import 'package:lottie/lottie.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../contsants/const_colors.dart';
-import '../../reusable/components.dart';
+import '../settings.dart';
 
 // ignore: must_be_immutable
 class ForgetPassPage extends StatelessWidget {
@@ -31,7 +32,28 @@ class ForgetPassPage extends StatelessWidget {
         SigningCubit cubit = SigningCubit.get(context);
 
         return Scaffold(
-          appBar: myAppBar(text: "Forget password", context: context),
+          appBar: AppBar(
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    navigateTo(context, const SettingsScreen(), true);
+                  },
+                  icon: const Icon(Icons.settings),
+                ),
+              ],
+              centerTitle: true,
+              toolbarHeight: 60,
+              shape: const RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  bottom: Radius.circular(30),
+                ),
+              ),
+              backgroundColor: themeColor,
+              elevation: 0,
+              title: const Text(
+                "LOGIN",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              )),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
             child: SingleChildScrollView(

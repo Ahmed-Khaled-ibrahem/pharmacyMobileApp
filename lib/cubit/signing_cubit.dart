@@ -18,8 +18,10 @@ class SigningCubit extends Cubit<AppStates> {
 
   int angle1 = 0;
   int angle2 = 3;
-  int cartItems = 9;
-  bool newMessage = false;
+
+  /// signing report not used for inner screens logic
+  // int cartItems = 9;
+  // bool newMessage = false;
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;

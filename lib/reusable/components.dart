@@ -10,6 +10,7 @@ Widget defaultTextField({
   required String label,
   required IconData prefixIcon,
   TextInputType? keyboardType,
+  int? lineCount,
 }) {
   return TextFormField(
     controller: controller,
@@ -21,6 +22,7 @@ Widget defaultTextField({
         return null;
       }
     },
+    maxLines: lineCount,
     decoration: InputDecoration(
         labelText: label,
         prefixIcon: Icon(prefixIcon),
@@ -51,8 +53,18 @@ Widget optionsWidget(BuildContext context) {
           value: choice,
           child: Row(
             children: [
-              choice=="Settings"?const Icon(Icons.settings,color: Colors.black,):const Icon(Icons.logout,color: Colors.black,),
-              const SizedBox(width: 10,),
+              choice == "Settings"
+                  ? const Icon(
+                      Icons.settings,
+                      color: Colors.black,
+                    )
+                  : const Icon(
+                      Icons.logout,
+                      color: Colors.black,
+                    ),
+              const SizedBox(
+                width: 10,
+              ),
               Text(choice),
             ],
           ),

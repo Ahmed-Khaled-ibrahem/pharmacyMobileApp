@@ -1,14 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import '../contsants/const_colors.dart';
-import '../contsants/widgets.dart';
 import '../reusable/components.dart';
-
-int? _activeMeterIndex = 1000;
-
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -18,8 +16,10 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
+  TextEditingController message = TextEditingController();
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  TextEditingController Message = TextEditingController();
+  int? _activeMeterIndex = 1000;
 
   @override
   Widget build(BuildContext context) {
@@ -32,193 +32,234 @@ class _SettingsScreenState extends State<SettingsScreen> {
           headTitle("Privacy Policies"),
           headTitle("Message Developers"),
         ];
-           late List<Widget> contentList = [W1(),messagedevCont()];
+        late List<Widget> contentList = [w1(), messageDevCont()];
 
-        return Scaffold(
-            appBar: AppBar(
-                centerTitle: true,
-                toolbarHeight: 60,
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    bottom: Radius.circular(30),
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+              appBar: AppBar(
+                  centerTitle: true,
+                  toolbarHeight: 60,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(30),
+                    ),
                   ),
-                ),
-                backgroundColor: themeColor,
-                elevation: 0,
-                title: const Text(
-                  "Settings",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                )),
-            body: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(15),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text("Language",style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      ),),
-                      Row(
-                        children: [
-                          AnimatedSwitcher(
-                            transitionBuilder: (child, animation) {
-                              final offsetAnimation = Tween(
-                                begin: const Offset(1.0, 0.0),
-                                end: const Offset(0.0, 0.0),
-                              ).animate(animation);
-                              return ClipRect(
-                                child: SlideTransition(
-                                  position: offsetAnimation,
-                                  child: child,
-                                ),
-                              );
-                            },
-                            duration: const Duration(milliseconds: 400),
-                            child: InkWell(
-                                key: ValueKey<bool>(cubit.language),
-                                onTap: (){setState(() {
-                                  cubit.language= !cubit.language;
-                                });},
-                                child:  Row(
-                                  children: [
-                                    cubit.language? const Text("English",style:
-                                    TextStyle(
-                                        fontSize: 30,
-                                        color: themeColor
-                                    ),): const Text("Arabic",style:
-                                    TextStyle(
-                                        fontSize: 30,
-                                        color: themeColor
-                                    ),),
-                                    const Icon(Icons.swap_horiz_rounded,size: 40,color: Colors.orange,),
-                                    cubit.language? const Text("Arabic",style:
-                                    TextStyle(
-                                        fontSize: 18
-                                    ),): const Text("English",style:
-                                    TextStyle(
-                                        fontSize: 18
-                                    ),),
-                                  ],
-                                )),
-                          ),
-                        ],
-                      ),
-                      const Divider(thickness: 2,) ,
-                      const Text("Theme",style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold
-                      ),),
-                      Row(
-                        children: [
-                          AnimatedSwitcher(
-                            transitionBuilder: (child, animation) {
-                              final offsetAnimation = Tween(
-                                begin: const Offset(1.0, 0.0),
-                                end: const Offset(0.0, 0.0),
-                              ).animate(animation);
-                              return ClipRect(
-                                child: SlideTransition(
-                                  position: offsetAnimation,
-                                  child: child,
-                                ),
-                              );
-                            },
-                            duration: const Duration(seconds: 1),
-                            child: InkWell(
-                                key: ValueKey<bool>(cubit.theme),
-                                onTap: (){setState(() {
-                                  EasyDynamicTheme.of(context).changeTheme();
-                                  if(EasyDynamicTheme.of(context).themeMode.toString() == "ThemeMode.system"){
-                                    EasyDynamicTheme.of(context).changeTheme();
-                                  }
-                                }
+                  backgroundColor: themeColor,
+                  elevation: 0,
+                  title: const Text(
+                    "Settings",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  )),
+              body: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          "Language",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            AnimatedSwitcher(
+                              transitionBuilder: (child, animation) {
+                                final offsetAnimation = Tween(
+                                  begin: const Offset(1.0, 0.0),
+                                  end: const Offset(0.0, 0.0),
+                                ).animate(animation);
+                                return ClipRect(
+                                  child: SlideTransition(
+                                    position: offsetAnimation,
+                                    child: child,
+                                  ),
                                 );
-                                cubit.theme = !cubit.theme;
-                                },
-                                child:  Row(
-                                  children: [
-                                    cubit.theme? const Text("Light",style:
-                                    TextStyle(
-                                        fontSize: 30,
-                                        color: themeColor
-                                    ),): const Text("Dark",style:
-                                    TextStyle(
-                                        fontSize: 30,
-                                        color: themeColor
-                                    ),),
-                                    const Icon(Icons.swap_horiz_rounded,size: 40,color: Colors.orange,),
-                                    cubit.theme? const Text("Dark",style:
-                                    TextStyle(
-                                        fontSize: 18
-                                    ),): const Text("Light",style:
-                                    TextStyle(
-                                        fontSize: 18
-                                    ),),
-                                  ],
-                                )),
-                          ),
-                        ],
-                      ),
-                      const Divider(thickness: 2,),
-                    ],
-                  ),
-                ),
-
-                Expanded(
-                  child: ListView.builder(
-                      itemCount: 2,
-                      itemBuilder: (BuildContext context, int i) {
-                        return Card(
-                          margin: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
-                          child: ExpansionPanelList(
-                            elevation: 0.0,
-                            animationDuration: const Duration(seconds: 1),
-                            expansionCallback: (int index, bool status) {
-                              setState(() {
-                                _activeMeterIndex = _activeMeterIndex == i ? null : i;
-                              });
-                            },
-                            children: [
-                              ExpansionPanel(
-                                  canTapOnHeader: true,
-                                  backgroundColor: _activeMeterIndex == i
-                                      ? Colors.cyan :null,
-
-                                  isExpanded: _activeMeterIndex == i,
-                                  headerBuilder: (BuildContext context, bool isExpanded) => Container(
-                                          padding: const EdgeInsets.only(left: 10),
-                                          alignment: Alignment.centerLeft,
-                                          child: SingleChildScrollView(
-                                            scrollDirection: Axis.horizontal,
-                                            child: Row(
-                                              children:  [
-                                                headList[i],
-                                              ],
+                              },
+                              duration: const Duration(milliseconds: 400),
+                              child: InkWell(
+                                  key: ValueKey<bool>(cubit.isEnglish),
+                                  onTap: () {
+                                    setState(() {
+                                      cubit.isEnglish = !cubit.isEnglish;
+                                    });
+                                  },
+                                  child: Row(
+                                    children: [
+                                      cubit.isEnglish
+                                          ? const Text(
+                                              "English",
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  color: themeColor),
+                                            )
+                                          : const Text(
+                                              "Arabic",
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  color: themeColor),
                                             ),
-                                          )),
-                                  body: contentList[i]),
-                            ],
-                          ),
-                        );
-                      }),
-                ),
-                footer(),
-              ],
-            ));
+                                      const Icon(
+                                        Icons.swap_horiz_rounded,
+                                        size: 40,
+                                        color: Colors.orange,
+                                      ),
+                                      cubit.isEnglish
+                                          ? const Text(
+                                              "Arabic",
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          : const Text(
+                                              "English",
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                    ],
+                                  )),
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          thickness: 2,
+                        ),
+                        const Text(
+                          "Theme",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        Row(
+                          children: [
+                            AnimatedSwitcher(
+                              transitionBuilder: (child, animation) {
+                                final offsetAnimation = Tween(
+                                  begin: const Offset(1.0, 0.0),
+                                  end: const Offset(0.0, 0.0),
+                                ).animate(animation);
+                                return ClipRect(
+                                  child: SlideTransition(
+                                    position: offsetAnimation,
+                                    child: child,
+                                  ),
+                                );
+                              },
+                              duration: const Duration(seconds: 1),
+                              child: InkWell(
+                                  key: ValueKey<bool>(cubit.isLight),
+                                  onTap: () {
+                                    setState(() {
+                                      EasyDynamicTheme.of(context)
+                                          .changeTheme();
+                                      if (EasyDynamicTheme.of(context)
+                                              .themeMode
+                                              .toString() ==
+                                          "ThemeMode.system") {
+                                        EasyDynamicTheme.of(context)
+                                            .changeTheme();
+                                      }
+                                    });
+                                    cubit.isLight = !cubit.isLight;
+                                  },
+                                  child: Row(
+                                    children: [
+                                      cubit.isLight
+                                          ? const Text(
+                                              "Light",
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  color: themeColor),
+                                            )
+                                          : const Text(
+                                              "Dark",
+                                              style: TextStyle(
+                                                  fontSize: 30,
+                                                  color: themeColor),
+                                            ),
+                                      const Icon(
+                                        Icons.swap_horiz_rounded,
+                                        size: 40,
+                                        color: Colors.orange,
+                                      ),
+                                      cubit.isLight
+                                          ? const Text(
+                                              "Dark",
+                                              style: TextStyle(fontSize: 18),
+                                            )
+                                          : const Text(
+                                              "Light",
+                                              style: TextStyle(fontSize: 18),
+                                            ),
+                                    ],
+                                  )),
+                            ),
+                          ],
+                        ),
+                        const Divider(
+                          thickness: 2,
+                        ),
+                      ],
+                    ),
+                  ),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: 2,
+                        itemBuilder: (BuildContext context, int i) {
+                          return Card(
+                            margin: const EdgeInsets.fromLTRB(
+                                10.0, 15.0, 10.0, 0.0),
+                            child: ExpansionPanelList(
+                              elevation: 0.0,
+                              animationDuration: const Duration(seconds: 1),
+                              expansionCallback: (int index, bool status) {
+                                setState(() {
+                                  _activeMeterIndex =
+                                      _activeMeterIndex == i ? null : i;
+                                });
+                              },
+                              children: [
+                                ExpansionPanel(
+                                    canTapOnHeader: true,
+                                    backgroundColor: _activeMeterIndex == i
+                                        ? Colors.cyan
+                                        : null,
+                                    isExpanded: _activeMeterIndex == i,
+                                    headerBuilder: (BuildContext context,
+                                            bool isExpanded) =>
+                                        Container(
+                                            padding:
+                                                const EdgeInsets.only(left: 10),
+                                            alignment: Alignment.centerLeft,
+                                            child: SingleChildScrollView(
+                                              scrollDirection: Axis.horizontal,
+                                              child: Row(
+                                                children: [
+                                                  headList[i],
+                                                ],
+                                              ),
+                                            )),
+                                    body: contentList[i]),
+                              ],
+                            ),
+                          );
+                        }),
+                  ),
+                  footer(),
+                ],
+              )),
+        );
       },
     );
   }
 
-Widget headTitle(String txt){
-    return  Text(txt,style: const TextStyle(
-        fontSize: 20,
-        fontWeight: FontWeight.bold
-    ),);
-}
-  Widget W1(){
+  Widget headTitle(String txt) {
+    return Text(
+      txt,
+      style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+    );
+  }
+
+  Widget w1() {
     return const SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       child: Text("""
@@ -278,58 +319,89 @@ Widget headTitle(String txt){
       """),
     );
   }
-    Widget messagedevCont(){
+
+  Widget messageDevCont() {
     return Padding(
       padding: const EdgeInsets.all(8.0),
-      child: Column(
-        children: [
-          defaultTextField(
-              label: "Message",
-              controller: Message,
-              prefixIcon: Icons.message_outlined,
-              validateString: "Message Shouldn't be Empty" ),
-          ElevatedButton.icon(
-              label: const Text("Send"),
-              icon: const Icon(Icons.send_rounded),
-              style: ElevatedButton.styleFrom(
-                  primary: themeColor,
-                  fixedSize: const Size(250, 35.0),
-                  shape: RoundedRectangleBorder(
-                      borderRadius:
-                      BorderRadius.circular(80))),
-              onPressed: () {
-
-              }),
-        ],
+      child: Form(
+        key: formKey,
+        child: Column(
+          children: [
+            defaultTextField(
+                label: "Message",
+                controller: message,
+                prefixIcon: Icons.message_outlined,
+                validateString: "Message Shouldn't be Empty",
+                keyboardType: TextInputType.multiline,
+                lineCount: 2),
+            ElevatedButton.icon(
+                label: const Text("Send"),
+                icon: const Icon(Icons.send_rounded),
+                style: ElevatedButton.styleFrom(
+                    primary: themeColor,
+                    fixedSize: const Size(250, 35.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(80))),
+                onPressed: () {
+                  if (formKey.currentState!.validate()) {
+                    sendMessage();
+                  }
+                }),
+          ],
+        ),
       ),
     );
   }
 
-
-    Widget footer(){
-    return Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset("assets/images/HomationLogo.png",height: 35,color: themeColor,),
-            const SizedBox(width: 7,),
-            Column(
-              children: const [
-                Text("By Homation"),
-                Text("Version 1.0"),
-              ],
-            ),
-          ],
-        ),
-        const SizedBox(height: 5,)
-      ],
-    );
+  void sendMessage() {
+    EasyLoading.show(status: "sending message...");
+    final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
+    _fireStore.collection("dev messages").add({
+      // TODO : Add user real information
+      "body": message.text,
+      "phone": "userPhone",
+      "name": "name",
+      "read": false
+    }).then((value) {
+      EasyLoading.showToast("message sent successfully");
+      message.clear();
+    }).catchError((err) {
+      setState(() {
+        EasyLoading.dismiss();
+      });
+      EasyLoading.showError("Error while sending the message");
+    });
   }
 
+  Widget footer() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 4.0),
+      child: Column(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset(
+                "assets/images/HomationLogo.png",
+                height: 30,
+                color: themeColor,
+              ),
+              const SizedBox(
+                width: 7,
+              ),
+              Column(
+                children: const [
+                  Text("By Homation"),
+                  Text("Version 1.0"),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 5,
+          )
+        ],
+      ),
+    );
+  }
 }
-
-
-
-
-
