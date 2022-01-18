@@ -53,7 +53,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void removeOrderImage(int index) {
-    // orderImages.removeAt(index);
+    orderImages.removeAt(index);
     emit(AddCartItemState());
 
     FirebaseStorage.instance
