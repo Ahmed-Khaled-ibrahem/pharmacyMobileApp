@@ -182,13 +182,19 @@ class SearchResultsScreen extends StatelessWidget {
             child: Column(
               children: [
                 SingleChildScrollView(
-                  child: Text(
-                    drug.name,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(color: Colors.black, fontSize: 18),
+                  child: Tooltip(
+                    message: drug.name,
+                    child: Text(
+                      drug.name,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(color: Colors.black, fontSize: 18),
+                    ),
                   ),
                   scrollDirection: Axis.vertical,
+                ),
+                const SizedBox(
+                  height: 3,
                 ),
                 Row(
                   children: [
@@ -198,7 +204,7 @@ class SearchResultsScreen extends StatelessWidget {
                         child: Text(
                           "${drug.price} LE",
                           style: const TextStyle(
-                              fontSize: 22,
+                              fontSize: 20,
                               fontWeight: FontWeight.w800,
                               color: Colors.white),
                         ),
