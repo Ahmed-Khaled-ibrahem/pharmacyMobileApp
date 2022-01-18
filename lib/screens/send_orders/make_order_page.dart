@@ -5,6 +5,7 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/send_orders/archive_order.dart';
 import '../../contsants/const_colors.dart';
 import '../../reusable/components.dart';
 import 'order_list.dart';
@@ -26,7 +27,14 @@ class MakeAnOrderScreen extends StatelessWidget {
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-                appBar: myAppBar(text: "Make an Order", context: context),
+                appBar: myAppBar(
+                    text: "Make an Order",
+                    context: context,
+                    actionIcon: IconButton(
+                        onPressed: () {
+                          navigateTo(context, const ArchiveOrders(), true);
+                        },
+                        icon: const Icon(Icons.archive))),
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

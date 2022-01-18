@@ -41,7 +41,7 @@ class AppCubit extends Cubit<AppStates> {
   List<String> orderImages = [];
   // List<OfferItem> offerItems = [];
 
-  /// cart functions
+  /// cart an order functions
   Future<void> addOrderImage(BuildContext context) async {
     XFile? file = await takePhoto(context);
     if (file != null) {
@@ -107,6 +107,7 @@ class AppCubit extends Cubit<AppStates> {
     required String userName,
     required String userPhone,
     required String userAddress,
+    required String description,
   }) {
     if (cartItems.isEmpty && orderImages.isEmpty) {
       EasyLoading.showToast("No items in cart");
@@ -126,7 +127,8 @@ class AppCubit extends Cubit<AppStates> {
         "Items Price": calcOrderPrice(),
         "time": DateTime.now().toString(),
         "OrderDrugs": orderDrugs,
-        "OrderImages": orderImages
+        "OrderImages": orderImages,
+        "description": description,
       };
 
       print(orderData);
@@ -168,6 +170,8 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
+  ///-----------------------------------------------------------------------///
+
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {
     // read user data
@@ -202,6 +206,12 @@ class AppCubit extends Cubit<AppStates> {
     List<Map<String, dynamic>> queryData =
         await _dataBase.query("data", where: "favorite = 1");
     return queryData.map((e) => Drug(drudData: e)).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getAllArchiveData() async {
+    List<Map<String, dynamic>> queryData;
+    queryData = await _dataBase.query("orders");
+    return queryData;
   }
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {

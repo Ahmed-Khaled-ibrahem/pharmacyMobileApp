@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:pharmacyapp/screens/send_orders/order_list.dart';
 import '../../contsants/const_colors.dart';
 import '../../contsants/widgets.dart';
 import '../../reusable/components.dart';
@@ -18,6 +17,7 @@ class OrderSubmissionScreen extends StatelessWidget {
       TextEditingController(text: AppCubit.userData.phone);
   TextEditingController address = TextEditingController();
   bool locationReady = false;
+  TextEditingController descriptionText = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -71,12 +71,108 @@ class OrderSubmissionScreen extends StatelessWidget {
                                 },
                                 child: const Text("use current Location"),
                               ),
+                              TextField(
+                                controller: descriptionText,
+                                decoration: InputDecoration(
+                                    labelText: "Description",
+                                    prefixIcon: const Icon(Icons.description),
+                                    enabledBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors.blueGrey, width: 1),
+                                      borderRadius: BorderRadius.circular(20),
+                                    )),
+                                keyboardType: TextInputType.multiline,
+                                maxLines: 3,
+                              ),
                             ],
                           ),
                         ),
-                        SizedBox(
-                          height: 500, // itemCount * itemLength
-                          child: OrderList(cubit),
+                        // "ItemsCount": cartItems.length,
+                        //         "ImagesCount": orderImages.length,
+                        //         "Items Price": calcOrderPrice(),
+                        // child: OrderList(cubit),
+                        Container(
+                          padding: const EdgeInsets.all(15),
+                          margin: const EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                              border: Border.all(
+                                color: Colors.grey,
+                              ),
+                              borderRadius:
+                                  const BorderRadius.all(Radius.circular(20))),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Order details",
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Expanded(
+                                      child: Text(
+                                    "Cart images",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                                  Expanded(
+                                      child: Text(
+                                    "${cubit.orderImages.length} image ",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ))
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Expanded(
+                                      child: Text(
+                                    "Cart items",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                                  Expanded(
+                                      child: Text(
+                                    "${cubit.cartItems.length} item ",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ))
+                                ],
+                              ),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                              Row(
+                                children: [
+                                  const Expanded(
+                                      child: Text(
+                                    "total items price",
+                                    style: TextStyle(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.bold),
+                                  )),
+                                  Expanded(
+                                      child: Text(
+                                    "${cubit.calcOrderPrice()} pound ",
+                                    style: const TextStyle(
+                                      fontSize: 15,
+                                    ),
+                                  ))
+                                ],
+                              )
+                            ],
+                          ),
                         ),
                         ElevatedButton.icon(
                           label: const Text("Confirm"),
@@ -87,10 +183,12 @@ class OrderSubmissionScreen extends StatelessWidget {
                           onPressed: () {
                             if (formKey.currentState!.validate()) {
                               cubit.submitOrder(
-                                  context: context,
-                                  userPhone: phoneNumber.text,
-                                  userAddress: address.text,
-                                  userName: name.text);
+                                context: context,
+                                userPhone: phoneNumber.text,
+                                userAddress: address.text,
+                                userName: name.text,
+                                description: descriptionText.text,
+                              );
                             }
                           },
                         ),

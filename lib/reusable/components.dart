@@ -74,16 +74,16 @@ Widget optionsWidget(BuildContext context) {
   );
 }
 
-AppBar myAppBar(
-    {required String text,
-    Color color = themeColor,
-    required BuildContext context}) {
+AppBar myAppBar({
+  required String text,
+  Color color = themeColor,
+  required BuildContext context,
+  IconButton? actionIcon,
+}) {
   return AppBar(
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: optionsWidget(context),
-        ),
+        actionIcon ?? Container(),
+        optionsWidget(context),
       ],
       centerTitle: true,
       toolbarHeight: 60,
