@@ -174,6 +174,7 @@ class AppCubit extends Cubit<AppStates> {
 
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {
+    emit(InitialStateLoading());
     // read user data
     if (uPhone != null) {
       String name =
@@ -185,7 +186,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
-    await deleteDatabase(path);
+    // await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {
@@ -196,6 +197,7 @@ class AppCubit extends Cubit<AppStates> {
       await File(path).writeAsBytes(bytes);
     }
     _dataBase = await openDatabase(path);
+    emit(InitialStateDone());
   }
 
   void reverseFavorites(Drug drug) {

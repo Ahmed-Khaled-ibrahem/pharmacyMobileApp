@@ -24,49 +24,46 @@ class FavoritesScreen extends StatelessWidget {
               text: "Favorites Items",
               context: context,
             ),
-            body: Padding(
-              padding: const EdgeInsets.all(15),
-              child: FutureBuilder<List<Drug>>(
-                future: cubit.getFavoriteList(),
-                builder:
-                    (BuildContext context, AsyncSnapshot<List<Drug>> snapshot) {
-                  switch (snapshot.connectionState) {
-                    case ConnectionState.waiting:
-                      return const Center(
-                        child: CircularProgressIndicator(),
+            body: FutureBuilder<List<Drug>>(
+              future: cubit.getFavoriteList(),
+              builder:
+                  (BuildContext context, AsyncSnapshot<List<Drug>> snapshot) {
+                switch (snapshot.connectionState) {
+                  case ConnectionState.waiting:
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  default:
+                    print(snapshot.data);
+                    if (snapshot.hasError) {
+                      print(snapshot.error);
+                      return const Center(child: Text('Error'));
+                    } else if (snapshot.data != null &&
+                        snapshot.data!.isNotEmpty) {
+                      return list(context, snapshot.data!, cubit);
+                    } else {
+                      return Center(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: const [
+                            Icon(
+                              Icons.shopping_bag_outlined,
+                              color: Colors.grey,
+                              size: 100,
+                            ),
+                            Text(
+                              'No favorite items',
+                              style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey),
+                            )
+                          ],
+                        ),
                       );
-                    default:
-                      print(snapshot.data);
-                      if (snapshot.hasError) {
-                        print(snapshot.error);
-                        return const Center(child: Text('Error'));
-                      } else if (snapshot.data != null &&
-                          snapshot.data!.isNotEmpty) {
-                        return list(context, snapshot.data!, cubit);
-                      } else {
-                        return Center(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
-                                Icons.shopping_bag_outlined,
-                                color: Colors.grey,
-                                size: 100,
-                              ),
-                              Text(
-                                'No favorite items',
-                                style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.grey),
-                              )
-                            ],
-                          ),
-                        );
-                      }
-                  }
-                },
-              ),
+                    }
+                }
+              },
             ));
       },
     );

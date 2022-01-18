@@ -15,6 +15,8 @@ class SearchResultsScreen extends StatelessWidget {
   SearchResultsScreen({Key? key}) : super(key: key);
   final _searchController = TextEditingController();
   String? text;
+  bool loadAgain = true;
+  late List<Drug> oldList;
 
   @override
   Widget build(BuildContext context) {
@@ -43,7 +45,7 @@ class SearchResultsScreen extends StatelessWidget {
                         child: TextFormField(
                           onChanged: (String v) {
                             text = v;
-                            print(text);
+                            loadAgain = true;
                             cubit.emitGeneralState();
                           },
                           decoration: InputDecoration(
@@ -61,47 +63,53 @@ class SearchResultsScreen extends StatelessWidget {
                           controller: _searchController,
                         )),
                     Expanded(
-                      child: FutureBuilder<List<Drug>>(
-                        future: cubit.findInDataBase(subName: text),
-                        builder: (BuildContext context,
-                            AsyncSnapshot<List<Drug>> snapshot) {
-                          switch (snapshot.connectionState) {
-                            case ConnectionState.waiting:
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            default:
-                              print(snapshot.data);
-                              if (snapshot.hasError) {
-                                print(snapshot.error);
-                                return const Center(child: Text('Error'));
-                              } else if (snapshot.data != null &&
-                                  snapshot.data!.isNotEmpty) {
-                                return list(context, snapshot.data!, cubit);
-                              } else {
-                                return Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: const [
-                                      Icon(
-                                        Icons.shopping_bag_outlined,
-                                        color: Colors.grey,
-                                        size: 100,
-                                      ),
-                                      Text(
-                                        'No items',
-                                        style: TextStyle(
-                                            fontSize: 20,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.grey),
-                                      )
-                                    ],
-                                  ),
-                                );
-                              }
-                          }
-                        },
-                      ),
+                      child: loadAgain
+                          ? FutureBuilder<List<Drug>>(
+                              future: cubit.findInDataBase(subName: text),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<List<Drug>> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  default:
+                                    print(snapshot.data);
+                                    if (snapshot.hasError) {
+                                      print(snapshot.error);
+                                      return const Center(child: Text('Error'));
+                                    } else if (snapshot.data != null &&
+                                        snapshot.data!.isNotEmpty) {
+                                      loadAgain = false;
+                                      oldList = snapshot.data!;
+                                      return list(
+                                          context, snapshot.data!, cubit);
+                                    } else {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(
+                                              Icons.shopping_bag_outlined,
+                                              color: Colors.grey,
+                                              size: 100,
+                                            ),
+                                            Text(
+                                              'No items',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey),
+                                            )
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                }
+                              },
+                            )
+                          : list(context, oldList, cubit),
                     ),
                   ],
                 )));
