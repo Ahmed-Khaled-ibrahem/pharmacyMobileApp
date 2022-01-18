@@ -33,7 +33,7 @@ class MainScreen extends StatelessWidget {
                   elevation: 10,
                   backgroundColor: themeColor,
                   onPressed: () {
-                    navigateTo(context, const SearchResultsScreen(), true);
+                    navigateTo(context,  MakeAnOrderScreen(), true);
                   },
                   child: Stack(
                     children:  [
@@ -85,19 +85,19 @@ class MainScreen extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(themeColor),
                     ),
                     onPressed: () {
-                      navigateTo(context, MakeAnOrderScreen(), true);
+                      navigateTo(context, const SearchResultsScreen(), true);
                     },
                     child: SizedBox(
                       width: 300,
                       child: Row(
                         children: const [
-                          Icon(Icons.shopping_cart_rounded),
+                          Icon(Icons.search),
                           SizedBox(
                             width: 5,
                           ),
-                          Text("Make an Order"),
+                          Text("Search"),
                           Spacer(),
-                          Icon(Icons.search),
+                          Icon(Icons.local_pharmacy_rounded),
                         ],
                       ),
                     ),
@@ -174,7 +174,11 @@ class MainScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.only(left: 15, right: 15),
                         child: Container(
-                          color: themeColor,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(5),
+                            color: themeColor,
+                          ),
+
                           child: const Text(
                             "   Brands",
                             style: TextStyle(
@@ -221,7 +225,7 @@ class MainScreen extends StatelessWidget {
                             ),
                             photoWithError(
                               imageLink:
-                                  "http://assets.stickpng.com/thumbs/589a40535aa6293a4aac48a6.png",
+                                  "https://i.pinimg.com/736x/ff/c6/d3/ffc6d3054e864678e01b6823d3e26503.jpg",
                             ),
                             photoWithError(
                               imageLink:
