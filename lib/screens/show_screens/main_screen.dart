@@ -102,7 +102,7 @@ class MainScreen extends StatelessWidget {
                       backgroundColor: MaterialStateProperty.all(themeColor),
                     ),
                     onPressed: () {
-                      navigateTo(context, const SearchResultsScreen(), true);
+                      navigateTo(context, SearchResultsScreen(), true);
                     },
                     child: SizedBox(
                       width: 300,

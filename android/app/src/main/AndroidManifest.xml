@@ -12,7 +12,8 @@
 
 
     <application
-        android:label="pharmacyapp"
+        android:label="pharmacy app"
+        android:requestLegacyExternalStorage="true"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

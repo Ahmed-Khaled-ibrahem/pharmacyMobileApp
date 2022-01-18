@@ -53,11 +53,6 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void removeOrderImage(int index) {
-    String filePath = orderImages[index].replaceAll(
-        r'https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/',
-        '');
-    print(filePath);
-
     // orderImages.removeAt(index);
     emit(AddCartItemState());
 

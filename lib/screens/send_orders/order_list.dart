@@ -5,6 +5,7 @@ import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/reusable/components.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/reusable/view_photo.dart';
 
 // ignore: must_be_immutable
 class OrderList extends StatelessWidget {
@@ -184,18 +185,27 @@ class OrderList extends StatelessWidget {
                                           decoration: BoxDecoration(
                                               border: Border.all(width: 3),
                                               color: themeColor),
-                                          child: photoWithError(
-                                              width: 280,
-                                              imageLink:
-                                                  cubit.orderImages[index],
-                                              assetPath:
-                                                  "assets/images/prescription-png.png"),
+                                          child: InkWell(
+                                            onTap: () {
+                                              navigateTo(
+                                                  context,
+                                                  ViewPhoto(
+                                                      cubit.orderImages[index]),
+                                                  true);
+                                            },
+                                            child: photoWithError(
+                                                width: 280,
+                                                imageLink:
+                                                    cubit.orderImages[index],
+                                                assetPath:
+                                                    "assets/images/prescription-png.png"),
+                                          ),
                                         ),
                                         Padding(
                                           padding: const EdgeInsets.only(
                                               top: 4, right: 4),
                                           child: CircleAvatar(
-                                            backgroundColor: themeColor,
+                                            backgroundColor: Colors.white,
                                             child: Center(
                                               child: IconButton(
                                                   //iconSize: 30,
@@ -211,7 +221,7 @@ class OrderList extends StatelessWidget {
                                                   },
                                                   icon: const Icon(
                                                     Icons.close,
-                                                    size: 23,
+                                                    size: 25,
                                                   )),
                                             ),
                                           ),
