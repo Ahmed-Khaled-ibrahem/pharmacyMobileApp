@@ -40,10 +40,13 @@ class ArchiveOrders extends StatelessWidget {
                         return ListView.separated(
                             itemBuilder: (BuildContext _, int index) {
                               return ListTile(
+                                onTap: () {
+                                  print(snapshot.data![index]['id']);
+                                },
                                 title: Text(
-                                    "Order $index at ${snapshot.data![index]['price']}"),
+                                    "Order ${index + 1} at ${snapshot.data![index]['time']}"),
                                 subtitle: Text(
-                                    "price ${snapshot.data![index]['time']}"),
+                                    "price ${snapshot.data![index]['price'] == 0 ? "-" : snapshot.data![index]['price']}"),
                               );
                             },
                             separatorBuilder: (_, __) {

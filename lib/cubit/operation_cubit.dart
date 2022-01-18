@@ -152,7 +152,7 @@ class AppCubit extends Cubit<AppStates> {
           "price": orderData['Items Price'],
           "itemsCount": cartItems.length,
           "imageCount": orderImages.length,
-          "time": orderData['Items Price'],
+          "time": orderData['time'],
         });
         DioHelper dioHelper = DioHelper();
         print(await dioHelper.postData(
