@@ -9,3 +9,9 @@ class AddCartItemState extends AppStates {}
 class ChangeCartItemState extends AppStates {}
 
 class SendOrderState extends AppStates {}
+
+class ChangeFavState extends AppStates {}
+
+class InitialStateLoading extends AppStates {}
+
+class InitialStateDone extends AppStates {}

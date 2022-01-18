@@ -96,175 +96,180 @@ class MainScreen extends StatelessWidget {
             ),
             appBar: myAppBar(text: "Tamer Deweek", context: context),
             body: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      backgroundColor: MaterialStateProperty.all(themeColor),
-                    ),
-                    onPressed: () {
-                      navigateTo(context, SearchResultsScreen(), true);
-                    },
-                    child: SizedBox(
-                      width: 300,
-                      child: Row(
-                        children: const [
-                          Icon(Icons.search),
-                          SizedBox(
-                            width: 5,
+              child: state is InitialStateLoading
+                  ? const CircularProgressIndicator()
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor:
+                                MaterialStateProperty.all(themeColor),
                           ),
-                          Text("Search"),
-                          Spacer(),
-                          Icon(Icons.local_pharmacy_rounded),
-                        ],
-                      ),
-                    ),
-                  ),
-                  InkWell(
-                    onTap: () {
-                      navigateTo(context, const OffersScreen(), true);
-                    },
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 200.0,
-                        autoPlay: true,
-                      ),
-                      items: [1, 2, 3, 4, 5].map((i) {
-                        return Builder(
-                          builder: (BuildContext context) {
-                            return offerCard();
+                          onPressed: () {
+                            navigateTo(context, SearchResultsScreen(), true);
                           },
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                  defaultSpaceH,
-                  // InkWell(
-                  //   onTap: () {
-                  //     navigateTo(context, SendPrescriptionScreen(), true);
-                  //   },
-                  //   child: Card(
-                  //     elevation: 15,
-                  //     shadowColor: Colors.black,
-                  //     color: const Color(0xff254ea6),
-                  //     child: SizedBox(
-                  //       width: 300,
-                  //       height: 120,
-                  //       child: Stack(
-                  //         children: [
-                  //           const Positioned(
-                  //               right: 10,
-                  //               top: 10,
-                  //               child: Icon(
-                  //                 Icons.document_scanner,
-                  //                 color: Colors.white,
-                  //                 size: 60.0,
-                  //               )),
-                  //           Positioned(
-                  //             left: 0,
-                  //             child: Image.network(
-                  //               "https://mir-s3-cdn-cf.behance.net/projects/404/7cb21683865409.Y3JvcCwyNzQ4LDIxNTAsMTIyLDA.jpg",
-                  //               width: 160,
-                  //             ),
-                  //           ),
-                  //           const Positioned(
-                  //               right: 35,
-                  //               top: 25,
-                  //               child: SizedBox(
-                  //                 width: 120,
-                  //                 child: Text(
-                  //                   "Send Doctor's Prescription",
-                  //                   style: TextStyle(
-                  //                       fontSize: 20,
-                  //                       color: Colors.white,
-                  //                       fontWeight: FontWeight.w500),
-                  //                 ),
-                  //               )),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
-                  SizedBox(
-                    width: double.infinity,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 5),
-                      child: Padding(
-                        padding: const EdgeInsets.only(left: 15, right: 15),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(5),
-                            color: themeColor,
-                          ),
-                          child: const Text(
-                            "   Brands",
-                            style: TextStyle(
-                              fontSize: 20,
-                              color: Colors.white,
-                              fontWeight: FontWeight.w200,
+                          child: SizedBox(
+                            width: 300,
+                            child: Row(
+                              children: const [
+                                Icon(Icons.search),
+                                SizedBox(
+                                  width: 5,
+                                ),
+                                Text("Search"),
+                                Spacer(),
+                                Icon(Icons.local_pharmacy_rounded),
+                              ],
                             ),
                           ),
                         ),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 15, right: 15),
-                      child: Container(
-                        decoration: const BoxDecoration(color: Colors.black12),
-                        child: GridView.count(
-                          physics: defaultScrollPhysics,
-                          primary: false,
-                          padding: const EdgeInsets.all(10),
-                          crossAxisSpacing: 5,
-                          mainAxisSpacing: 5,
-                          crossAxisCount: 3,
-                          children: [
-                            photoWithError(
-                                imageLink:
-                                    "https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg"),
-                            photoWithError(
-                              imageLink:
-                                  "https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",
+                        InkWell(
+                          onTap: () {
+                            navigateTo(context, const OffersScreen(), true);
+                          },
+                          child: CarouselSlider(
+                            options: CarouselOptions(
+                              height: 200.0,
+                              autoPlay: true,
                             ),
-                            photoWithError(
-                              imageLink:
-                                  "https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",
-                            ),
-                            photoWithError(
-                              imageLink:
-                                  "https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",
-                            ),
-                            photoWithError(
-                              imageLink:
-                                  "https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",
-                            ),
-                            photoWithError(
-                              imageLink:
-                                  "https://i.pinimg.com/736x/ff/c6/d3/ffc6d3054e864678e01b6823d3e26503.jpg",
-                            ),
-                            photoWithError(
-                              imageLink:
-                                  "https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",
-                            ),
-                            photoWithError(
-                              imageLink:
-                                  "https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",
-                            ),
-                            photoWithError(
-                              imageLink:
-                                  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",
-                            ),
-                          ],
+                            items: [1, 2, 3, 4, 5].map((i) {
+                              return Builder(
+                                builder: (BuildContext context) {
+                                  return offerCard();
+                                },
+                              );
+                            }).toList(),
+                          ),
                         ),
-                      ),
+                        // InkWell(
+                        //   onTap: () {
+                        //     navigateTo(context, SendPrescriptionScreen(), true);
+                        //   },
+                        //   child: Card(
+                        //     elevation: 15,
+                        //     shadowColor: Colors.black,
+                        //     color: const Color(0xff254ea6),
+                        //     child: SizedBox(
+                        //       width: 300,
+                        //       height: 120,
+                        //       child: Stack(
+                        //         children: [
+                        //           const Positioned(
+                        //               right: 10,
+                        //               top: 10,
+                        //               child: Icon(
+                        //                 Icons.document_scanner,
+                        //                 color: Colors.white,
+                        //                 size: 60.0,
+                        //               )),
+                        //           Positioned(
+                        //             left: 0,
+                        //             child: Image.network(
+                        //               "https://mir-s3-cdn-cf.behance.net/projects/404/7cb21683865409.Y3JvcCwyNzQ4LDIxNTAsMTIyLDA.jpg",
+                        //               width: 160,
+                        //             ),
+                        //           ),
+                        //           const Positioned(
+                        //               right: 35,
+                        //               top: 25,
+                        //               child: SizedBox(
+                        //                 width: 120,
+                        //                 child: Text(
+                        //                   "Send Doctor's Prescription",
+                        //                   style: TextStyle(
+                        //                       fontSize: 20,
+                        //                       color: Colors.white,
+                        //                       fontWeight: FontWeight.w500),
+                        //                 ),
+                        //               )),
+                        //         ],
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
+                        SizedBox(
+                          width: double.infinity,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, top: 10),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(5),
+                                color: themeColor,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
+                                child: Text(
+                                  "Brands",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w200,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 15, right: 15, bottom: 20),
+                            child: Container(
+                              decoration:
+                                  const BoxDecoration(color: Colors.black12),
+                              child: GridView.count(
+                                physics: defaultScrollPhysics,
+                                primary: false,
+                                padding: const EdgeInsets.all(10),
+                                crossAxisSpacing: 5,
+                                mainAxisSpacing: 5,
+                                crossAxisCount: 3,
+                                children: [
+                                  photoWithError(
+                                      imageLink:
+                                          "https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg"),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://i.pinimg.com/736x/ff/c6/d3/ffc6d3054e864678e01b6823d3e26503.jpg",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",
+                                  ),
+                                  photoWithError(
+                                    imageLink:
+                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
+                      ],
                     ),
-                  )
-                ],
-              ),
             ),
           ),
         );
@@ -351,15 +356,18 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Positioned(
-                left: 20,
-                bottom: 10,
-                child: Text(
-                  "Add to cart",
-                  style: TextStyle(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w500),
+            Positioned(
+                left: 2,
+                bottom: 4,
+                child: TextButton(
+                  onPressed: () => print("add to cart"),
+                  child: const Text(
+                    "Add to cart",
+                    style: TextStyle(
+                        fontSize: 20,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500),
+                  ),
                 )),
             Positioned(
               right: -12,

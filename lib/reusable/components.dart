@@ -74,16 +74,16 @@ Widget optionsWidget(BuildContext context) {
   );
 }
 
-AppBar myAppBar(
-    {required String text,
-    Color color = themeColor,
-    required BuildContext context}) {
+AppBar myAppBar({
+  required String text,
+  Color color = themeColor,
+  required BuildContext context,
+  IconButton? actionIcon,
+}) {
   return AppBar(
       actions: [
-        Padding(
-          padding: const EdgeInsets.only(left: 10.0),
-          child: optionsWidget(context),
-        ),
+        actionIcon ?? Container(),
+        optionsWidget(context),
       ],
       centerTitle: true,
       toolbarHeight: 60,
@@ -100,12 +100,12 @@ AppBar myAppBar(
       ));
 }
 
-Widget photoWithError({
-  required String imageLink,
-  String assetPath = "assets/images/loginlogo.png",
-  double? height,
-  double? width,
-}) {
+Widget photoWithError(
+    {required String imageLink,
+    String assetPath = "assets/images/loginlogo.png",
+    double? height,
+    double? width,
+    Widget? errorWidget}) {
   return FadeInImage.assetNetwork(
     height: height,
     width: width,
@@ -116,10 +116,11 @@ Widget photoWithError({
       error,
       stackTrace,
     ) {
-      return const Icon(
-        Icons.downloading,
-        size: 30,
-      );
+      return errorWidget ??
+          const Icon(
+            Icons.downloading,
+            size: 30,
+          );
     },
     image: imageLink,
   );

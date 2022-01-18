@@ -41,7 +41,7 @@ class AppCubit extends Cubit<AppStates> {
   List<String> orderImages = [];
   // List<OfferItem> offerItems = [];
 
-  /// cart functions
+  /// cart an order functions
   Future<void> addOrderImage(BuildContext context) async {
     XFile? file = await takePhoto(context);
     if (file != null) {
@@ -107,6 +107,7 @@ class AppCubit extends Cubit<AppStates> {
     required String userName,
     required String userPhone,
     required String userAddress,
+    required String description,
   }) {
     if (cartItems.isEmpty && orderImages.isEmpty) {
       EasyLoading.showToast("No items in cart");
@@ -126,7 +127,8 @@ class AppCubit extends Cubit<AppStates> {
         "Items Price": calcOrderPrice(),
         "time": DateTime.now().toString(),
         "OrderDrugs": orderDrugs,
-        "OrderImages": orderImages
+        "OrderImages": orderImages,
+        "description": description,
       };
 
       print(orderData);
@@ -150,7 +152,7 @@ class AppCubit extends Cubit<AppStates> {
           "price": orderData['Items Price'],
           "itemsCount": cartItems.length,
           "imageCount": orderImages.length,
-          "time": orderData['Items Price'],
+          "time": orderData['time'],
         });
         DioHelper dioHelper = DioHelper();
         print(await dioHelper.postData(
@@ -168,8 +170,11 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
+  ///-----------------------------------------------------------------------///
+
   /// deal with data base
   void initialReadSqlData(String? uPhone) async {
+    emit(InitialStateLoading());
     // read user data
     if (uPhone != null) {
       String name =
@@ -181,7 +186,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
-    await deleteDatabase(path);
+    // await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {
@@ -192,16 +197,26 @@ class AppCubit extends Cubit<AppStates> {
       await File(path).writeAsBytes(bytes);
     }
     _dataBase = await openDatabase(path);
+    emit(InitialStateDone());
   }
 
-  void makeFavorites(int id, {bool remove = false}) {
-    _dataBase.update("data", {"favorite": !remove ? 1 : 0}, where: "id = $id");
+  void reverseFavorites(Drug drug) {
+    drug.isFav = !drug.isFav;
+    emit(ChangeFavState());
+    _dataBase.update("data", {"favorite": drug.isFav ? 1 : 0},
+        where: "id = ${drug.id}");
   }
 
   Future<List<Drug>> getFavoriteList() async {
     List<Map<String, dynamic>> queryData =
         await _dataBase.query("data", where: "favorite = 1");
     return queryData.map((e) => Drug(drudData: e)).toList();
+  }
+
+  Future<List<Map<String, dynamic>>> getAllArchiveData() async {
+    List<Map<String, dynamic>> queryData;
+    queryData = await _dataBase.query("orders");
+    return queryData;
   }
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
