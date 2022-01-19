@@ -64,7 +64,7 @@ class MainScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    //navigateTo(context, MakeAnOrderScreen(), true);
+                    navigateTo(context, MakeAnOrderScreen(), true);
                   },
                   child: Container(
                     width: 55,
@@ -134,6 +134,7 @@ class MainScreen extends StatelessWidget {
                           child: Icon(
                         Icons.message_outlined,
                         size: 30,
+                            color: Colors.white,
                       )),
                       cubit.newMessage
                           ? Container(

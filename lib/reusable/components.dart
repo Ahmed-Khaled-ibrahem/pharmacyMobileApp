@@ -55,13 +55,13 @@ Widget optionsWidget(BuildContext context) {
           child: Row(
             children: [
               choice == setText
-                  ? const Icon(
+                  ?  Icon(
                       Icons.settings,
-                      color: Colors.black,
+                   color:  cubit.themeState=='Dark'? Colors.white: Colors.black,
                     )
-                  : const Icon(
+                  :  Icon(
                       Icons.logout,
-                      color: Colors.black,
+                color:  cubit.themeState=='Dark'? Colors.white: Colors.black,
                     ),
               const SizedBox(
                 width: 10,
