@@ -38,8 +38,6 @@ class AppCubit extends Cubit<AppStates> {
   String languageState =
       'English'; // all states is 'English' - 'Arabic' - 'System'
   String themeState = 'Light'; // all states is 'Light' - 'Dark' - 'System'
-  bool isEnglish = true; // english -> true   , arabic -> false
-  bool isLight = true; // light -> true  ,  dark -> false
 
   bool newMessage = false;
   bool activeOrder = false;

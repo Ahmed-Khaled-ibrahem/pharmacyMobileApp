@@ -202,7 +202,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
         return Scaffold(
-          backgroundColor: cubit.isLight ? null : ThemeData.dark().canvasColor,
+          backgroundColor:
+              cubit.themeState == "Light" ? null : ThemeData.dark().canvasColor,
           appBar: myAppBar(text: "Direct Chatting", context: context),
           body: Chat(
             emptyState: Center(
@@ -221,7 +222,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
             onAvatarTap: (img) {
               navigateTo(context, ViewPhoto(img.imageUrl.toString()), true);
             },
-            theme: cubit.isLight
+            theme: cubit.themeState == "Light"
                 ? const DefaultChatTheme(
                     primaryColor: themeColor,
                     inputBackgroundColor: themeColor,
