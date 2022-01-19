@@ -214,7 +214,11 @@ class OrderList extends StatelessWidget {
                                                     imageLink: cubit
                                                         .orderImages[index],
                                                     assetPath:
-                                                        "assets/images/prescription-png.png"),
+                                                        "assets/images/prescription-png.png",
+                                                    errorWidget: Image.asset(
+                                                      "assets/images/prescription-png.png",
+                                                      width: 280,
+                                                    )),
                                               ),
                                             ),
                                             Padding(

@@ -78,7 +78,7 @@ AppBar myAppBar({
   required String text,
   Color color = themeColor,
   required BuildContext context,
-  IconButton? actionIcon,
+  Widget? actionIcon,
 }) {
   return AppBar(
       actions: [
