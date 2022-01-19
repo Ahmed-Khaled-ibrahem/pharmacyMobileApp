@@ -35,6 +35,7 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
+  phone = "01201838240";
   runApp(EasyDynamicThemeWidget(child: MyApp(phone)));
 }
 
@@ -46,18 +47,27 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final lang =  PreferenceHelper.getDataFromSharedPreference(key:'language')??"English";
-    final theme =  PreferenceHelper.getDataFromSharedPreference(key:'ThemeState')??'Light';
+    final lang =
+        PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
+            "English";
+    final theme =
+        PreferenceHelper.getDataFromSharedPreference(key: 'ThemeState') ??
+            'Light';
 
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (BuildContext context) => AppCubit()..appStart(phone, lang, theme)),
+            create: (BuildContext context) =>
+                AppCubit()..appStart(phone, lang, theme)),
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
         // navigatorKey: navigatorKey,
-        locale: lang =='English'? const Locale('en') : lang =='Arabic'? const Locale('ar') : null,
+        locale: lang == 'English'
+            ? const Locale('en')
+            : lang == 'Arabic'
+                ? const Locale('ar')
+                : null,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
