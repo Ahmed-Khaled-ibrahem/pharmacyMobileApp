@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -11,8 +12,6 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
@@ -42,14 +41,11 @@ class AppCubit extends Cubit<AppStates> {
   // List<OfferItem> offerItems = [];
 
   /// cart an order functions
-  Future<void> addOrderImage(BuildContext context) async {
-    XFile? file = await takePhoto(context);
-    if (file != null) {
-      String image = await uploadPhoto(file, "prec");
-      print(image);
-      orderImages.add(image);
-      emit(AddCartItemState());
-    }
+  Future<void> addOrderImage(XFile file) async {
+    String image = await uploadPhoto(File(file.path), "prec");
+    print(image);
+    orderImages.add(image);
+    emit(AddCartItemState());
   }
 
   void removeOrderImage(int index) {
@@ -108,66 +104,69 @@ class AppCubit extends Cubit<AppStates> {
     required String userPhone,
     required String userAddress,
     required String description,
-  }) {
+  }) async {
     if (cartItems.isEmpty && orderImages.isEmpty) {
       EasyLoading.showToast("No items in cart");
     } else {
       EasyLoading.show(status: "sending order..");
-      List<Map<String, dynamic>> orderDrugs = cartItems
-          .map((e) => {"id": e.drug.id, "quantity": e.quantity})
-          .toList();
+      if (await isConnected()) {
+        List<Map<String, dynamic>> orderDrugs = cartItems
+            .map((e) => {"id": e.drug.id, "quantity": e.quantity})
+            .toList();
 
-      Map<String, dynamic> orderData = {
-        "Name": userName,
-        "ContactPhone": userPhone,
-        "UserPhone": userData.phone,
-        "UserAddress": userAddress,
-        "ItemsCount": cartItems.length,
-        "ImagesCount": orderImages.length,
-        "Items Price": calcOrderPrice(),
-        "time": DateTime.now().toString(),
-        "OrderDrugs": orderDrugs,
-        "OrderImages": orderImages,
-        "description": description,
-      };
+        Map<String, dynamic> orderData = {
+          "Name": userName,
+          "ContactPhone": userPhone,
+          "UserPhone": userData.phone,
+          "UserAddress": userAddress,
+          "ItemsCount": cartItems.length,
+          "ImagesCount": orderImages.length,
+          "Items Price": calcOrderPrice(),
+          "time": DateTime.now().toString(),
+          "OrderDrugs": orderDrugs,
+          "OrderImages": orderImages,
+          "description": description,
+        };
 
-      print(orderData);
-
-      _fireStore
-          .collection("active orders")
-          .doc("current")
-          .collection(userData.phone)
-          .add(orderData)
-          .then((value) async {
         _fireStore
-            .collection("users")
-            .doc(userData.phone)
-            .collection("orders")
-            .doc(value.id)
-            .set({"state": "waiting"});
-        cartItems = [];
-        orderImages = [];
-        _dataBase.insert("orders", {
-          "id": value.id,
-          "price": orderData['Items Price'],
-          "itemsCount": cartItems.length,
-          "imageCount": orderImages.length,
-          "time": orderData['time'],
-          "details": json.encode(orderDrugs),
+            .collection("active orders")
+            .doc("current")
+            .collection(userData.phone)
+            .add(orderData)
+            .then((value) async {
+          _fireStore
+              .collection("users")
+              .doc(userData.phone)
+              .collection("orders")
+              .doc(value.id)
+              .set({"state": "waiting"});
+
+          _dataBase.insert("orders", {
+            "id": value.id,
+            "price": orderData['Items Price'],
+            "itemsCount": cartItems.length,
+            "imageCount": orderImages.length,
+            "time": orderData['time'],
+            "details": json.encode(orderData),
+          });
+          cartItems = [];
+          orderImages = [];
+          DioHelper dioHelper = DioHelper();
+          print(await dioHelper.postData(
+              sendData: {"type": "newOrder", "orderId": value.id},
+              title: "New order",
+              body: "Order received from ${userData.phone}",
+              receiverUId: "admin"));
+          emit(SendOrderState());
+          EasyLoading.dismiss();
+          navigateTo(context, const MainScreen(), false);
+        }).catchError((err) {
+          print(err);
+          EasyLoading.showError("Error happened while sending ");
         });
-        DioHelper dioHelper = DioHelper();
-        print(await dioHelper.postData(
-            sendData: {"type": "newOrder", "orderId": value.id},
-            title: "New order",
-            body: "Order received from ${userData.phone}",
-            receiverUId: "admin"));
-        emit(SendOrderState());
-        EasyLoading.dismiss();
-        navigateTo(context, const MainScreen(), false);
-      }).catchError((err) {
-        print(err);
-        EasyLoading.showError("Error happened while sending ");
-      });
+      } else {
+        EasyLoading.showError("No internet connection");
+      }
     }
   }
 
@@ -233,14 +232,14 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   /// helper for make order
-  Future<String> uploadPhoto(XFile file, String place) async {
+  Future<String> uploadPhoto(File file, String place) async {
     // to show the photo professional use Future builder this
     // https://stackoverflow.com/questions/51983011/when-should-i-use-a-futurebuilder
 
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
         storage.ref().child(place).child("image1" + DateTime.now().toString());
-    UploadTask uploadTask = ref.putFile(File(file.path));
+    UploadTask uploadTask = ref.putFile(file);
 
     uploadTask.snapshotEvents.listen((event) async {
       double percentage = event.bytesTransferred / event.totalBytes;
@@ -313,79 +312,6 @@ class AppCubit extends Cubit<AppStates> {
     return fullLocation;
   }
 
-  Future<XFile?> takePhoto(BuildContext context) async {
-    if (await Permission.camera.request().isGranted) {
-      ImageSource? source = await showGeneralDialog<ImageSource>(
-        barrierLabel: "Barrier",
-        barrierDismissible: true,
-        barrierColor: Colors.black.withOpacity(0.5),
-        transitionDuration: const Duration(milliseconds: 700),
-        context: context,
-        pageBuilder: (_, __, ___) {
-          return Align(
-            alignment: Alignment.bottomCenter,
-            child: Material(
-              child: Container(
-                margin: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                height: 70,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    OutlinedButton.icon(
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(themeColor),
-                      ),
-                      label: const Text("Gallery"),
-                      onPressed: () =>
-                          Navigator.pop(context, ImageSource.gallery),
-                      icon: const Icon(
-                        Icons.image,
-                        size: 35,
-                      ),
-                    ),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    OutlinedButton.icon(
-                      style: ButtonStyle(
-                        foregroundColor: MaterialStateProperty.all(themeColor),
-                      ),
-                      label: const Text("Camera"),
-                      onPressed: () =>
-                          Navigator.pop(context, ImageSource.camera),
-                      icon: const Icon(
-                        Icons.camera_alt_outlined,
-                        size: 35,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-        transitionBuilder: (_, anim, __, child) {
-          return SlideTransition(
-            position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0))
-                .animate(anim),
-            child: child,
-          );
-        },
-      );
-      if (source != null) {
-        XFile? pickedFile = await ImagePicker().pickImage(source: source);
-        return pickedFile;
-      }
-    } else {
-      EasyLoading.showToast("Can't open camera");
-    }
-  }
-
   /// logOut
   void logout(BuildContext context) {
     customChoiceDialog(context,
@@ -412,6 +338,15 @@ class AppCubit extends Cubit<AppStates> {
         }
       }
     });
+  }
+
+  Future<bool> isConnected() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   void emitGeneralState() {
