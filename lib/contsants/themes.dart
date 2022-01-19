@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 
 import 'const_colors.dart';
 
@@ -28,3 +29,5 @@ ThemeData darkThemeData = ThemeData(
   colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.teal)
       .copyWith(secondary: Colors.teal),
 );
+
+
