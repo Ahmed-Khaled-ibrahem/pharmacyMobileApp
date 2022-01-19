@@ -35,6 +35,8 @@ class AppCubit extends Cubit<AppStates> {
       FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
+
+  String languageState = 'en';  // all states is 'en' - 'ar' - 'sy'
   bool isEnglish = true; // english -> true   , arabic -> false
   bool isLight = true; // light -> true  ,  dark -> false
 

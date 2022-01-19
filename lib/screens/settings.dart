@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/shared/pref_helper.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
 
@@ -85,6 +86,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   onTap: () {
                                     setState(() {
                                       cubit.isEnglish = !cubit.isEnglish;
+                                      PreferenceHelper.putDataInSharedPreference(key: 'language',value: 'en');
+                                      EasyLoading.showInfo("Restart the App to make changes");
                                     });
                                   },
                                   child: Row(

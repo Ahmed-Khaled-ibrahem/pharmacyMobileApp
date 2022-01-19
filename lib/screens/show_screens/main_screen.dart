@@ -64,7 +64,7 @@ class MainScreen extends StatelessWidget {
               children: [
                 InkWell(
                   onTap: () {
-                    navigateTo(context, MakeAnOrderScreen(), true);
+                    //navigateTo(context, MakeAnOrderScreen(), true);
                   },
                   child: Container(
                     width: 55,
