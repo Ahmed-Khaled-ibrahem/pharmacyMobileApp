@@ -1,7 +1,9 @@
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../contsants/const_colors.dart';
 import '../show_screens/main_screen.dart';
@@ -206,7 +208,7 @@ class LoginScreenState extends State<LoginScreen>
                                         context: context,
                                         phone: username.text,
                                         password: password.text);
-                                    stopanimation();
+                                    stopAnimation();
                                   }
                                 }),
                             const SizedBox(
@@ -222,7 +224,9 @@ class LoginScreenState extends State<LoginScreen>
                             InkWell(
                               onTap: () {
                                 navigateTo(context, const MainScreen(), false);
-                                stopanimation();
+                                AppCubit.userData =
+                                    AppUser("dev account", "dev", "acc");
+                                stopAnimation();
                               },
                               child: SizedBox(
                                   height: 40,
@@ -267,7 +271,7 @@ class LoginScreenState extends State<LoginScreen>
     }
   }
 
-  void stopanimation() {
+  void stopAnimation() {
     animationController.value = 1;
     if (animationController.isAnimating) {
       animationController.dispose();

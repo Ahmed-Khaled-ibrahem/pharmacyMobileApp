@@ -44,14 +44,14 @@ class MakeAnOrderScreen extends StatelessWidget {
                             icon: const Icon(Icons.archive)),
                         Visibility(
                           visible: cubit.activeOrder,
-                          child: Container(
-                            width: 10,
-                            height: 10,
-                            decoration: BoxDecoration(
-                                color: Colors.green,
-                                borderRadius: BorderRadius.circular(20)),
+                          child: const Padding(
+                            padding: EdgeInsets.only(top: 8.0),
+                            child: CircleAvatar(
+                              radius: 10,
+                              backgroundColor: Colors.green,
+                            ),
                           ),
-                        )
+                        ),
                       ],
                     )),
                 body: Column(
