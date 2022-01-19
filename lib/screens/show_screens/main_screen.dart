@@ -80,25 +80,34 @@ class MainScreen extends StatelessWidget {
                                     size: 30,
                                     color: Colors.white,
                                   )),
-                        cubit.cartItems.isNotEmpty ||
-                                cubit.orderImages.isNotEmpty
+                        cubit.activeOrder
                             ? Container(
                                 width: 20,
                                 height: 20,
                                 decoration: BoxDecoration(
-                                    color: Colors.orange,
+                                    color: Colors.green,
                                     borderRadius: BorderRadius.circular(20)),
-                                child: Center(
-                                    child: Text(
-                                  (cubit.cartItems.length +
-                                          cubit.orderImages.length)
-                                      .toString(),
-                                  style: const TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold),
-                                )),
                               )
-                            : Container()
+                            : cubit.cartItems.isNotEmpty ||
+                                    cubit.orderImages.isNotEmpty
+                                ? Container(
+                                    width: 20,
+                                    height: 20,
+                                    decoration: BoxDecoration(
+                                        color: Colors.orange,
+                                        borderRadius:
+                                            BorderRadius.circular(20)),
+                                    child: Center(
+                                        child: Text(
+                                      (cubit.cartItems.length +
+                                              cubit.orderImages.length)
+                                          .toString(),
+                                      style: const TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold),
+                                    )),
+                                  )
+                                : Container()
                       ],
                     ),
                   ),

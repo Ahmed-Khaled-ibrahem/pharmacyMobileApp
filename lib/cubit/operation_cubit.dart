@@ -38,6 +38,7 @@ class AppCubit extends Cubit<AppStates> {
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
+  bool activeOrder = false;
   // List<OfferItem> offerItems = [];
 
   /// cart an order functions
@@ -181,6 +182,7 @@ class AppCubit extends Cubit<AppStates> {
           });
           cartItems = [];
           orderImages = [];
+          activeOrder = true;
           DioHelper dioHelper = DioHelper();
           print(await dioHelper.postData(
               sendData: {"type": "newOrder", "orderId": value.id},
@@ -364,6 +366,7 @@ class AppCubit extends Cubit<AppStates> {
           userData.phone = "notYet";
           cartItems = [];
           orderImages = [];
+          activeOrder = false;
           navigateTo(context, const LoginScreen(), false);
         } else {
           EasyLoading.showToast("You must login first");

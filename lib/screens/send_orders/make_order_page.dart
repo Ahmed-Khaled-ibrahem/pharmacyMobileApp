@@ -33,12 +33,27 @@ class MakeAnOrderScreen extends StatelessWidget {
                 appBar: myAppBar(
                     text: "Make an Order",
                     context: context,
-                    actionIcon: IconButton(
-                        tooltip: "Archived Orders",
-                        onPressed: () {
-                          navigateTo(context, const ArchiveOrders(), true);
-                        },
-                        icon: const Icon(Icons.archive))),
+                    actionIcon: Stack(
+                      alignment: Alignment.topLeft,
+                      children: [
+                        IconButton(
+                            tooltip: "Archived Orders",
+                            onPressed: () {
+                              navigateTo(context, const ArchiveOrders(), true);
+                            },
+                            icon: const Icon(Icons.archive)),
+                        Visibility(
+                          visible: cubit.activeOrder,
+                          child: Container(
+                            width: 10,
+                            height: 10,
+                            decoration: BoxDecoration(
+                                color: Colors.green,
+                                borderRadius: BorderRadius.circular(20)),
+                          ),
+                        )
+                      ],
+                    )),
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

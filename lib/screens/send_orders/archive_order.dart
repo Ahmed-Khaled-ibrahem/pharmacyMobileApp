@@ -42,6 +42,7 @@ class ArchiveOrders extends StatelessWidget {
                           snapshot.data!.isNotEmpty) {
                         return ListView.separated(
                             physics: defaultScrollPhysics,
+                            reverse: true,
                             itemBuilder: (BuildContext _, int index) {
                               DateTime dateTime =
                                   DateTime.parse(snapshot.data![index]['time']);
