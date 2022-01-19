@@ -51,8 +51,6 @@ class ArchiveOrders extends StatelessWidget {
                         );
                       default:
                         if (snapshot.hasError) {
-                          print(snapshot.stackTrace);
-                          print(snapshot.error);
                           return const Center(child: Text('Error'));
                         } else if (snapshot.data != null &&
                             snapshot.data!.isNotEmpty) {
@@ -70,7 +68,8 @@ class ArchiveOrders extends StatelessWidget {
                                       navigateTo(
                                           context,
                                           ArchiveOrderDetails(
-                                              snapshot.data![index]),
+                                              snapshot.data![index],
+                                              cubit.readCartLocal),
                                           true);
                                     },
                                     leading: CircleAvatar(
@@ -100,7 +99,7 @@ class ArchiveOrders extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                                "Items count ${snapshot.data![index].price}",
+                                                "Items count ${snapshot.data![index].itemsCount}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,
@@ -109,7 +108,7 @@ class ArchiveOrders extends StatelessWidget {
                                               width: 20,
                                             ),
                                             Text(
-                                                "Images count ${snapshot.data![index].price}",
+                                                "Images count ${snapshot.data![index].imagesCount}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,

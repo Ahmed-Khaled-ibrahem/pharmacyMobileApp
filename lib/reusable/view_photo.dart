@@ -73,7 +73,6 @@ class ViewPhoto extends StatelessWidget {
           file.copy(newPath + "/${DateTime.now()}.jpeg");
           EasyLoading.showInfo("file saved in Pharmacy APP file ");
         }).catchError((err) {
-          print(err);
           EasyLoading.showError("an error Happened while saving");
         });
       }

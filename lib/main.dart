@@ -53,6 +53,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
+        // navigatorKey: navigatorKey,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -66,7 +67,6 @@ class MyApp extends StatelessWidget {
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: EasyDynamicTheme.of(context).themeMode,
-        // navigatorKey: navigatorKey,
         builder: EasyLoading.init(),
         title: 'Pharmacy',
         debugShowCheckedModeBanner: false,
