@@ -12,6 +12,8 @@ import '../../reusable/components.dart';
 import 'chating_page.dart';
 import '../send_orders/make_order_page.dart';
 import 'offers_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -121,7 +123,7 @@ class MainScreen extends StatelessWidget {
                 ),
               ],
             ),
-            appBar: myAppBar(text: "Tamer Deweek", context: context),
+            appBar: myAppBar(text: AppLocalizations.of(context)!.tamerdewwek, context: context),
             body: Center(
               child: state is InitialStateLoading
                   ? const CircularProgressIndicator()
@@ -254,12 +256,15 @@ class MainScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(12.0),
                               itemCount: brandsList.length,
                               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  crossAxisSpacing: 3,
-                                  mainAxisSpacing: 5),
+                                  crossAxisCount: 3 ,
+                                  crossAxisSpacing: 2,
+                                  mainAxisSpacing: 2),
                               itemBuilder: (BuildContext context, int index) =>
-                                  photoWithError(
-                                      imageLink: brandsList[index]['image']),
+                                  ClipRRect(
+                                      borderRadius: BorderRadius.circular(7),
+                                    child: photoWithError(
+                                        imageLink: brandsList[index]['image']),
+                                  ),
                             ),
                             ),
                           ),
