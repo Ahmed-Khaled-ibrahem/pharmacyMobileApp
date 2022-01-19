@@ -36,7 +36,8 @@ class AppCubit extends Cubit<AppStates> {
   static late AppUser userData; // userId
 
 
-  String languageState = 'en';  // all states is 'en' - 'ar' - 'sy'
+  String languageState = 'English';   // all states is 'English' - 'Arabic' - 'System'
+  String themeState = 'Light';   // all states is 'Light' - 'Dark' - 'System'
   bool isEnglish = true; // english -> true   , arabic -> false
   bool isLight = true; // light -> true  ,  dark -> false
 
@@ -73,8 +74,11 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void appStart(String? uPhone) async {
+  void appStart(String? uPhone,String lang, String theme) async {
     emit(InitialStateLoading());
+
+    themeState = theme;
+    languageState = lang;
     // read user data
     if (uPhone != null) {
       String name =

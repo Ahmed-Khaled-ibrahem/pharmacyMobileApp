@@ -65,138 +65,120 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Row(
-                          children: [
-                            AnimatedSwitcher(
-                              transitionBuilder: (child, animation) {
-                                final offsetAnimation = Tween(
-                                  begin: const Offset(1.0, 0.0),
-                                  end: const Offset(0.0, 0.0),
-                                ).animate(animation);
-                                return ClipRect(
-                                  child: SlideTransition(
-                                    position: offsetAnimation,
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              duration: const Duration(milliseconds: 400),
-                              child: InkWell(
-                                  key: ValueKey<bool>(cubit.isEnglish),
-                                  onTap: () {
+                        const SizedBox(height: 10,),
+                        DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: themeColor, //background color of dropdown button
+                              border: Border.all(color: Colors.black38, width:1), //border of dropdown button
+                              borderRadius: BorderRadius.circular(50), //border raiuds of dropdown button
+
+                            ),
+                            child:Padding(
+                                padding: const EdgeInsets.only(left:30, right:30),
+                                child: DropdownButton(
+                                  value: cubit.languageState,
+                                  items: const [ //add items in the dropdown
+                                    DropdownMenuItem(
+                                      child: Text("English"),
+                                      value: "English",
+                                    ),
+                                    DropdownMenuItem(
+                                        child: Text("Arabic"),
+                                        value: "Arabic"
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text("System"),
+                                      value: "System",
+                                    )
+                                  ],
+                                  onChanged: (value){
                                     setState(() {
-                                      cubit.isEnglish = !cubit.isEnglish;
-                                      PreferenceHelper.putDataInSharedPreference(key: 'language',value: 'en');
+                                      cubit.languageState = value.toString();
+                                      PreferenceHelper.putDataInSharedPreference(key: 'language',value: value.toString());
                                       EasyLoading.showInfo("Restart the App to make changes");
                                     });
+
                                   },
-                                  child: Row(
-                                    children: [
-                                      cubit.isEnglish
-                                          ? const Text(
-                                              "English",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  color: themeColor),
-                                            )
-                                          : const Text(
-                                              "Arabic",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  color: themeColor),
-                                            ),
-                                      const Icon(
-                                        Icons.swap_horiz_rounded,
-                                        size: 40,
-                                        color: Colors.orange,
-                                      ),
-                                      cubit.isEnglish
-                                          ? const Text(
-                                              "Arabic",
-                                              style: TextStyle(fontSize: 18),
-                                            )
-                                          : const Text(
-                                              "English",
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                    ],
-                                  )),
-                            ),
-                          ],
+                                  icon: const Padding( //Icon at tail, arrow bottom is default icon
+                                      padding: EdgeInsets.only(left:20),
+                                      child:Icon(Icons.language)
+                                  ),
+                                  iconEnabledColor: Colors.white, //Icon color
+                                  style: const TextStyle(  //te
+                                      color: Colors.white, //Font color
+                                      fontSize: 20 //font size on dropdown button
+                                  ),
+
+                                  dropdownColor: Colors.blueGrey, //dropdown background color
+                                  underline: Container(), //remove underline
+                                  isExpanded: true, //make true to make width 100%
+                                )
+                            )
                         ),
-                        const Divider(
-                          thickness: 2,
-                        ),
+
+                        const Divider(thickness: 2,),
                         const Text(
                           "Theme",
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        Row(
-                          children: [
-                            AnimatedSwitcher(
-                              transitionBuilder: (child, animation) {
-                                final offsetAnimation = Tween(
-                                  begin: const Offset(1.0, 0.0),
-                                  end: const Offset(0.0, 0.0),
-                                ).animate(animation);
-                                return ClipRect(
-                                  child: SlideTransition(
-                                    position: offsetAnimation,
-                                    child: child,
-                                  ),
-                                );
-                              },
-                              duration: const Duration(seconds: 1),
-                              child: InkWell(
-                                  key: ValueKey<bool>(cubit.isLight),
-                                  onTap: () {
+                        const SizedBox(height: 10,),
+                        DecoratedBox(
+                            decoration: BoxDecoration(
+                              color: themeColor, //background color of dropdown button
+                              border: Border.all(color: Colors.black38, width:1), //border of dropdown button
+                              borderRadius: BorderRadius.circular(50), //border raiuds of dropdown button
+
+                            ),
+                            child:Padding(
+                                padding: const EdgeInsets.only(left:30, right:30),
+                                child: DropdownButton(
+                                  value: cubit.themeState,
+                                  items: const [ //add items in the dropdown
+                                    DropdownMenuItem(
+                                      child: Text("Light"),
+                                      value: "Light",
+                                    ),
+                                    DropdownMenuItem(
+
+                                        child: Text("Dark"),
+                                        value: "Dark"
+                                    ),
+                                    DropdownMenuItem(
+                                      child: Text("System"),
+                                      value: "System",
+                                    )
+                                  ],
+                                  onChanged: (value){
                                     setState(() {
-                                      EasyDynamicTheme.of(context)
-                                          .changeTheme();
-                                      if (EasyDynamicTheme.of(context)
-                                              .themeMode
-                                              .toString() ==
-                                          "ThemeMode.system") {
-                                        EasyDynamicTheme.of(context)
-                                            .changeTheme();
+                                      cubit.themeState = value.toString();
+                                      PreferenceHelper.putDataInSharedPreference(key: 'ThemeState',value: value.toString());
+                                      if( value.toString() == 'Light'){
+                                        EasyDynamicTheme.of(context).changeTheme(dark: false);
+                                      }
+                                      else if(value.toString() == 'Dark'){
+                                        EasyDynamicTheme.of(context).changeTheme(dark: true);
+                                      }
+                                      else{
+                                        EasyDynamicTheme.of(context).changeTheme(dynamic: true);
                                       }
                                     });
-                                    cubit.isLight = !cubit.isLight;
+
                                   },
-                                  child: Row(
-                                    children: [
-                                      cubit.isLight
-                                          ? const Text(
-                                              "Light",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  color: themeColor),
-                                            )
-                                          : const Text(
-                                              "Dark",
-                                              style: TextStyle(
-                                                  fontSize: 30,
-                                                  color: themeColor),
-                                            ),
-                                      const Icon(
-                                        Icons.swap_horiz_rounded,
-                                        size: 40,
-                                        color: Colors.orange,
-                                      ),
-                                      cubit.isLight
-                                          ? const Text(
-                                              "Dark",
-                                              style: TextStyle(fontSize: 18),
-                                            )
-                                          : const Text(
-                                              "Light",
-                                              style: TextStyle(fontSize: 18),
-                                            ),
-                                    ],
-                                  )),
-                            ),
-                          ],
+                                  icon: const Padding(
+                                      padding: EdgeInsets.only(left:20),
+                                      child:Icon(Icons.color_lens_rounded)
+                                  ),
+                                  iconEnabledColor: Colors.white,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20
+                                  ),
+                                  dropdownColor: Colors.blueGrey,
+                                  underline: Container(),
+                                  isExpanded: true,
+                                )
+                            )
                         ),
                         const Divider(
                           thickness: 2,

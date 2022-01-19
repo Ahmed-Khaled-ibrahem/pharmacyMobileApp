@@ -46,14 +46,17 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final lang =  PreferenceHelper.getDataFromSharedPreference(key:'language')??"English";
+    final theme =  PreferenceHelper.getDataFromSharedPreference(key:'ThemeState')??'Light';
+
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (BuildContext context) => AppCubit()..appStart(phone)),
+            create: (BuildContext context) => AppCubit()..appStart(phone, lang, theme)),
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
-        locale: PreferenceHelper.getDataFromSharedPreference(key:'language')=='en'? const Locale('en'):const Locale('ar'),
+        locale: lang =='English'? const Locale('en') : lang =='Arabic'? const Locale('ar') : null,
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
