@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,8 @@ class AppCubit extends Cubit<AppStates> {
   late Database _dataBase; // SQL-LITE database object
   final FirebaseFirestore _fireStore =
       FirebaseFirestore.instance; // fire-store database object
+  final DatabaseReference _fireBase =
+      FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
   bool isEnglish = true; // english -> true   , arabic -> false
@@ -43,17 +46,17 @@ class AppCubit extends Cubit<AppStates> {
 
   /// cart an order functions
   Future<void> addOrderImage(XFile file) async {
-    String image = await uploadPhoto(File(file.path), "prec");
+    String image = await uploadFile(File(file.path), "prec");
     print(image);
     orderImages.add(image);
     emit(AddCartItemState());
-    saveCartLocal();
+    _saveCartLocal();
   }
 
   void removeOrderImage(int index) {
     orderImages.removeAt(index);
     emit(AddCartItemState());
-    saveCartLocal();
+    _saveCartLocal();
     FirebaseStorage.instance
         .refFromURL(orderImages[index])
         .delete()
@@ -67,14 +70,14 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       cartItems.add(OrderItem(drug, 1));
       emit(AddCartItemState());
-      saveCartLocal();
+      _saveCartLocal();
     }
   }
 
   void removeFromCart(int index) {
     cartItems.removeAt(index);
     emit(AddCartItemState());
-    saveCartLocal();
+    _saveCartLocal();
   }
 
   void changeCartQuantity(
@@ -90,25 +93,23 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       cartItems[index].quantity = newValue;
     }
-    saveCartLocal();
+    _saveCartLocal();
     emit(ChangeCartItemState());
   }
 
-  void saveCartLocal() {
+  void _saveCartLocal() {
     List<Map<String, dynamic>> orderDrugs = cartItems
         .map((e) => {"id": e.drug.id, "quantity": e.quantity})
         .toList();
-
     Map<String, dynamic> cartData = {
       "OrderDrugs": orderDrugs,
       "OrderImages": orderImages,
     };
-
     PreferenceHelper.putDataInSharedPreference(
         key: "cartData", value: cartData);
   }
 
-  Future<void> readCartLocal(Map<String, dynamic> cartData) async {
+  Future<void> _readCartLocal(Map<String, dynamic> cartData) async {
     emit(CartItemsLoading());
     List<dynamic> tempImages = cartData['OrderImages'];
     orderImages = tempImages.map((e) => e.toString()).toList();
@@ -140,7 +141,7 @@ class AppCubit extends Cubit<AppStates> {
       EasyLoading.showToast("No items in cart");
     } else {
       EasyLoading.show(status: "sending order..");
-      if (await isConnected()) {
+      if (await _isConnected()) {
         List<Map<String, dynamic>> orderDrugs = cartItems
             .map((e) => {"id": e.drug.id, "quantity": e.quantity})
             .toList();
@@ -165,12 +166,17 @@ class AppCubit extends Cubit<AppStates> {
             .collection(userData.phone)
             .add(orderData)
             .then((value) async {
-          _fireStore
-              .collection("users")
-              .doc(userData.phone)
-              .collection("orders")
-              .doc(value.id)
-              .set({"state": "waiting"});
+          _fireBase
+              .child(userData.phone)
+              .child("orders")
+              .update({value.id: "await"});
+
+          DioHelper dioHelper = DioHelper();
+          print(await dioHelper.postData(
+              sendData: {"type": "newOrder", "orderId": value.id},
+              title: "New order",
+              body: "Order received from ${userData.phone}",
+              receiverUId: "admin"));
 
           _dataBase.insert("orders", {
             "id": value.id,
@@ -180,15 +186,11 @@ class AppCubit extends Cubit<AppStates> {
             "time": orderData['time'],
             "details": json.encode(orderData),
           });
+
           cartItems = [];
           orderImages = [];
           activeOrder = true;
-          DioHelper dioHelper = DioHelper();
-          print(await dioHelper.postData(
-              sendData: {"type": "newOrder", "orderId": value.id},
-              title: "New order",
-              body: "Order received from ${userData.phone}",
-              receiverUId: "admin"));
+
           emit(SendOrderState());
           EasyLoading.dismiss();
           navigateTo(context, const MainScreen(), false);
@@ -201,7 +203,6 @@ class AppCubit extends Cubit<AppStates> {
       }
     }
   }
-
   ///-----------------------------------------------------------------------///
 
   /// deal with data base
@@ -221,8 +222,7 @@ class AppCubit extends Cubit<AppStates> {
     // await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
-    if (!exists) {
-      // database read before
+    if (!exists) {  // database read before
       ByteData data = await rootBundle.load("assets/drugs_data/testSql.db");
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
@@ -233,9 +233,8 @@ class AppCubit extends Cubit<AppStates> {
     String? data =
         PreferenceHelper.getDataFromSharedPreference(key: "cartData");
     if (data != null) {
-      readCartLocal(json.decode(data));
+      _readCartLocal(json.decode(data));
     }
-
     emit(InitialStateDone());
   }
 
@@ -260,7 +259,6 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
     List<Map<String, dynamic>> queryData;
-
     if (subName != null) {
       queryData =
           await _dataBase.query("data", where: "name LIKE  \"%$subName%\"");
@@ -271,13 +269,12 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   /// helper for make order
-  Future<String> uploadPhoto(File file, String place) async {
+  Future<String> uploadFile(File file, String place) async {
     // to show the photo professional use Future builder this
     // https://stackoverflow.com/questions/51983011/when-should-i-use-a-futurebuilder
-
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
-        storage.ref().child(place).child("image1" + DateTime.now().toString());
+        storage.ref().child(place).child("file" + DateTime.now().toString());
     UploadTask uploadTask = ref.putFile(file);
 
     uploadTask.snapshotEvents.listen((event) async {
@@ -296,19 +293,15 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Future<String?> determinePosition() async {
-    bool serviceEnabled;
-    LocationPermission permission;
-
     EasyLoading.show(status: 'getting location..');
 
-    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       EasyLoading.showError('Location services are disabled.');
       return null;
     }
 
-    permission = await Geolocator.checkPermission();
-
+     LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -323,7 +316,6 @@ class AppCubit extends Cubit<AppStates> {
     }
 
     Position pos = await Geolocator.getCurrentPosition();
-
     List<Placemark> placeMarks =
         await placemarkFromCoordinates(pos.latitude, pos.longitude)
             .catchError((err) {
@@ -331,10 +323,6 @@ class AppCubit extends Cubit<AppStates> {
       EasyLoading.dismiss();
     });
     Placemark place = placeMarks[0];
-
-    print(pos.longitude);
-    print(pos.latitude);
-
     String fullLocation = place.subThoroughfare ?? '';
     fullLocation += ' ';
     fullLocation += place.thoroughfare ?? '';
@@ -347,8 +335,20 @@ class AppCubit extends Cubit<AppStates> {
     fullLocation += ' ';
     fullLocation += place.country ?? '';
 
+    // print(pos.longitude);
+    // print(pos.latitude);
+
     EasyLoading.dismiss();
     return fullLocation;
+  }
+
+  Future<bool> _isConnected() async {
+    var connectivityResult = await (Connectivity().checkConnectivity());
+    if (connectivityResult == ConnectivityResult.none) {
+      return false;
+    } else {
+      return true;
+    }
   }
 
   /// logOut
@@ -379,15 +379,6 @@ class AppCubit extends Cubit<AppStates> {
         }
       }
     });
-  }
-
-  Future<bool> isConnected() async {
-    var connectivityResult = await (Connectivity().checkConnectivity());
-    if (connectivityResult == ConnectivityResult.none) {
-      return false;
-    } else {
-      return true;
-    }
   }
 
   void emitGeneralState() {

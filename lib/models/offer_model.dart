@@ -1,9 +1,11 @@
+import 'package:pharmacyapp/models/drug_model.dart';
+
 class OfferItem {
-  int drugId;
+  Drug drug;
   bool percentage = true;
   int offer;
 
-  OfferItem(this.drugId, this.offer, {bool isPercentage = true}) {
+  OfferItem(this.drug, this.offer, {bool isPercentage = true}) {
     percentage = isPercentage;
   }
 }
