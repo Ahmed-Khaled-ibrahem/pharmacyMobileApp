@@ -81,8 +81,6 @@ class AppCubit extends Cubit<AppStates> {
       userData = AppUser(uPhone, name_['first']!, name_['second']!);
       mainStart();
     }
-
-    emit(InitialStateDone());
   }
 
   /// cart an order functions
@@ -251,7 +249,6 @@ class AppCubit extends Cubit<AppStates> {
   /// deal with data base
   Future<void> _loadDataBase() async {
     String databasePath = await getDatabasesPath();
-    print(userData.phone);
     String path = "$databasePath/${userData.phone}-drugs.db";
 
     // await deleteDatabase(path);
@@ -271,6 +268,7 @@ class AppCubit extends Cubit<AppStates> {
     if (data != null) {
       _readCartLocal(json.decode(data));
     }
+    emit(InitialStateDone());
   }
 
   void reverseFavorites(Drug drug) {
@@ -298,21 +296,26 @@ class AppCubit extends Cubit<AppStates> {
       print(stateMap);
       queryData = await _dataBase.query("orders");
       if (queryData.isEmpty) {
-        stateMap.forEach((key, value) async {
+        for (int i = 0; i < stateMap.length; i++) {
+          String key = stateMap.keys.toList()[i];
+          String value = stateMap.values.toList()[i];
+          print("loop");
+          print(key);
+          print(value);
           DocumentSnapshot<Map<String, dynamic>> orderData;
           if (value == "wait") {
             orderData = await _fireStore
                 .collection("active orders")
                 .doc("current")
                 .collection(userData.phone)
-                .doc(key)
+                .doc(key.trim())
                 .get();
           } else {
             orderData = await _fireStore
                 .collection("active orders")
                 .doc("archive")
                 .collection(userData.phone)
-                .doc(key)
+                .doc(key.trim())
                 .get();
           }
           if (orderData.exists) {
@@ -322,6 +325,7 @@ class AppCubit extends Cubit<AppStates> {
                 orderData: orderData.data()!,
                 isActive: value == "wait",
                 fromFire: true));
+            print("after adding");
             _dataBase.insert("orders", {
               "id": key,
               "price": orderData['Items Price'],
@@ -330,8 +334,9 @@ class AppCubit extends Cubit<AppStates> {
               "time": orderData['time'],
               "details": json.encode(orderData.data()),
             });
+            print("after adding 2 ");
           }
-        });
+        }
         return returnedData;
       } else {
         print(queryData);

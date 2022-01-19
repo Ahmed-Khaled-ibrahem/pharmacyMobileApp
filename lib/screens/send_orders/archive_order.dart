@@ -5,6 +5,8 @@ import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/order_model.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/send_orders/archive_details.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../reusable/components.dart';
 
@@ -65,15 +67,11 @@ class ArchiveOrders extends StatelessWidget {
                                         : null,
                                     isThreeLine: true,
                                     onTap: () {
-                                      print(snapshot.data![index].orderItems);
-                                      print(snapshot
-                                          .data![index]
-                                          .orderItems['orderImages']
-                                          .runtimeType);
-                                      print(snapshot
-                                          .data![index]
-                                          .orderItems['OrderDrugs']
-                                          .runtimeType);
+                                      navigateTo(
+                                          context,
+                                          ArchiveOrderDetails(
+                                              snapshot.data![index]),
+                                          true);
                                     },
                                     leading: CircleAvatar(
                                         foregroundColor: Colors.white,
