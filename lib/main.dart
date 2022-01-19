@@ -11,6 +11,8 @@ import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'shared/pref_helper.dart';
 import 'cubit/operation_cubit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 // GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -52,6 +54,13 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
+        localizationsDelegates: const [
+          AppLocalizations.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: const [Locale('en', ''), Locale('ar', ''),],
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: EasyDynamicTheme.of(context).themeMode,
