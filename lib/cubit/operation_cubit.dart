@@ -107,15 +107,14 @@ class AppCubit extends Cubit<AppStates> {
         key: "cartData", value: cartData);
   }
 
-  Future<void> readCartLocal(String data) async {
+  Future<void> readCartLocal(Map<String, dynamic> cartData) async {
     emit(CartItemsLoading());
-    Map<String, dynamic> cartData =
-        PreferenceHelper.getDataFromSharedPreference(key: "cartData");
-    orderImages = cartData['OrderImages'];
-    List<Map<String, dynamic>> orderDrugs = cartData['OrderImages'];
-    for (Map<String, dynamic> orderItem in orderDrugs) {
+    List<dynamic> tempImages = cartData['OrderImages'];
+    orderImages = tempImages.map((e) => e.toString()).toList();
+    List<dynamic> orderDrugs = cartData['OrderDrugs'];
+    for (dynamic orderItem in orderDrugs) {
       Drug drug = (await (findInDataBase(id: orderItem['id'])))[0];
-      OrderItem(drug, orderItem['quantity']);
+      cartItems.add(OrderItem(drug, orderItem['quantity']));
     }
     emit(CartItemsDone());
   }
@@ -228,6 +227,13 @@ class AppCubit extends Cubit<AppStates> {
       await File(path).writeAsBytes(bytes);
     }
     _dataBase = await openDatabase(path);
+
+    String? data =
+        PreferenceHelper.getDataFromSharedPreference(key: "cartData");
+    if (data != null) {
+      readCartLocal(json.decode(data));
+    }
+
     emit(InitialStateDone());
   }
 

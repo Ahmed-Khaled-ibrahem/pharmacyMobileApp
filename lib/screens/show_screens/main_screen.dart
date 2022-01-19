@@ -40,13 +40,18 @@ class MainScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(60)),
                     child: Stack(
                       children: [
-                        const Center(
-                            child: Icon(
-                          Icons.shopping_cart,
-                          size: 30,
-                          color: Colors.white,
-                        )),
-                        cubit.cartItems.isNotEmpty
+                        Center(
+                            child: state is CartItemsLoading
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : const Icon(
+                                    Icons.shopping_cart,
+                                    size: 30,
+                                    color: Colors.white,
+                                  )),
+                        cubit.cartItems.isNotEmpty ||
+                                cubit.orderImages.isNotEmpty
                             ? Container(
                                 width: 20,
                                 height: 20,
@@ -55,7 +60,9 @@ class MainScreen extends StatelessWidget {
                                     borderRadius: BorderRadius.circular(20)),
                                 child: Center(
                                     child: Text(
-                                  cubit.cartItems.length.toString(),
+                                  (cubit.cartItems.length +
+                                          cubit.orderImages.length)
+                                      .toString(),
                                   style: const TextStyle(
                                       fontSize: 10,
                                       fontWeight: FontWeight.bold),
