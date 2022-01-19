@@ -22,6 +22,12 @@ class MainScreen extends StatelessWidget {
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
 
+        List<Map> offersList = [
+          {"id":200,"name":"Head and Shoulders Shampoo 400 ml","priceorperc":true,"value":30,"image":"https://m.media-amazon.com/images/I/71+Zza6xeNL._SY355_.jpg",},
+          {"id":201,"name":"Sun block Cream 250 ml","priceorperc":true,"value":15,"image":"https://api.watsons.com.ph/medias/Sun-Light-Gel-SPF50-50ml-50020619.jpg?context=bWFzdGVyfHd0Y3BoL2ltYWdlc3w1OTg3OXxpbWFnZS9qcGVnfGhjNS9oZDgvOTA5ODQ2MDEwMjY4Ni9TdW4gTGlnaHQgR2VsIFNQRjUwIDUwbWwtNTAwMjA2MTkuanBnfGQxZGRlNmJkZGFmNDI4OWZhN2QxY2U3ZWQ4MzU1YjgxNDVmNTQxNmIxZWIwYzUwOTYyMTcwN2QyOGYzYjlkYjA",},
+          {"id":202,"name":"Axe Body Spray 150 ml","priceorperc":false,"value":60,"image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTheyuwVZM2IZWg8MztfoDyg-mEnrWsrMDj_SyPVSvbTXQpM07XT9XNE7gjglhyopano&usqp=CAU",},
+        ];
+
         return WillPopScope(
           onWillPop: () => onWillPop(context),
           child: Scaffold(
@@ -143,11 +149,11 @@ class MainScreen extends StatelessWidget {
                             options: CarouselOptions(
                                 height: 200.0,
                                 autoPlay: true,
-                                enableInfiniteScroll: false),
-                            items: [1, 2, 3, 4, 5].map((i) {
+                                enableInfiniteScroll: true),
+                            items: [0, 1, 2].map((i) {
                               return Builder(
                                 builder: (BuildContext context) {
-                                  return offerCard();
+                                  return offerCard(offersList[i]);
                                 },
                               );
                             }).toList(),
@@ -308,7 +314,7 @@ class MainScreen extends StatelessWidget {
         false;
   }
 
-  Widget offerCard() {
+  Widget offerCard(Map items) {
     return Card(
       elevation: 15,
       shadowColor: Colors.black,
@@ -329,8 +335,7 @@ class MainScreen extends StatelessWidget {
                   children: [
                     SizedBox(
                         width: 200,
-                        child: Image.network(
-                            "https://m.media-amazon.com/images/I/71+Zza6xeNL._SY355_.jpg")),
+                        child: Image.network(items['image'])),
                     Positioned(
                       top: -20,
                       child: SizedBox(
@@ -352,14 +357,14 @@ class MainScreen extends StatelessWidget {
                       color: Colors.white,
                       fontWeight: FontWeight.w500),
                 )),
-            const Positioned(
-              left: 20,
+            Positioned(
+              left: 10,
               top: 50,
               child: SizedBox(
-                width: 110,
+                width: 100,
                 child: Text(
-                  "Head and Shoulders Shampoo 400 ml",
-                  style: TextStyle(
+                  items['name'],
+                  style: const TextStyle(
                       color: Colors.orangeAccent,
                       fontSize: 18,
                       fontWeight: FontWeight.w500),
@@ -383,11 +388,11 @@ class MainScreen extends StatelessWidget {
               right: -12,
               bottom: -12,
               child: Container(
-                child: const Center(
+                child:  Center(
                   child: Text(
-                    "30%",
-                    style: TextStyle(
-                        fontSize: 30,
+                    items['priceorperc']?"${items['value']}%":"${items['value']} LE",
+                    style:  TextStyle(
+                        fontSize: items['priceorperc']?30:20,
                         color: Colors.white,
                         fontWeight: FontWeight.w900),
                   ),
