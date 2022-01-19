@@ -27,6 +27,30 @@ class MainScreen extends StatelessWidget {
           {"id":201,"name":"Sun block Cream 250 ml","priceorperc":true,"value":15,"image":"https://api.watsons.com.ph/medias/Sun-Light-Gel-SPF50-50ml-50020619.jpg?context=bWFzdGVyfHd0Y3BoL2ltYWdlc3w1OTg3OXxpbWFnZS9qcGVnfGhjNS9oZDgvOTA5ODQ2MDEwMjY4Ni9TdW4gTGlnaHQgR2VsIFNQRjUwIDUwbWwtNTAwMjA2MTkuanBnfGQxZGRlNmJkZGFmNDI4OWZhN2QxY2U3ZWQ4MzU1YjgxNDVmNTQxNmIxZWIwYzUwOTYyMTcwN2QyOGYzYjlkYjA",},
           {"id":202,"name":"Axe Body Spray 150 ml","priceorperc":false,"value":60,"image":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTheyuwVZM2IZWg8MztfoDyg-mEnrWsrMDj_SyPVSvbTXQpM07XT9XNE7gjglhyopano&usqp=CAU",},
         ];
+        List<Map> brandsList = [
+          {'name':'gillette','image':'https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg'},
+          {'name':'panadol','image':'https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg'},
+          {'name':'pampers','image':'https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png'},
+          {'name':'oral-b','image':'https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg'},
+          {'name':'closeup','image':'https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png'},
+          {'name':'dove','image':'https://i.pinimg.com/736x/ff/c6/d3/ffc6d3054e864678e01b6823d3e26503.jpg'},
+          {'name':'vatika','image':'https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'dettol','image':'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+          {'name':'head and shoulders','image':'https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg'},
+
+        ];
 
         return WillPopScope(
           onWillPop: () => onWillPop(context),
@@ -236,51 +260,20 @@ class MainScreen extends StatelessWidget {
                             child: Container(
                               decoration:
                                   const BoxDecoration(color: Colors.black12),
-                              child: GridView.count(
-                                physics: defaultScrollPhysics,
-                                primary: false,
-                                padding: const EdgeInsets.all(10),
-                                crossAxisSpacing: 5,
-                                mainAxisSpacing: 5,
-                                crossAxisCount: 3,
-                                children: [
+                              child: GridView.builder(
+                              scrollDirection: Axis.vertical,
+                              physics: defaultScrollPhysics,
+                              shrinkWrap: true,
+                              padding: const EdgeInsets.all(12.0),
+                              itemCount: brandsList.length,
+                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 3,
+                                  crossAxisSpacing: 3,
+                                  mainAxisSpacing: 5),
+                              itemBuilder: (BuildContext context, int index) =>
                                   photoWithError(
-                                      imageLink:
-                                          "https://www.scrolldroll.com/wp-content/uploads/2020/03/gillette-logo.jpg"),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://mir-s3-cdn-cf.behance.net/projects/404/70822d53075295.Y3JvcCw5MjMsNzIyLDAsMjE0.jpg",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://seeklogo.com/images/P/pampers-logo-D613293CC6-seeklogo.com.png",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://pbs.twimg.com/profile_images/1312124968411504640/cClEe45Z_400x400.jpg",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://www.redafrica.xyz/wp-content/uploads/2020/01/CloseUP-Logo.png",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://i.pinimg.com/736x/ff/c6/d3/ffc6d3054e864678e01b6823d3e26503.jpg",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://pbs.twimg.com/profile_images/1566237760/logo-vatika_400x400.jpg",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://www.sampleroom.ph/image/catalog/brand-partners/HandS_logo.jpg",
-                                  ),
-                                  photoWithError(
-                                    imageLink:
-                                        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9T6ApEOkNdZSMZwqlo7Tb6B2XXGOKF7NPEAW-o8P4EwM-j-fLrNnjvnnU-xQRjzsEFPY&usqp=CAU",
-                                  ),
-                                ],
-                              ),
+                                      imageLink: brandsList[index]['image']),
+                            ),
                             ),
                           ),
                         )
