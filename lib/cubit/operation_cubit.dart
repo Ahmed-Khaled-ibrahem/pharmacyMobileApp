@@ -35,9 +35,9 @@ class AppCubit extends Cubit<AppStates> {
       FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
-
-  String languageState = 'English';   // all states is 'English' - 'Arabic' - 'System'
-  String themeState = 'Light';   // all states is 'Light' - 'Dark' - 'System'
+  String languageState =
+      'English'; // all states is 'English' - 'Arabic' - 'System'
+  String themeState = 'Light'; // all states is 'Light' - 'Dark' - 'System'
   bool isEnglish = true; // english -> true   , arabic -> false
   bool isLight = true; // light -> true  ,  dark -> false
 
@@ -50,6 +50,8 @@ class AppCubit extends Cubit<AppStates> {
 
   // start function
   void mainStart() {
+    emit(InitialStateLoading());
+
     _loadDataBase();
 
     _fireBase.child(userData.phone).get().then((snapshot) {
@@ -74,9 +76,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  void appStart(String? uPhone,String lang, String theme) async {
-    emit(InitialStateLoading());
-
+  void appStart(String? uPhone, String lang, String theme) async {
     themeState = theme;
     languageState = lang;
     // read user data
@@ -275,13 +275,13 @@ class AppCubit extends Cubit<AppStates> {
         PreferenceHelper.getDataFromSharedPreference(key: "cartData");
     if (data != null) {
       emit(CartItemsLoading());
-
       readCartLocal(json.decode(data)).then((value) {
         cartItems = value['OrderDrugs'];
         orderImages = value['OrderImages'];
         emit(CartItemsDone());
       });
     }
+
     emit(InitialStateDone());
   }
 

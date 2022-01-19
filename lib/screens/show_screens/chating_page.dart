@@ -1,7 +1,5 @@
-import 'package:flutter/cupertino.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
-import 'package:pharmacyapp/contsants/themes.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
@@ -202,9 +200,9 @@ class _ChattingScreenState extends State<ChattingScreen> {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
-         AppCubit cubit = AppCubit.get(context);
+        AppCubit cubit = AppCubit.get(context);
         return Scaffold(
-          backgroundColor: cubit.isLight?null:ThemeData.dark().canvasColor,
+          backgroundColor: cubit.isLight ? null : ThemeData.dark().canvasColor,
           appBar: myAppBar(text: "Direct Chatting", context: context),
           body: Chat(
             emptyState: Center(
@@ -212,7 +210,10 @@ class _ChattingScreenState extends State<ChattingScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: const [
-                  Icon(Icons.chat,size: 60,),
+                  Icon(
+                    Icons.chat,
+                    size: 60,
+                  ),
                   Text("No Chat messages yet"),
                 ],
               ),
@@ -220,19 +221,18 @@ class _ChattingScreenState extends State<ChattingScreen> {
             onAvatarTap: (img) {
               navigateTo(context, ViewPhoto(img.imageUrl.toString()), true);
             },
-            theme: cubit.isLight?
-            const DefaultChatTheme(
-              primaryColor: themeColor,
-              inputBackgroundColor: themeColor,
-            ):
-            DarkChatTheme(
-                primaryColor: themeColor,
-                inputBackgroundColor: themeColor,
-                backgroundColor: ThemeData.dark().canvasColor,
-              secondaryColor: Colors.white10,
-              inputPadding: const EdgeInsets.all(20),
-              inputMargin: const EdgeInsets.all(0)
-            ),
+            theme: cubit.isLight
+                ? const DefaultChatTheme(
+                    primaryColor: themeColor,
+                    inputBackgroundColor: themeColor,
+                  )
+                : DarkChatTheme(
+                    primaryColor: themeColor,
+                    inputBackgroundColor: themeColor,
+                    backgroundColor: ThemeData.dark().canvasColor,
+                    secondaryColor: Colors.white10,
+                    inputPadding: const EdgeInsets.all(20),
+                    inputMargin: const EdgeInsets.all(0)),
             showUserAvatars: true,
             showUserNames: true,
             messages: _messages,
