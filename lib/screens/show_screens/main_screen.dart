@@ -14,6 +14,7 @@ import '../send_orders/make_order_page.dart';
 import 'offers_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 class MainScreen extends StatelessWidget {
   MainScreen(BuildContext? context, {Key? key}) : super(key: key) {
     if (context != null) {
