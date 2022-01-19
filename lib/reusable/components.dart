@@ -3,6 +3,8 @@ import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/settings.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 Widget defaultTextField({
   required TextEditingController controller,
@@ -36,24 +38,25 @@ Widget defaultTextField({
 Widget optionsWidget(BuildContext context) {
   AppCubit cubit = AppCubit.get(context);
 
+  String setText = AppLocalizations.of(context)!.settings;
+  String logoutText = AppLocalizations.of(context)!.logout;
+
   return PopupMenuButton<String>(
     onSelected: (index) {
-      switch (index) {
-        case 'Settings':
-          navigateTo(context, const SettingsScreen(), true);
-          break;
-        case 'logout':
-          cubit.logout(context);
-          break;
+      if(index == setText ){
+        navigateTo(context, const SettingsScreen(), true);
+      }
+      else if(index ==logoutText ){
+        cubit.logout(context);
       }
     },
     itemBuilder: (BuildContext context) {
-      return {'Settings', 'logout'}.map((String choice) {
+      return {setText, logoutText}.map((String choice) {
         return PopupMenuItem<String>(
           value: choice,
           child: Row(
             children: [
-              choice == "Settings"
+              choice == setText
                   ? const Icon(
                       Icons.settings,
                       color: Colors.black,

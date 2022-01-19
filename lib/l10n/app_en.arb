@@ -1,4 +1,13 @@
 {
     "tamerdewwek": "Tamer Deweek",
-    "search": "Search"
+    "search": "Search",
+    "settings": "Settings",
+    "logout": "Logout",
+    "brand": "Brand",
+    "todayoffer": "Today's Offer",
+    "addtocart": "Add to Cart",
+    "are_you_sure": "Are you sure?",
+    "do_you_want_to_exit": "Do you want to Exit",
+    "yes": "Yes",
+    "no": "No"
 }

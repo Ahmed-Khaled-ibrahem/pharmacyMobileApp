@@ -1,4 +1,13 @@
 {
   "tamerdewwek": "تامر دويك",
-  "search": "بحث"
+  "search": "بحث",
+  "settings": "الإعدادات",
+  "logout": "تسجيل خروج",
+  "brand": "الماركات",
+  "todayoffer": "عرض اليوم",
+  "addtocart": "اضف الي العربه",
+  "are_you_sure": "هل أنت متأكد ؟",
+  "do_you_want_to_exit": "انك تريد اغلاق التطبيق",
+  "yes": "نعم",
+  "no": "لا"
 }

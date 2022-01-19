@@ -142,14 +142,14 @@ class MainScreen extends StatelessWidget {
                           child: SizedBox(
                             width: 300,
                             child: Row(
-                              children: const [
-                                Icon(Icons.search),
-                                SizedBox(
+                              children:  [
+                                const Icon(Icons.search),
+                                const SizedBox(
                                   width: 5,
                                 ),
-                                Text("Search"),
-                                Spacer(),
-                                Icon(Icons.local_pharmacy_rounded),
+                                Text(AppLocalizations.of(context)!.search),
+                                const Spacer(),
+                                const Icon(Icons.local_pharmacy_rounded),
                               ],
                             ),
                           ),
@@ -166,7 +166,7 @@ class MainScreen extends StatelessWidget {
                             items: [0, 1, 2].map((i) {
                               return Builder(
                                 builder: (BuildContext context) {
-                                  return offerCard(offersList[i]);
+                                  return offerCard(offersList[i],context);
                                 },
                               );
                             }).toList(),
@@ -228,11 +228,11 @@ class MainScreen extends StatelessWidget {
                                 borderRadius: BorderRadius.circular(5),
                                 color: themeColor,
                               ),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
+                              child:  Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text(
-                                  "Brands",
-                                  style: TextStyle(
+                                  AppLocalizations.of(context)!.brand,
+                                  style: const TextStyle(
                                     fontSize: 20,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w200,
@@ -282,16 +282,16 @@ class MainScreen extends StatelessWidget {
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: const Text('Are you sure?'),
-            content: const Text('Do you want to Exit'),
+            title:  Text(AppLocalizations.of(context)!.are_you_sure),
+            content:  Text(AppLocalizations.of(context)!.do_you_want_to_exit),
             actions: <Widget>[
               TextButton(
                 onPressed: () => Navigator.of(context).pop(false),
-                child: const Text('No'),
+                child:  Text(AppLocalizations.of(context)!.no),
               ),
               TextButton(
                 onPressed: () => Navigator.of(context).pop(true),
-                child: const Text('Yes'),
+                child:  Text(AppLocalizations.of(context)!.yes),
               ),
             ],
           ),
@@ -299,7 +299,7 @@ class MainScreen extends StatelessWidget {
         false;
   }
 
-  Widget offerCard(Map items) {
+  Widget offerCard(Map items,context) {
     return Card(
       elevation: 15,
       shadowColor: Colors.black,
@@ -332,12 +332,12 @@ class MainScreen extends StatelessWidget {
                 ),
               ),
             ),
-            const Positioned(
+             Positioned(
                 top: 10,
                 left: 10,
                 child: Text(
-                  "Today's Offer",
-                  style: TextStyle(
+                  AppLocalizations.of(context)!.todayoffer,
+                  style: const TextStyle(
                       fontSize: 20,
                       color: Colors.white,
                       fontWeight: FontWeight.w500),
@@ -361,9 +361,9 @@ class MainScreen extends StatelessWidget {
                 bottom: 4,
                 child: TextButton(
                   onPressed: () => print("add to cart"),
-                  child: const Text(
-                    "Add to cart",
-                    style: TextStyle(
+                  child:  Text(
+                    AppLocalizations.of(context)!.addtocart,
+                    style: const TextStyle(
                         fontSize: 20,
                         color: Colors.white,
                         fontWeight: FontWeight.w500),
