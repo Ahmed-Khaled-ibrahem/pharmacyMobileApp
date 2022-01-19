@@ -87,14 +87,11 @@ class AppCubit extends Cubit<AppStates> {
       userData = AppUser(uPhone, name_['first']!, name_['second']!);
       mainStart();
     }
-
-    emit(InitialStateDone());
   }
 
   /// cart an order functions
   Future<void> addOrderImage(XFile file) async {
     String image = await uploadFile(File(file.path), "prec");
-    print(image);
     orderImages.add(image);
     emit(AddCartItemState());
     _saveCartLocal();
@@ -156,16 +153,20 @@ class AppCubit extends Cubit<AppStates> {
         key: "cartData", value: cartData);
   }
 
-  Future<void> _readCartLocal(Map<String, dynamic> cartData) async {
-    emit(CartItemsLoading());
-    List<dynamic> tempImages = cartData['OrderImages'];
-    orderImages = tempImages.map((e) => e.toString()).toList();
+  Future<Map<String, dynamic>> readCartLocal(
+      Map<String, dynamic> cartData) async {
+    List<dynamic> tempImages = cartData['orderImages'] ?? [];
+    tempImages = tempImages.map((e) => e.toString()).toList();
     List<dynamic> orderDrugs = cartData['OrderDrugs'];
+    List<OrderItem> tempItems = [];
     for (dynamic orderItem in orderDrugs) {
       Drug drug = (await (findInDataBase(id: orderItem['id'])))[0];
-      cartItems.add(OrderItem(drug, orderItem['quantity']));
+      tempItems.add(OrderItem(drug, orderItem['quantity']));
     }
-    emit(CartItemsDone());
+    return {
+      "OrderImages": tempImages,
+      "OrderDrugs": tempItems,
+    };
   }
 
   double calcOrderPrice() {
@@ -243,7 +244,6 @@ class AppCubit extends Cubit<AppStates> {
           EasyLoading.dismiss();
           navigateTo(context, MainScreen(null), false);
         }).catchError((err) {
-          print(err);
           EasyLoading.showError("Error happened while sending ");
         });
       } else {
@@ -257,7 +257,6 @@ class AppCubit extends Cubit<AppStates> {
   /// deal with data base
   Future<void> _loadDataBase() async {
     String databasePath = await getDatabasesPath();
-    print(userData.phone);
     String path = "$databasePath/${userData.phone}-drugs.db";
 
     // await deleteDatabase(path);
@@ -275,8 +274,15 @@ class AppCubit extends Cubit<AppStates> {
     String? data =
         PreferenceHelper.getDataFromSharedPreference(key: "cartData");
     if (data != null) {
-      _readCartLocal(json.decode(data));
+      emit(CartItemsLoading());
+
+      readCartLocal(json.decode(data)).then((value) {
+        cartItems = value['OrderDrugs'];
+        orderImages = value['OrderImages'];
+        emit(CartItemsDone());
+      });
     }
+    emit(InitialStateDone());
   }
 
   void reverseFavorites(Drug drug) {
@@ -301,28 +307,29 @@ class AppCubit extends Cubit<AppStates> {
     if (fireOrder.exists) {
       String map = json.encode(fireOrder.value);
       Map<String, dynamic> stateMap = json.decode(map);
-      print(stateMap);
+
       queryData = await _dataBase.query("orders");
       if (queryData.isEmpty) {
-        stateMap.forEach((key, value) async {
+        for (int i = 0; i < stateMap.length; i++) {
+          String key = stateMap.keys.toList()[i];
+          String value = stateMap.values.toList()[i];
           DocumentSnapshot<Map<String, dynamic>> orderData;
           if (value == "wait") {
             orderData = await _fireStore
                 .collection("active orders")
                 .doc("current")
                 .collection(userData.phone)
-                .doc(key)
+                .doc(key.trim())
                 .get();
           } else {
             orderData = await _fireStore
                 .collection("active orders")
                 .doc("archive")
                 .collection(userData.phone)
-                .doc(key)
+                .doc(key.trim())
                 .get();
           }
           if (orderData.exists) {
-            print(orderData.data());
             returnedData.add(OrderModel(
                 oId: key,
                 orderData: orderData.data()!,
@@ -337,23 +344,21 @@ class AppCubit extends Cubit<AppStates> {
               "details": json.encode(orderData.data()),
             });
           }
-        });
+        }
         return returnedData;
       } else {
-        print(queryData);
         for (Map<String, dynamic> e in queryData) {
-          String id = e['id'];
+          String id = e['id'].toString().trim();
           String? status = stateMap[id];
           if (status != null) {
             // get order state at every order form data base ;
             returnedData.add(OrderModel(
               oId: id,
               orderData: e,
-              isActive: status == "wait",
+              isActive: status.trim() == "wait",
             ));
           } else {
             _dataBase.delete("orders", where: "id =  $id").catchError((err) {
-              print("deleted before");
               return 0;
             });
           }
@@ -427,7 +432,6 @@ class AppCubit extends Cubit<AppStates> {
     List<Placemark> placeMarks =
         await placemarkFromCoordinates(pos.latitude, pos.longitude)
             .catchError((err) {
-      print(err);
       EasyLoading.dismiss();
     });
     Placemark place = placeMarks[0];

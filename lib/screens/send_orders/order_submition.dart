@@ -25,8 +25,6 @@ class OrderSubmissionScreen extends StatelessWidget {
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
-        double height = MediaQuery.of(context).size.height;
-        print(height);
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(

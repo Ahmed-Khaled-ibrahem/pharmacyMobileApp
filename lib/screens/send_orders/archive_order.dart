@@ -5,6 +5,8 @@ import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/order_model.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/send_orders/archive_details.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../reusable/components.dart';
 
@@ -49,8 +51,6 @@ class ArchiveOrders extends StatelessWidget {
                         );
                       default:
                         if (snapshot.hasError) {
-                          print(snapshot.stackTrace);
-                          print(snapshot.error);
                           return const Center(child: Text('Error'));
                         } else if (snapshot.data != null &&
                             snapshot.data!.isNotEmpty) {
@@ -65,15 +65,12 @@ class ArchiveOrders extends StatelessWidget {
                                         : null,
                                     isThreeLine: true,
                                     onTap: () {
-                                      print(snapshot.data![index].orderItems);
-                                      print(snapshot
-                                          .data![index]
-                                          .orderItems['orderImages']
-                                          .runtimeType);
-                                      print(snapshot
-                                          .data![index]
-                                          .orderItems['OrderDrugs']
-                                          .runtimeType);
+                                      navigateTo(
+                                          context,
+                                          ArchiveOrderDetails(
+                                              snapshot.data![index],
+                                              cubit.readCartLocal),
+                                          true);
                                     },
                                     leading: CircleAvatar(
                                         foregroundColor: Colors.white,
@@ -102,7 +99,7 @@ class ArchiveOrders extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                                "Items count ${snapshot.data![index].price}",
+                                                "Items count ${snapshot.data![index].itemsCount}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,
@@ -111,7 +108,7 @@ class ArchiveOrders extends StatelessWidget {
                                               width: 20,
                                             ),
                                             Text(
-                                                "Images count ${snapshot.data![index].price}",
+                                                "Images count ${snapshot.data![index].imagesCount}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,

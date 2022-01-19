@@ -101,7 +101,6 @@ class SigningCubit extends Cubit<AppStates> {
         }
       }
     }).catchError((err) {
-      print(err);
       EasyLoading.showInfo("wrong Code");
     });
   }
@@ -120,7 +119,6 @@ class SigningCubit extends Cubit<AppStates> {
       return;
     } else {
       String rightPass = collectionRef.get("pass");
-      print(rightPass);
       if (password == rightPass) {
         EasyLoading.dismiss();
         FirebaseMessaging.instance.subscribeToTopic(phone);

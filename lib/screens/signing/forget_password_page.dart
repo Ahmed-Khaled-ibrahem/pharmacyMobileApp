@@ -178,11 +178,8 @@ class ForgetPassPage extends StatelessWidget {
                         password: passwordSignUp.text,
                         create: false);
                   },
-                  onChanged: (value) {
-                    print(value);
-                  },
+                  onChanged: (value) {},
                   beforeTextPaste: (text) {
-                    print("Allowing to paste $text");
                     return true;
                   },
                 )),

@@ -56,6 +56,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
+        // navigatorKey: navigatorKey,
         locale: lang =='English'? const Locale('en') : lang =='Arabic'? const Locale('ar') : null,
         localizationsDelegates: const [
           AppLocalizations.delegate,

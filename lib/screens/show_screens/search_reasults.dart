@@ -74,9 +74,7 @@ class SearchResultsScreen extends StatelessWidget {
                                       child: CircularProgressIndicator(),
                                     );
                                   default:
-                                    print(snapshot.data);
                                     if (snapshot.hasError) {
-                                      print(snapshot.error);
                                       return const Center(child: Text('Error'));
                                     } else if (snapshot.data != null &&
                                         snapshot.data!.isNotEmpty) {
@@ -118,8 +116,6 @@ class SearchResultsScreen extends StatelessWidget {
   }
 
   Widget list(BuildContext context, List<Drug> drugs, AppCubit cubit) {
-    print(MediaQuery.of(context).size.width /
-        (MediaQuery.of(context).size.height / 1.48));
     return GridView.builder(
       scrollDirection: Axis.vertical,
       physics: defaultScrollPhysics,

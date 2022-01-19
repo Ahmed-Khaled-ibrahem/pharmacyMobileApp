@@ -182,11 +182,8 @@ class SignUpPage extends StatelessWidget {
                         secondName: secondName.text,
                         password: passwordSignUp.text);
                   },
-                  onChanged: (value) {
-                    print(value);
-                  },
+                  onChanged: (value) {},
                   beforeTextPaste: (text) {
-                    print("Allowing to paste $text");
                     return true;
                   },
                 )),

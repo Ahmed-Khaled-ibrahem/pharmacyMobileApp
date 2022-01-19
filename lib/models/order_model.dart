@@ -25,7 +25,7 @@ class OrderModel {
       orderData = json.decode(orderData['details']);
     }
     price = orderData['Items Price'];
-    itemsCount = orderData['ImagesCount'];
+    itemsCount = orderData['ItemsCount'];
     imagesCount = orderData['ImagesCount'];
     DateTime dateTime = DateTime.parse(orderData['time']);
     time = DateFormat("yyyy-MM-dd hh:mm:ss").format(dateTime);
@@ -34,7 +34,7 @@ class OrderModel {
     name = orderData['Name'];
     address = orderData['UserAddress'];
     orderItems = {
-      "orderImages": orderData['orderImages'],
+      "orderImages": orderData['OrderImages'],
       "OrderDrugs": orderData['OrderDrugs']
     };
   }
