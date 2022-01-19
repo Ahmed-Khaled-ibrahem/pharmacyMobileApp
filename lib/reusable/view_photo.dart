@@ -63,7 +63,7 @@ class ViewPhoto extends StatelessWidget {
       newPath = newPath + "/Pharmacy APP";
       dir = Directory(newPath);
       if (await dir.exists()) {
-        file.copy(newPath + "/${DateTime.now()}+.jpeg").then((value) {
+        file.copy(newPath + "/${DateTime.now()}.jpeg").then((value) {
           EasyLoading.showInfo("file saved in Pharmacy APP file ");
         }).catchError((err) {
           EasyLoading.showError("an error Happened while saving");
