@@ -35,7 +35,7 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-  phone = "01201838240";
+  // phone = "01201838240";
   runApp(EasyDynamicThemeWidget(child: MyApp(phone)));
 }
 

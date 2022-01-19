@@ -42,10 +42,10 @@ class AppCubit extends Cubit<AppStates> {
   bool isLight = true; // light -> true  ,  dark -> false
 
   bool newMessage = false;
+  bool activeOrder = false;
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
-  bool activeOrder = false;
   // List<OfferItem> offerItems = [];
 
   // start function
