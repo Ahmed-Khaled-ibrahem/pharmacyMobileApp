@@ -46,8 +46,6 @@ class AppCubit extends Cubit<AppStates> {
 
   // start function
   void mainStart() {
-    print("iam here");
-
     _fireBase.child(userData.phone).get().then((snapshot) {
       /// check if there any active orders
       DataSnapshot orders = snapshot.child("orders");
@@ -285,8 +283,22 @@ class AppCubit extends Cubit<AppStates> {
 
   Future<List<Map<String, dynamic>>> getAllArchiveData() async {
     List<Map<String, dynamic>> queryData;
-    queryData = await _dataBase.query("orders");
-    return queryData;
+    DataSnapshot fireOrder =
+        await _fireBase.child(userData.phone).child("orders").get();
+    if (fireOrder.exists) {
+      // TODO :
+      // get order state at every order form data base ;
+      // if there is no data in DB grab it from fire store
+      // return at order model format
+      String map = json.encode(fireOrder.value);
+      Map<String, dynamic> stateMap = json.decode(map);
+      print(stateMap);
+
+      queryData = await _dataBase.query("orders");
+      return queryData;
+    } else {
+      return [];
+    }
   }
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
