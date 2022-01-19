@@ -14,6 +14,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
+import 'package:pharmacyapp/models/order_model.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/main_screen.dart';
@@ -37,7 +38,7 @@ class AppCubit extends Cubit<AppStates> {
   bool isEnglish = true; // english -> true   , arabic -> false
   bool isLight = true; // light -> true  ,  dark -> false
 
-  bool newMessage = true;
+  bool newMessage = false;
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
@@ -46,6 +47,8 @@ class AppCubit extends Cubit<AppStates> {
 
   // start function
   void mainStart() {
+    _loadDataBase();
+
     _fireBase.child(userData.phone).get().then((snapshot) {
       /// check if there any active orders
       DataSnapshot orders = snapshot.child("orders");
@@ -66,6 +69,20 @@ class AppCubit extends Cubit<AppStates> {
     }).catchError((err) {
       print(err);
     });
+  }
+
+  void appStart(String? uPhone) async {
+    emit(InitialStateLoading());
+    // read user data
+    if (uPhone != null) {
+      String name =
+          PreferenceHelper.getDataFromSharedPreference(key: "userName");
+      Map<String, dynamic> name_ = json.decode(name);
+      userData = AppUser(uPhone, name_['first']!, name_['second']!);
+      mainStart();
+    }
+
+    emit(InitialStateDone());
   }
 
   /// cart an order functions
@@ -232,20 +249,10 @@ class AppCubit extends Cubit<AppStates> {
   ///-----------------------------------------------------------------------///
 
   /// deal with data base
-  void initialReadSqlData(String? uPhone) async {
-    emit(InitialStateLoading());
-    // read user data
-    if (uPhone != null) {
-      String name =
-          PreferenceHelper.getDataFromSharedPreference(key: "userName");
-      Map<String, dynamic> name_ = json.decode(name);
-      userData = AppUser(uPhone, name_['first']!, name_['second']!);
-    }
-
-    mainStart();
-
+  Future<void> _loadDataBase() async {
     String databasePath = await getDatabasesPath();
-    String path = "$databasePath/drugs.db";
+    print(userData.phone);
+    String path = "$databasePath/${userData.phone}-drugs.db";
 
     // await deleteDatabase(path);
 
@@ -264,8 +271,6 @@ class AppCubit extends Cubit<AppStates> {
     if (data != null) {
       _readCartLocal(json.decode(data));
     }
-
-    emit(InitialStateDone());
   }
 
   void reverseFavorites(Drug drug) {
@@ -281,21 +286,74 @@ class AppCubit extends Cubit<AppStates> {
     return queryData.map((e) => Drug(drudData: e)).toList();
   }
 
-  Future<List<Map<String, dynamic>>> getAllArchiveData() async {
+  Future<List<OrderModel>> getAllArchiveData() async {
+    List<OrderModel> returnedData = [];
     List<Map<String, dynamic>> queryData;
     DataSnapshot fireOrder =
         await _fireBase.child(userData.phone).child("orders").get();
+
     if (fireOrder.exists) {
-      // TODO :
-      // get order state at every order form data base ;
-      // if there is no data in DB grab it from fire store
-      // return at order model format
       String map = json.encode(fireOrder.value);
       Map<String, dynamic> stateMap = json.decode(map);
       print(stateMap);
-
       queryData = await _dataBase.query("orders");
-      return queryData;
+      if (queryData.isEmpty) {
+        stateMap.forEach((key, value) async {
+          DocumentSnapshot<Map<String, dynamic>> orderData;
+          if (value == "wait") {
+            orderData = await _fireStore
+                .collection("active orders")
+                .doc("current")
+                .collection(userData.phone)
+                .doc(key)
+                .get();
+          } else {
+            orderData = await _fireStore
+                .collection("active orders")
+                .doc("archive")
+                .collection(userData.phone)
+                .doc(key)
+                .get();
+          }
+          if (orderData.exists) {
+            print(orderData.data());
+            returnedData.add(OrderModel(
+                oId: key,
+                orderData: orderData.data()!,
+                isActive: value == "wait",
+                fromFire: true));
+            _dataBase.insert("orders", {
+              "id": key,
+              "price": orderData['Items Price'],
+              "itemsCount": orderData['ItemsCount'],
+              "imageCount": orderData['ImagesCount'],
+              "time": orderData['time'],
+              "details": json.encode(orderData.data()),
+            });
+          }
+        });
+        return returnedData;
+      } else {
+        print(queryData);
+        for (Map<String, dynamic> e in queryData) {
+          String id = e['id'];
+          String? status = stateMap[id];
+          if (status != null) {
+            // get order state at every order form data base ;
+            returnedData.add(OrderModel(
+              oId: id,
+              orderData: e,
+              isActive: status == "wait",
+            ));
+          } else {
+            _dataBase.delete("orders", where: "id =  $id").catchError((err) {
+              print("deleted before");
+              return 0;
+            });
+          }
+        }
+        return returnedData;
+      }
     } else {
       return [];
     }
@@ -411,6 +469,7 @@ class AppCubit extends Cubit<AppStates> {
           cartItems = [];
           orderImages = [];
           activeOrder = false;
+          newMessage = false;
           navigateTo(context, const LoginScreen(), false);
         } else {
           EasyLoading.showToast("You must login first");

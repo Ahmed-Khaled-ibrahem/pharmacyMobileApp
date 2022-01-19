@@ -4,7 +4,6 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/settings.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 
 Widget defaultTextField({
   required TextEditingController controller,
@@ -43,10 +42,9 @@ Widget optionsWidget(BuildContext context) {
 
   return PopupMenuButton<String>(
     onSelected: (index) {
-      if(index == setText ){
+      if (index == setText) {
         navigateTo(context, const SettingsScreen(), true);
-      }
-      else if(index ==logoutText ){
+      } else if (index == logoutText) {
         cubit.logout(context);
       }
     },

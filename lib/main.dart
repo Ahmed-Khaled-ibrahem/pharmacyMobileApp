@@ -49,8 +49,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-            create: (BuildContext context) =>
-                AppCubit()..initialReadSqlData(phone)),
+            create: (BuildContext context) => AppCubit()..appStart(phone)),
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(

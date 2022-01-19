@@ -1,10 +1,10 @@
-import 'package:dash_chat/dash_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/models/order_model.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import '../../reusable/components.dart';
 
@@ -38,10 +38,10 @@ class ArchiveOrders extends StatelessWidget {
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: FutureBuilder<List<Map<String, dynamic>>>(
+                child: FutureBuilder<List<OrderModel>>(
                   future: cubit.getAllArchiveData(),
                   builder: (BuildContext context,
-                      AsyncSnapshot<List<Map<String, dynamic>>> snapshot) {
+                      AsyncSnapshot<List<OrderModel>> snapshot) {
                     switch (snapshot.connectionState) {
                       case ConnectionState.waiting:
                         return const Center(
@@ -49,6 +49,7 @@ class ArchiveOrders extends StatelessWidget {
                         );
                       default:
                         if (snapshot.hasError) {
+                          print(snapshot.stackTrace);
                           print(snapshot.error);
                           return const Center(child: Text('Error'));
                         } else if (snapshot.data != null &&
@@ -57,15 +58,22 @@ class ArchiveOrders extends StatelessWidget {
                               physics: defaultScrollPhysics,
                               itemBuilder: (BuildContext _, int index) {
                                 index = snapshot.data!.length - index - 1;
-                                DateTime dateTime = DateTime.parse(
-                                    snapshot.data![index]['time']);
-                                String date = DateFormat("yyyy-MM-dd hh:mm:ss")
-                                    .format(dateTime);
+
                                 return ListTile(
+                                    tileColor: snapshot.data![index].isActive
+                                        ? Colors.green.withOpacity(0.4)
+                                        : null,
                                     isThreeLine: true,
                                     onTap: () {
-                                      print(snapshot.data![index]['id']);
-                                      print(snapshot.data![index]['details']);
+                                      print(snapshot.data![index].orderItems);
+                                      print(snapshot
+                                          .data![index]
+                                          .orderItems['orderImages']
+                                          .runtimeType);
+                                      print(snapshot
+                                          .data![index]
+                                          .orderItems['OrderDrugs']
+                                          .runtimeType);
                                     },
                                     leading: CircleAvatar(
                                         foregroundColor: Colors.white,
@@ -76,7 +84,7 @@ class ArchiveOrders extends StatelessWidget {
                                           overflow: TextOverflow.ellipsis,
                                         )),
                                     title: Text(
-                                      "Date  $date",
+                                      "Date  ${snapshot.data![index].time}",
                                       style: const TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold),
@@ -86,7 +94,7 @@ class ArchiveOrders extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text(
-                                            "price :  ${snapshot.data![index]['price'] == 0 ? "not yet" : snapshot.data![index]['price']}",
+                                            "price :  ${snapshot.data![index].price == 0 ? "not yet" : snapshot.data![index].price}",
                                             style: const TextStyle(
                                               color: Colors.grey,
                                               fontSize: 15,
@@ -94,7 +102,7 @@ class ArchiveOrders extends StatelessWidget {
                                         Row(
                                           children: [
                                             Text(
-                                                "Items count ${snapshot.data![index]['itemsCount']}",
+                                                "Items count ${snapshot.data![index].price}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,
@@ -103,7 +111,7 @@ class ArchiveOrders extends StatelessWidget {
                                               width: 20,
                                             ),
                                             Text(
-                                                "Images count ${snapshot.data![index]['imageCount']}",
+                                                "Images count ${snapshot.data![index].price}",
                                                 style: const TextStyle(
                                                   color: Colors.grey,
                                                   fontSize: 12,

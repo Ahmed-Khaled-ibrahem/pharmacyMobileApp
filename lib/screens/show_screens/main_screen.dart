@@ -89,7 +89,9 @@ class MainScreen extends StatelessWidget {
                                 width: 20,
                                 height: 20,
                                 decoration: BoxDecoration(
-                                    color: Colors.green,
+                                    color: HSLColor.fromColor(Colors.green)
+                                        .withSaturation(1)
+                                        .toColor(),
                                     borderRadius: BorderRadius.circular(20)),
                               )
                             : cubit.cartItems.isNotEmpty ||
