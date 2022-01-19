@@ -44,6 +44,32 @@ class AppCubit extends Cubit<AppStates> {
   bool activeOrder = false;
   // List<OfferItem> offerItems = [];
 
+  // start function
+  void mainStart() {
+    print("iam here");
+
+    _fireBase.child(userData.phone).get().then((snapshot) {
+      /// check if there any active orders
+      DataSnapshot orders = snapshot.child("orders");
+      if (orders.exists) {
+        String map = json.encode(orders.value);
+        Map<String, dynamic> mapA = json.decode(map);
+        activeOrder = mapA.values.contains("wait");
+      }
+
+      /// see if there message
+      DataSnapshot messages = snapshot.child("message");
+      if (messages.exists) {
+        String map = json.encode(messages.value);
+        Map<String, dynamic> mapA = json.decode(map);
+        newMessage = !mapA['user'];
+      }
+      emit(GetFireStateDone());
+    }).catchError((err) {
+      print(err);
+    });
+  }
+
   /// cart an order functions
   Future<void> addOrderImage(XFile file) async {
     String image = await uploadFile(File(file.path), "prec");
@@ -169,7 +195,7 @@ class AppCubit extends Cubit<AppStates> {
           _fireBase
               .child(userData.phone)
               .child("orders")
-              .update({value.id: "await"});
+              .update({value.id: "wait"});
 
           DioHelper dioHelper = DioHelper();
           print(await dioHelper.postData(
@@ -189,11 +215,12 @@ class AppCubit extends Cubit<AppStates> {
 
           cartItems = [];
           orderImages = [];
+          PreferenceHelper.clearDataFromSharedPreference(key: "cartData");
           activeOrder = true;
 
           emit(SendOrderState());
           EasyLoading.dismiss();
-          navigateTo(context, const MainScreen(), false);
+          navigateTo(context, MainScreen(null), false);
         }).catchError((err) {
           print(err);
           EasyLoading.showError("Error happened while sending ");
@@ -203,6 +230,7 @@ class AppCubit extends Cubit<AppStates> {
       }
     }
   }
+
   ///-----------------------------------------------------------------------///
 
   /// deal with data base
@@ -216,13 +244,16 @@ class AppCubit extends Cubit<AppStates> {
       userData = AppUser(uPhone, name_['first']!, name_['second']!);
     }
 
+    mainStart();
+
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/drugs.db";
 
     // await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
-    if (!exists) {  // database read before
+    if (!exists) {
+      // database read before
       ByteData data = await rootBundle.load("assets/drugs_data/testSql.db");
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
@@ -235,6 +266,7 @@ class AppCubit extends Cubit<AppStates> {
     if (data != null) {
       _readCartLocal(json.decode(data));
     }
+
     emit(InitialStateDone());
   }
 
@@ -295,13 +327,13 @@ class AppCubit extends Cubit<AppStates> {
   Future<String?> determinePosition() async {
     EasyLoading.show(status: 'getting location..');
 
-     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
       EasyLoading.showError('Location services are disabled.');
       return null;
     }
 
-     LocationPermission permission = await Geolocator.checkPermission();
+    LocationPermission permission = await Geolocator.checkPermission();
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {

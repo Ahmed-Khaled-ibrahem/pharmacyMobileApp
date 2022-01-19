@@ -60,7 +60,10 @@ class MyApp extends StatelessWidget {
           GlobalWidgetsLocalizations.delegate,
           GlobalCupertinoLocalizations.delegate,
         ],
-        supportedLocales: const [Locale('en', ''), Locale('ar', ''),],
+        supportedLocales: const [
+          Locale('en', ''),
+          Locale('ar', ''),
+        ],
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: EasyDynamicTheme.of(context).themeMode,
@@ -83,7 +86,7 @@ class MyApp extends StatelessWidget {
          */
         home: phone == null
             ? const LoginScreen()
-            : const MainScreen(), //const MakeAnOrderScreen(), //
+            : MainScreen(null), //const MakeAnOrderScreen(), //
       ),
     );
   }

@@ -18,4 +18,8 @@ class InitialStateDone extends AppStates {}
 
 class CartItemsLoading extends AppStates {}
 
+class CartStateDone extends AppStates {}
+
 class CartItemsDone extends AppStates {}
+
+class GetFireStateDone extends AppStates {}

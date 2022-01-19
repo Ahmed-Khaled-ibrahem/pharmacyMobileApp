@@ -56,7 +56,7 @@ class SigningCubit extends Cubit<AppStates> {
       },
       timeout: const Duration(minutes: 2),
       codeAutoRetrievalTimeout: (String verificationId) {
-        EasyLoading.showInfo('Code expired now.');
+        // EasyLoading.showInfo('Code expired now.');
       },
     );
   }
@@ -90,7 +90,8 @@ class SigningCubit extends Cubit<AppStates> {
               key: "userName",
               value: {"first": firstName, "second": secondName});
           AppCubit.userData = AppUser(phone, firstName!, secondName!);
-          navigateTo(context, const MainScreen(), false);
+          swipeBackScreen();
+          navigateTo(context, MainScreen(context), false);
         } else {
           EasyLoading.showToast("password changed successfully");
           navigateTo(context, const LoginScreen(), false);
@@ -129,7 +130,7 @@ class SigningCubit extends Cubit<AppStates> {
         EasyLoading.dismiss();
         Map<String, dynamic> name = collectionRef.get("name");
         AppCubit.userData = AppUser(phone, name['first']!, name['second']!);
-        navigateTo(context, const MainScreen(), false);
+        navigateTo(context, MainScreen(context), false);
       } else {
         EasyLoading.showError("Wrong password");
       }

@@ -76,6 +76,7 @@ dependencies:
   simple_grid: ^0.1.1
   carousel_slider: ^4.0.0
   easy_dynamic_theme: ^2.2.0
+  pull_to_refresh: ^2.0.0
   #chat
   dash_chat: ^1.1.16
   flutter_chat_types: ^3.2.2

@@ -39,7 +39,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                         IconButton(
                             tooltip: "Archived Orders",
                             onPressed: () {
-                              navigateTo(context, const ArchiveOrders(), true);
+                              navigateTo(context, ArchiveOrders(), true);
                             },
                             icon: const Icon(Icons.archive)),
                         Visibility(

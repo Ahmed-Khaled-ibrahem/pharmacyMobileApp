@@ -223,7 +223,7 @@ class LoginScreenState extends State<LoginScreen>
                             ),
                             InkWell(
                               onTap: () {
-                                navigateTo(context, const MainScreen(), false);
+                                navigateTo(context, MainScreen(null), false);
                                 AppCubit.userData =
                                     AppUser("dev account", "dev", "acc");
                                 stopAnimation();
