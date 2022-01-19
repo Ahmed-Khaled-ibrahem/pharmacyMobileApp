@@ -2,6 +2,7 @@ import 'package:dash_chat/dash_chat.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import '../../reusable/components.dart';
@@ -40,6 +41,7 @@ class ArchiveOrders extends StatelessWidget {
                       } else if (snapshot.data != null &&
                           snapshot.data!.isNotEmpty) {
                         return ListView.separated(
+                            physics: defaultScrollPhysics,
                             itemBuilder: (BuildContext _, int index) {
                               DateTime dateTime =
                                   DateTime.parse(snapshot.data![index]['time']);
@@ -60,7 +62,7 @@ class ArchiveOrders extends StatelessWidget {
                                         overflow: TextOverflow.ellipsis,
                                       )),
                                   title: Text(
-                                    "Date - $date",
+                                    "Date  $date",
                                     style: const TextStyle(
                                         fontSize: 15,
                                         fontWeight: FontWeight.bold),
@@ -70,7 +72,7 @@ class ArchiveOrders extends StatelessWidget {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                          "price ${snapshot.data![index]['price'] == 0 ? "not yet" : snapshot.data![index]['price']}",
+                                          "price :  ${snapshot.data![index]['price'] == 0 ? "not yet" : snapshot.data![index]['price']}",
                                           style: const TextStyle(
                                             color: Colors.grey,
                                             fontSize: 15,

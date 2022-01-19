@@ -371,7 +371,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
       "body": message.text,
       "phone": phone,
       "name": name,
-      "read": false
+      "read": false,
+      "time": DateTime.now().toString(),
     }).then((value) {
       EasyLoading.showToast("message sent successfully");
       message.clear();

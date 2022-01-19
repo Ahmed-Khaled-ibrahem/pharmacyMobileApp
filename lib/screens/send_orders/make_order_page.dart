@@ -135,7 +135,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                       ),
                     ),
                     Expanded(
-                      child: OrderList(cubit),
+                      child: OrderList(cubit, state),
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,

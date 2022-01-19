@@ -15,3 +15,7 @@ class ChangeFavState extends AppStates {}
 class InitialStateLoading extends AppStates {}
 
 class InitialStateDone extends AppStates {}
+
+class CartItemsLoading extends AppStates {}
+
+class CartItemsDone extends AppStates {}

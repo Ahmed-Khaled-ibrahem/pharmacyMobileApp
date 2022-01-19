@@ -46,12 +46,13 @@ class AppCubit extends Cubit<AppStates> {
     print(image);
     orderImages.add(image);
     emit(AddCartItemState());
+    saveCartLocal();
   }
 
   void removeOrderImage(int index) {
     orderImages.removeAt(index);
     emit(AddCartItemState());
-
+    saveCartLocal();
     FirebaseStorage.instance
         .refFromURL(orderImages[index])
         .delete()
@@ -65,12 +66,14 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       cartItems.add(OrderItem(drug, 1));
       emit(AddCartItemState());
+      saveCartLocal();
     }
   }
 
   void removeFromCart(int index) {
     cartItems.removeAt(index);
     emit(AddCartItemState());
+    saveCartLocal();
   }
 
   void changeCartQuantity(
@@ -86,7 +89,35 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       cartItems[index].quantity = newValue;
     }
+    saveCartLocal();
     emit(ChangeCartItemState());
+  }
+
+  void saveCartLocal() {
+    List<Map<String, dynamic>> orderDrugs = cartItems
+        .map((e) => {"id": e.drug.id, "quantity": e.quantity})
+        .toList();
+
+    Map<String, dynamic> cartData = {
+      "OrderDrugs": orderDrugs,
+      "OrderImages": orderImages,
+    };
+
+    PreferenceHelper.putDataInSharedPreference(
+        key: "cartData", value: cartData);
+  }
+
+  Future<void> readCartLocal(String data) async {
+    emit(CartItemsLoading());
+    Map<String, dynamic> cartData =
+        PreferenceHelper.getDataFromSharedPreference(key: "cartData");
+    orderImages = cartData['OrderImages'];
+    List<Map<String, dynamic>> orderDrugs = cartData['OrderImages'];
+    for (Map<String, dynamic> orderItem in orderDrugs) {
+      Drug drug = (await (findInDataBase(id: orderItem['id'])))[0];
+      OrderItem(drug, orderItem['quantity']);
+    }
+    emit(CartItemsDone());
   }
 
   double calcOrderPrice() {
@@ -322,6 +353,7 @@ class AppCubit extends Cubit<AppStates> {
         if (userData.phone != "notYet") {
           FirebaseMessaging.instance.unsubscribeFromTopic(userData.phone);
           PreferenceHelper.clearDataFromSharedPreference(key: "phone");
+          PreferenceHelper.clearDataFromSharedPreference(key: "cartData");
           EasyLoading.dismiss();
           userData.phone = "notYet";
           cartItems = [];
