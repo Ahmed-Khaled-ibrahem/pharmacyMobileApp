@@ -379,6 +379,7 @@ class MainScreen extends StatelessWidget {
                 width: 100,
                 child: Text(
                   items['name'],
+                  textAlign: TextAlign.left,
                   style: const TextStyle(
                       color: Colors.orangeAccent,
                       fontSize: 18,

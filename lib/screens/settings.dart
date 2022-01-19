@@ -77,7 +77,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                 padding: const EdgeInsets.only(left:30, right:30),
                                 child: DropdownButton(
                                   value: cubit.languageState,
-                                  items: const [ //add items in the dropdown
+                                  items: const [
                                     DropdownMenuItem(
                                       child: Text("English"),
                                       value: "English",
@@ -93,25 +93,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                   ],
                                   onChanged: (value){
                                     setState(() {
-                                      cubit.languageState = value.toString();
-                                      PreferenceHelper.putDataInSharedPreference(key: 'language',value: value.toString());
-                                      EasyLoading.showInfo("Restart the App to make changes");
+                                      if(cubit.languageState != value.toString()){
+                                        cubit.languageState = value.toString();
+                                        PreferenceHelper.putDataInSharedPreference(key: 'language',value: value.toString());
+                                        EasyLoading.showInfo("Restart the App to make changes");
+                                      }
                                     });
 
                                   },
-                                  icon: const Padding( //Icon at tail, arrow bottom is default icon
+                                  icon: const Padding(
                                       padding: EdgeInsets.only(left:20),
                                       child:Icon(Icons.language)
                                   ),
-                                  iconEnabledColor: Colors.white, //Icon color
-                                  style: const TextStyle(  //te
-                                      color: Colors.white, //Font color
-                                      fontSize: 20 //font size on dropdown button
+                                  iconEnabledColor: Colors.white,
+                                  style: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20
                                   ),
 
-                                  dropdownColor: Colors.blueGrey, //dropdown background color
-                                  underline: Container(), //remove underline
-                                  isExpanded: true, //make true to make width 100%
+                                  dropdownColor: Colors.blueGrey,
+                                  underline: Container(),
+                                  isExpanded: true,
                                 )
                             )
                         ),
