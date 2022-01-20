@@ -33,14 +33,6 @@ class ForgetPassPage extends StatelessWidget {
 
         return Scaffold(
           appBar: AppBar(
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    navigateTo(context, const SettingsScreen(), true);
-                  },
-                  icon: const Icon(Icons.settings),
-                ),
-              ],
               centerTitle: true,
               toolbarHeight: 60,
               shape: const RoundedRectangleBorder(
@@ -51,7 +43,7 @@ class ForgetPassPage extends StatelessWidget {
               backgroundColor: themeColor,
               elevation: 0,
               title: const Text(
-                "LOGIN",
+                "Change Password",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               )),
           body: Padding(

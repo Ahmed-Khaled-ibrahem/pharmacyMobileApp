@@ -9,6 +9,7 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
+import 'package:pharmacyapp/screens/signing/forget_password_page.dart';
 
 
 class ProfileScreen extends StatefulWidget {
@@ -213,76 +214,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 15,
                             ),
                             Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: TextFormField(
-                                controller: oldPassword,
-                                //onChanged: (v){runanimation();},
-                                //onTap: (){runanimation();},
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'Password cannot be Empty';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                obscureText: showPasswordSignUp,
-                                decoration: InputDecoration(
-                                    labelText: 'Old Password',
-                                    prefixIcon: const Icon(Icons.lock),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                      const BorderSide(color: Colors.blueGrey, width: 1),
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        showPasswordSignUp = !showPasswordSignUp;
-                                        cubit.emitGeneralState();
-                                      },
-                                      icon: Icon(showPasswordSignUp
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
-                                    )),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Padding(
-                              padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: TextFormField(
-                                controller: newPassword,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'new Password cannot be Empty';
-                                  } else {
-                                    return null;
-                                  }
-                                },
-                                obscureText: showPasswordSignUp,
-                                decoration: InputDecoration(
-                                    labelText: 'New Password',
-                                    prefixIcon: const Icon(Icons.lock),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                      const BorderSide(color: Colors.blueGrey, width: 1),
-                                      borderRadius: BorderRadius.circular(40),
-                                    ),
-                                    suffixIcon: IconButton(
-                                      onPressed: () {
-                                        showPasswordSignUp = !showPasswordSignUp;
-                                        cubit.emitGeneralState();
-                                      },
-                                      icon: Icon(showPasswordSignUp
-                                          ? Icons.visibility
-                                          : Icons.visibility_off),
-                                    )),
-                              ),
-                            ),
-                            const SizedBox(
-                              height: 15,
-                            ),
-                            Padding(
                               padding: const EdgeInsets.symmetric(horizontal: 8.0),
                               child: SizedBox(
                                 width: double.infinity,
@@ -302,6 +233,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 ),
                               ),
                             ),
+                            TextButton(
+                                onPressed: () {
+                                  navigateTo(
+                                      context, ForgetPassPage(), true);
+                                },
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: const [
+                                    Icon(Icons.password_sharp),
+                                    SizedBox(width: 10,),
+                                    Text("Change Password"),
+                                  ],
+                                )),
                           ],
                         ),
                       ),
