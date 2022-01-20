@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:easy_dynamic_theme/easy_dynamic_theme.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -57,7 +59,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ignore: must_be_immutable
 class RestartWidget extends StatefulWidget {
   RestartWidget({Key? key, this.phone}) : super(key: key);
 
@@ -72,13 +73,8 @@ class RestartWidget extends StatefulWidget {
 }
 
 class _RestartWidgetState extends State<RestartWidget> {
-  Key key = UniqueKey();
-
   void restartApp() {
-    setState(() {
-      print("restart");
-      // key = UniqueKey();
-    });
+    setState(() {});
   }
 
   @override
@@ -88,7 +84,6 @@ class _RestartWidgetState extends State<RestartWidget> {
     return Builder(builder: (BuildContext context) {
       lang = PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
           "English";
-      print(lang);
       return MaterialApp(
         navigatorKey: navigatorKey,
         locale: lang == 'English'
@@ -124,7 +119,6 @@ class _RestartWidgetState extends State<RestartWidget> {
             splashColor: Colors.white,
             scaffoldBackgroundColor: const Color(0xFFFFF9F9),
         ),
-
          */
         home: widget.phone == null
             ? const LoginScreen()
