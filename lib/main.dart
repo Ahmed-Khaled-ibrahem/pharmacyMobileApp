@@ -12,8 +12,6 @@ import 'cubit/operation_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -29,15 +27,31 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-  // phone = "01201838240";
+
   runApp(EasyDynamicThemeWidget(child: MyApp(phone)));
 }
 
 // ignore: must_be_immutable
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   MyApp(this.phone, {Key? key}) : super(key: key);
 
   String? phone;
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_MyAppState>()!.restartApp();
+  }
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      key = UniqueKey();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +66,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
             create: (BuildContext context) =>
-                AppCubit()..appStart(phone, lang, theme)),
+                AppCubit()..appStart(widget.phone, lang, theme)),
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
@@ -92,7 +106,7 @@ class MyApp extends StatelessWidget {
         ),
 
          */
-        home: phone == null
+        home: widget.phone == null
             ? const LoginScreen()
             : MainScreen(null), //const MakeAnOrderScreen(), //
       ),

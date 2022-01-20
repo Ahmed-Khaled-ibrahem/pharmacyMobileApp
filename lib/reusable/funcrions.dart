@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:page_transition/page_transition.dart';
-
 
 void navigateTo(BuildContext context, Widget screen, bool push) {
   if (push) {
@@ -18,8 +16,6 @@ void navigateTo(BuildContext context, Widget screen, bool push) {
     );
   }
 }
-
-
 
 void customChoiceDialog(
   BuildContext context, {

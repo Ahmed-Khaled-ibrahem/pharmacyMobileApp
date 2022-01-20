@@ -26,8 +26,9 @@ import 'package:pharmacyapp/shared/fcm/dio_helper.dart';
 import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:sqflite/sqflite.dart';
-import '../main.dart';
 import 'states.dart';
+
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 class AppCubit extends Cubit<AppStates> {
   AppCubit() : super(AppInitial());
@@ -40,14 +41,14 @@ class AppCubit extends Cubit<AppStates> {
       FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
-  String languageState = 'English'; // all states is 'English' - 'Arabic' - 'System'
+  String languageState =
+      'English'; // all states is 'English' - 'Arabic' - 'System'
   String themeState = 'Light'; // all states is 'Light' - 'Dark' - 'System'
 
   bool newMessage = false;
   bool activeOrder = false;
   int numberOfMessages = 0;
   int numberOfOrders = 0;
-
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
@@ -92,7 +93,7 @@ class AppCubit extends Cubit<AppStates> {
   void appStart(String? uPhone, String lang, String theme) async {
     themeState = theme;
     languageState = lang;
-
+    print("hehe");
     if (await Permission.notification.request().isGranted) {
       FireNotificationHelper(notificationHandler);
     }
@@ -109,6 +110,7 @@ class AppCubit extends Cubit<AppStates> {
 
   void _readOffers() {
     offerItems = [];
+    emit(OffersListReady());
   }
 
   /// cart an order functions
@@ -287,7 +289,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/${userData.phone}-drugs.db";
 
-     //await deleteDatabase(path);
+    //await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {

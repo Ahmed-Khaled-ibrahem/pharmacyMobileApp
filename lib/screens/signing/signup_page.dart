@@ -54,7 +54,7 @@ class SignUpPage extends StatelessWidget {
               backgroundColor: themeColor,
               elevation: 0,
               title: const Text(
-                "LOGIN",
+                "Sign up",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               )),
           body: Padding(

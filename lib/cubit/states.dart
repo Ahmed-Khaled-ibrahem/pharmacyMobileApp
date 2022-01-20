@@ -25,3 +25,5 @@ class CartItemsDone extends AppStates {}
 class GetFireStateDone extends AppStates {}
 
 class NotificationReceived extends AppStates {}
+
+class OffersListReady extends AppStates {}

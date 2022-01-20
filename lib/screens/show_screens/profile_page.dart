@@ -11,30 +11,26 @@ import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
 import 'package:pharmacyapp/screens/signing/forget_password_page.dart';
 
+// ignore: must_be_immutable
+class ProfileScreen extends StatelessWidget {
+  ProfileScreen({Key? key}) : super(key: key);
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({Key? key}) : super(key: key);
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
+  TextEditingController address = TextEditingController();
+  TextEditingController firstName =
+      TextEditingController(text: AppCubit.userData.firstName);
+  TextEditingController secondName =
+      TextEditingController(text: AppCubit.userData.lastName);
+  TextEditingController phoneNumber =
+      TextEditingController(text: AppCubit.userData.phone);
 
-class _ProfileScreenState extends State<ProfileScreen> {
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
-
-        TextEditingController address = TextEditingController();
-        TextEditingController oldPassword = TextEditingController();
-        TextEditingController newPassword = TextEditingController();
-        TextEditingController firstName = TextEditingController(text: "Ahmed");
-        TextEditingController secondName = TextEditingController(text: "Khaled");
-        TextEditingController phoneNumber = TextEditingController(text: "01288534459");
-
-        GlobalKey<FormState> formKey = GlobalKey<FormState>();
-        bool showPasswordSignUp = true;
 
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -62,11 +58,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Stack(
                         children: [
                           InkWell(
-                            child: Image.network('https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg',
-                            width: 200,
+                            child: Image.network(
+                              AppCubit.userData.photo,
+                              width: 200,
+                              errorBuilder: (_, __, ___) {
+                                return const Icon(Icons.person);
+                              },
                             ),
-                            onTap: (){navigateTo(context, ViewPhoto('https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg'
-                            ), true);},
+                            onTap: () {
+                              navigateTo(context,
+                                  ViewPhoto(AppCubit.userData.photo), true);
+                            },
                           ),
                           Positioned(
                             bottom: -20,
@@ -79,24 +81,31 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 }
                               },
                               child: Container(
-                                width: 80,
+                                  width: 80,
                                   height: 80,
-                                  decoration:  BoxDecoration(
+                                  decoration: BoxDecoration(
                                     color: Colors.black87,
                                     borderRadius: BorderRadius.circular(40),
                                   ),
-                                  child: const Icon(Icons.edit,size: 30,color: Colors.orange,)),
+                                  child: const Icon(
+                                    Icons.edit,
+                                    size: 30,
+                                    color: Colors.orange,
+                                  )),
                             ),
                           ),
                         ],
                       ),
-                      const SizedBox(height: 20,),
+                      const SizedBox(
+                        height: 20,
+                      ),
                       Form(
                         key: formKey,
                         child: Column(
                           children: [
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: Row(
                                 children: [
                                   Expanded(
@@ -113,13 +122,15 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           labelText: 'First Name',
                                           prefixIcon: Icon(Icons.person),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide:
-                                            BorderSide(color: Colors.blueGrey, width: 1),
+                                            borderSide: BorderSide(
+                                                color: Colors.blueGrey,
+                                                width: 1),
                                             borderRadius: BorderRadius.only(
                                                 topLeft: Radius.circular(40),
                                                 bottomLeft: Radius.circular(40),
                                                 topRight: Radius.circular(10),
-                                                bottomRight: Radius.circular(10)),
+                                                bottomRight:
+                                                    Radius.circular(10)),
                                           )),
                                     ),
                                   ),
@@ -140,13 +151,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                           labelText: 'Last Name',
                                           prefixIcon: Icon(Icons.person),
                                           enabledBorder: OutlineInputBorder(
-                                            borderSide:
-                                            BorderSide(color: Colors.blueGrey, width: 1),
+                                            borderSide: BorderSide(
+                                                color: Colors.blueGrey,
+                                                width: 1),
                                             borderRadius: BorderRadius.only(
                                                 topRight: Radius.circular(40),
-                                                bottomRight: Radius.circular(40),
+                                                bottomRight:
+                                                    Radius.circular(40),
                                                 topLeft: Radius.circular(10),
-                                                bottomLeft: Radius.circular(10)),
+                                                bottomLeft:
+                                                    Radius.circular(10)),
                                           )),
                                     ),
                                   ),
@@ -176,8 +190,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     labelText: 'Phone number',
                                     prefixIcon: const Icon(Icons.phone),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                      const BorderSide(color: Colors.blueGrey, width: 1),
+                                      borderSide: const BorderSide(
+                                          color: Colors.blueGrey, width: 1),
                                       borderRadius: BorderRadius.circular(40),
                                     )),
                               ),
@@ -204,8 +218,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     labelText: 'address',
                                     prefixIcon: const Icon(Icons.home),
                                     enabledBorder: OutlineInputBorder(
-                                      borderSide:
-                                      const BorderSide(color: Colors.blueGrey, width: 1),
+                                      borderSide: const BorderSide(
+                                          color: Colors.blueGrey, width: 1),
                                       borderRadius: BorderRadius.circular(40),
                                     )),
                               ),
@@ -214,7 +228,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               height: 15,
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8.0),
                               child: SizedBox(
                                 width: double.infinity,
                                 height: 50,
@@ -224,25 +239,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   style: ElevatedButton.styleFrom(
                                       primary: themeColor,
                                       shape: RoundedRectangleBorder(
-                                          borderRadius: BorderRadius.circular(80))),
+                                          borderRadius:
+                                              BorderRadius.circular(80))),
                                   onPressed: () {
-                                    if (formKey.currentState!.validate()) {
-
-                                    }
+                                    if (formKey.currentState!.validate()) {}
                                   },
                                 ),
                               ),
                             ),
                             TextButton(
                                 onPressed: () {
-                                  navigateTo(
-                                      context, ForgetPassPage(), true);
+                                  navigateTo(context, ForgetPassPage(), true);
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: const [
                                     Icon(Icons.password_sharp),
-                                    SizedBox(width: 10,),
+                                    SizedBox(
+                                      width: 10,
+                                    ),
                                     Text("Change Password"),
                                   ],
                                 )),
@@ -257,6 +272,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       },
     );
   }
+
   Future<XFile?> _takePhoto(BuildContext context) async {
     if (await Permission.camera.request().isGranted) {
       ImageSource? source = await showGeneralDialog<ImageSource>(
