@@ -21,6 +21,7 @@ class ArchiveOrderDetails extends StatelessWidget {
           context: context,
         ),
         body: SingleChildScrollView(
+physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -161,6 +162,7 @@ class ArchiveOrderDetails extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: PageView.builder(
+physics: const BouncingScrollPhysics(),
           itemCount: 2,
           itemBuilder: (_, index) {
             switch (index) {
