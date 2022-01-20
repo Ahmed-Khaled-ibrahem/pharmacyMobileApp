@@ -36,12 +36,12 @@ class AppCubit extends Cubit<AppStates> {
       FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
-  String languageState =
-      'English'; // all states is 'English' - 'Arabic' - 'System'
+  String languageState = 'English'; // all states is 'English' - 'Arabic' - 'System'
   String themeState = 'Light'; // all states is 'Light' - 'Dark' - 'System'
 
   bool newMessage = false;
   bool activeOrder = false;
+
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
@@ -263,7 +263,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/${userData.phone}-drugs.db";
 
-    // await deleteDatabase(path);
+     //await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {

@@ -184,7 +184,42 @@ class MainScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        InkWell(
+                        offersList.isNotEmpty?
+                        Card(
+                          color: Colors.amber[200],
+                          child: SizedBox(
+                            width: 300,
+                            height: 200,
+                            child: Stack(
+                              children: [
+                                Positioned(
+                                  left: 20,
+                                  top: -10,
+                                  child: Transform.rotate(
+                                      angle: 2.9,
+                                      child: const Icon(Icons.apps,size: 220,color: Colors.white30,)),
+                                ),
+                                Center(
+                                  child:Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Icon(Icons.redeem,size: 50 ,color: Colors.black,),
+                                      Text("NO offers now",style: TextStyle(fontSize: 25,color: Colors.black,),),
+                                      SizedBox(
+                                          width: 250,
+                                          child: Text("We will notify you about new offers",
+                                            textAlign: TextAlign.center,
+                                            style: TextStyle(
+                                              color: Colors.black,
+                                                fontSize: 20,fontWeight: FontWeight.bold),)),
+
+                                    ],
+                                  ),),
+                              ],
+                            )
+                          ), //SizedBox
+                        )
+                            :InkWell(
                           onTap: () {
                             navigateTo(context, const OffersScreen(), true);
                           },
