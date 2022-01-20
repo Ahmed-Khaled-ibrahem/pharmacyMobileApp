@@ -14,6 +14,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
+import 'package:pharmacyapp/models/message_model.dart';
 import 'package:pharmacyapp/models/order_model.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
@@ -219,7 +220,12 @@ class AppCubit extends Cubit<AppStates> {
 
           DioHelper dioHelper = DioHelper();
           print(await dioHelper.postData(
-              sendData: {"type": "newOrder", "orderId": value.id},
+              sendData: {
+                "type": "newOrder",
+                "user": userData.phone,
+                "orderId": value.id,
+                "orderData": json.encode(orderData)
+              },
               title: "New order",
               body: "Order received from ${userData.phone}",
               receiverUId: "admin"));
@@ -367,6 +373,83 @@ class AppCubit extends Cubit<AppStates> {
       return [];
     }
   }
+
+  // TODO : // COMPLETE THiS FUNCTIONS BODY
+  Future<List<MessageModel>> getAllMessages() async {
+    List<MessageModel> messagesData = (await _dataBase.query("messages"))
+        .map((e) => MessageModel(jsonData: e))
+        .toList();
+    if (await checkMessageUpdate(messagesData.last)) {
+      return messagesData;
+    } else {
+      // from FireStore
+      QuerySnapshot<Map<String, dynamic>> data = await _fireStore
+          .collection("users")
+          .doc(userData.phone)
+          .collection("messages")
+          .get();
+      data.docs.map((e) => print(e));
+      return [];
+    }
+  }
+
+  Future<bool> checkMessageUpdate(MessageModel lastMessage) async {
+    // check if message i have are updates
+    DataSnapshot lastId = await _fireBase
+        .child(userData.phone)
+        .child("messages")
+        .child("lastId")
+        .get();
+    if (lastId.exists) {
+      return lastMessage.id == lastId.value;
+    } else {
+      return true;
+    }
+  }
+
+  void saveMessage(
+      {bool mine = true,
+      Map<String, dynamic>? messageMap,
+      MessageModel? messageModel}) {
+    messageMap ??= messageModel!.toMap();
+
+    // save to database
+    if (mine) {
+      // upload to fire and push notification and set doctor unread
+      _fireStore
+          .collection("users")
+          .doc(userData.phone)
+          .collection("messages")
+          .add(messageMap)
+          .then((value) async {
+        messageMap!['id'] = value.id;
+        _dataBase.insert("messages", messageMap);
+        _fireBase
+            .child(userData.phone)
+            .child("messages")
+            .update({"lastID": value.id, "doctor": false});
+
+        DioHelper dioHelper = DioHelper();
+        print(await dioHelper.postData(
+            sendData: {
+              "type": "newMessage",
+              "user": userData.phone,
+              "messageId": value.id,
+              "messageData": json.encode(messageMap)
+            },
+            title: "New order",
+            body: "Order received from ${userData.phone}",
+            receiverUId: "admin"));
+      }).catchError((err) {
+        print(err);
+        EasyLoading.showError("Error at sending message");
+      });
+    } else {
+      _dataBase.insert("messages", messageMap);
+    }
+  }
+
+  ///-----------------------------------------------------------------///
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
     List<Map<String, dynamic>> queryData;

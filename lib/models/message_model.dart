@@ -6,16 +6,7 @@ class MessageModel {
   double? width;
   late bool isMine;
   late bool seen;
-
-  /// Data base
-  // 	"id"	TEXT,
-  // 	"body"	TEXT,
-  // 	"time"	TEXT,
-  // 	"sender"	INTEGER,
-  // 	"type"	TEXT,
-  // 	"size"	NUMERIC,
-  // 	"width"	NUMERIC,
-  // 	"status"	INTEGER
+  late String time;
 
   MessageModel({
     Map<String, dynamic>? jsonData,
@@ -26,14 +17,16 @@ class MessageModel {
     double? mWidth,
     bool? mSender,
     bool? mStatus,
+    String? mTime,
   }) {
     if (jsonData != null) {
       id = jsonData['id'];
       body = jsonData['body'];
+      time = jsonData['time'];
       type = {
         "text": MessageType.text,
-        "image": MessageType.text,
-        "file": MessageType.text
+        "image": MessageType.image,
+        "file": MessageType.file
       }[jsonData['type']]!;
       size = jsonData['size'];
       width = jsonData['width'];
@@ -47,7 +40,25 @@ class MessageModel {
       width = mWidth;
       isMine = mSender!;
       seen = mStatus ?? false;
+      time = mTime!;
     }
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'body': body,
+      'type': {
+        MessageType.text: "text",
+        MessageType.image: "image",
+        "file": MessageType.text
+      }[MessageType],
+      'size': size,
+      'width': width,
+      'time': time,
+      'sender': isMine ? 0 : 1,
+      'status': seen ? 1 : 0
+    };
   }
 }
 
