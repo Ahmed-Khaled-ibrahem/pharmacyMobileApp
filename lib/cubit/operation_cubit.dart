@@ -93,7 +93,7 @@ class AppCubit extends Cubit<AppStates> {
   void appStart(String? uPhone, String lang, String theme) async {
     themeState = theme;
     languageState = lang;
-    print("hehe");
+
     if (await Permission.notification.request().isGranted) {
       FireNotificationHelper(notificationHandler);
     }
@@ -404,6 +404,7 @@ class AppCubit extends Cubit<AppStates> {
     List<MessageModel> messagesData = (await _dataBase.query("messages"))
         .map((e) => MessageModel(jsonData: e))
         .toList();
+    numberOfMessages = 1;
     if ((messagesData.length == numberOfMessages)) {
       return messagesData;
     } else {
@@ -412,9 +413,15 @@ class AppCubit extends Cubit<AppStates> {
           .doc(userData.phone)
           .collection("messages")
           .get();
-      data.docs.map((e) => print(e));
-      // TODO : // COMPLETE THiS FUNCTIONS BODY
-      return [];
+      print("jj");
+      messagesData = [];
+      for (var e in data.docs) {
+        Map<String, dynamic> messageMap = e.data();
+        messageMap['id'] = e.id;
+        messagesData.add(MessageModel(jsonData: messageMap));
+        _dataBase.insert("messages", messageMap);
+      }
+      return messagesData;
     }
   }
 

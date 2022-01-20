@@ -18,7 +18,6 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-    // navigation bar color
     statusBarColor: Color.fromRGBO(0, 0, 0, 0), // status bar color
   ));
 
@@ -49,15 +48,14 @@ class _MyAppState extends State<MyApp> {
     setState(() {});
   }
 
+  String lang = PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
+      "English";
+  String theme =
+      PreferenceHelper.getDataFromSharedPreference(key: 'ThemeState') ??
+          'Light';
+
   @override
   Widget build(BuildContext context) {
-    final lang =
-        PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
-            "English";
-    final theme =
-        PreferenceHelper.getDataFromSharedPreference(key: 'ThemeState') ??
-            'Light';
-
     return MultiBlocProvider(
       providers: [
         BlocProvider(
