@@ -184,7 +184,7 @@ class MainScreen extends StatelessWidget {
                             ),
                           ),
                         ),
-                        offersList.isNotEmpty?
+                        offersList.isEmpty?
                         Card(
                           color: Colors.amber[200],
                           child: SizedBox(

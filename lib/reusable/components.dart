@@ -12,6 +12,8 @@ Widget defaultTextField({
   required IconData prefixIcon,
   TextInputType? keyboardType,
   int? lineCount,
+  String? initialValue,
+  bool? readonly
 }) {
   return TextFormField(
     controller: controller,
@@ -23,6 +25,8 @@ Widget defaultTextField({
         return null;
       }
     },
+    readOnly: readonly??false,
+    initialValue: initialValue,
     maxLines: lineCount,
     decoration: InputDecoration(
         labelText: label,

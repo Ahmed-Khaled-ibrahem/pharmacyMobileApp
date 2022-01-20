@@ -5,9 +5,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/show_screens/profile_page.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
 import '../contsants/const_colors.dart';
 import '../reusable/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -21,6 +24,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   int? _activeMeterIndex = 1000;
+  ImageProvider avatar = Image.network('https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg').image;
 
   @override
   Widget build(BuildContext context) {
@@ -185,7 +189,27 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         const Divider(
                           thickness: 2,
                         ),
+                          ListTile(
+                             leading: CircleAvatar(
+                               radius: 30,
+                               child:Image.network('https://png.pngtree.com/png-vector/20191101/ourmid/pngtree-cartoon-color-simple-male-avatar-png-image_1934459.jpg'
+                                 ,scale: 2,),
+                             ),
+                          title: const Text('Ahmed Khaled Ibrahem'),
+                          trailing: InkWell(
+                              onTap: (){
+                                navigateTo(context, const ProfileScreen(), true);
+                              },
+                              child:  SizedBox(height: 40,width:30,child: Icon(Icons.edit,color: Theme.of(context).indicatorColor,))),
+                           subtitle: const Text("01288534459"),
+                           horizontalTitleGap: 20,
+                        ),
+                        const Divider(
+                          thickness: 2,
+                        ),
                       ],
+
+
                     ),
                   ),
                   Expanded(
