@@ -23,6 +23,7 @@ class OrderList extends StatelessWidget {
               child: CircularProgressIndicator(),
             )
           : PageView.builder(
+physics: const BouncingScrollPhysics(),
               itemCount: 2,
               itemBuilder: (_, index) {
                 switch (index) {
