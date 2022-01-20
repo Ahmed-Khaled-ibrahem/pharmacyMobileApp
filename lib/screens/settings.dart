@@ -112,8 +112,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                               .putDataInSharedPreference(
                                                   key: 'language',
                                                   value: value.toString());
-
-                                          MyApp.restartApp(context);
+                                          RestartWidget.restartApp(context);
                                           // EasyLoading.showInfo(
                                           //     "Restart the App to make changes");
                                         }

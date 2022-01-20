@@ -31,28 +31,15 @@ Future<void> main() async {
 }
 
 // ignore: must_be_immutable
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   MyApp(this.phone, {Key? key}) : super(key: key);
-
-  String? phone;
-  static void restartApp(BuildContext context) {
-    context.findAncestorStateOfType<_MyAppState>()!.restartApp();
-  }
-
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  void restartApp() {
-    setState(() {});
-  }
 
   String lang = PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
       "English";
   String theme =
       PreferenceHelper.getDataFromSharedPreference(key: 'ThemeState') ??
           'Light';
+  String? phone;
 
   @override
   Widget build(BuildContext context) {
@@ -60,10 +47,49 @@ class _MyAppState extends State<MyApp> {
       providers: [
         BlocProvider(
             create: (BuildContext context) =>
-                AppCubit()..appStart(widget.phone, lang, theme)),
+                AppCubit()..appStart(phone, lang, theme)),
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
-      child: MaterialApp(
+      child: RestartWidget(
+        phone: phone,
+      ),
+    );
+  }
+}
+
+// ignore: must_be_immutable
+class RestartWidget extends StatefulWidget {
+  RestartWidget({Key? key, this.phone}) : super(key: key);
+
+  String? phone;
+
+  static void restartApp(BuildContext context) {
+    context.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+  }
+
+  @override
+  _RestartWidgetState createState() => _RestartWidgetState();
+}
+
+class _RestartWidgetState extends State<RestartWidget> {
+  Key key = UniqueKey();
+
+  void restartApp() {
+    setState(() {
+      print("restart");
+      // key = UniqueKey();
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    String lang;
+
+    return Builder(builder: (BuildContext context) {
+      lang = PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
+          "English";
+      print(lang);
+      return MaterialApp(
         navigatorKey: navigatorKey,
         locale: lang == 'English'
             ? const Locale('en')
@@ -89,22 +115,22 @@ class _MyAppState extends State<MyApp> {
         debugShowCheckedModeBanner: false,
         /*
         theme: ThemeData(
-          backgroundColor: themeColor,
-          appBarTheme: const AppBarTheme(backgroundColor: themeColor),
-          //canvasColor: AppCubit().themeColor,
-          primaryColor: Colors.white,
-          focusColor: Colors.white,
-          unselectedWidgetColor: Colors.white,
-          splashColor: Colors.white,
-          scaffoldBackgroundColor: const Color(0xFFFFF9F9),
+            backgroundColor: themeColor,
+            appBarTheme: const AppBarTheme(backgroundColor: themeColor),
+            //canvasColor: AppCubit().themeColor,
+            primaryColor: Colors.white,
+            focusColor: Colors.white,
+            unselectedWidgetColor: Colors.white,
+            splashColor: Colors.white,
+            scaffoldBackgroundColor: const Color(0xFFFFF9F9),
         ),
 
          */
         home: widget.phone == null
             ? const LoginScreen()
             : MainScreen(null), //const MakeAnOrderScreen(), //
-      ),
-    );
+      );
+    });
   }
 }
 
