@@ -13,16 +13,20 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/message_model.dart';
+import 'package:pharmacyapp/models/offer_model.dart';
 import 'package:pharmacyapp/models/order_model.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/main_screen.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'package:pharmacyapp/shared/fcm/dio_helper.dart';
+import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:sqflite/sqflite.dart';
+import '../main.dart';
 import 'states.dart';
 
 class AppCubit extends Cubit<AppStates> {
@@ -41,17 +45,21 @@ class AppCubit extends Cubit<AppStates> {
 
   bool newMessage = false;
   bool activeOrder = false;
+  int numberOfMessages = 0;
+  int numberOfOrders = 0;
 
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
-  // List<OfferItem> offerItems = [];
+  List<OfferItem> offerItems = [];
 
   // start function
   void mainStart() {
     emit(InitialStateLoading());
 
     _loadDataBase();
+
+    _readOffers();
 
     _fireBase.child(userData.phone).get().then((snapshot) {
       /// check if there any active orders
@@ -69,6 +77,12 @@ class AppCubit extends Cubit<AppStates> {
         Map<String, dynamic> mapA = json.decode(map);
         newMessage = !mapA['user'];
       }
+
+      numberOfMessages =
+          int.parse(snapshot.child("numberOfMessages").value.toString());
+      numberOfOrders =
+          int.parse(snapshot.child("numberOfOrders").value.toString());
+
       emit(GetFireStateDone());
     }).catchError((err) {
       print(err);
@@ -78,6 +92,11 @@ class AppCubit extends Cubit<AppStates> {
   void appStart(String? uPhone, String lang, String theme) async {
     themeState = theme;
     languageState = lang;
+
+    if (await Permission.notification.request().isGranted) {
+      FireNotificationHelper(notificationHandler);
+    }
+
     // read user data
     if (uPhone != null) {
       String name =
@@ -86,6 +105,10 @@ class AppCubit extends Cubit<AppStates> {
       userData = AppUser(uPhone, name_['first']!, name_['second']!);
       mainStart();
     }
+  }
+
+  void _readOffers() {
+    offerItems = [];
   }
 
   /// cart an order functions
@@ -192,7 +215,7 @@ class AppCubit extends Cubit<AppStates> {
         List<Map<String, dynamic>> orderDrugs = cartItems
             .map((e) => {"id": e.drug.id, "quantity": e.quantity})
             .toList();
-
+        numberOfOrders++;
         Map<String, dynamic> orderData = {
           "Name": userName,
           "ContactPhone": userPhone,
@@ -205,6 +228,7 @@ class AppCubit extends Cubit<AppStates> {
           "OrderDrugs": orderDrugs,
           "OrderImages": orderImages,
           "description": description,
+          "location": await determinePosition(latLan: true) ?? "denied",
         };
 
         _fireStore
@@ -374,82 +398,68 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  // TODO : // COMPLETE THiS FUNCTIONS BODY
   Future<List<MessageModel>> getAllMessages() async {
     List<MessageModel> messagesData = (await _dataBase.query("messages"))
         .map((e) => MessageModel(jsonData: e))
         .toList();
-    if (await checkMessageUpdate(messagesData.last)) {
+    if ((messagesData.length == numberOfMessages)) {
       return messagesData;
     } else {
-      // from FireStore
       QuerySnapshot<Map<String, dynamic>> data = await _fireStore
           .collection("users")
           .doc(userData.phone)
           .collection("messages")
           .get();
       data.docs.map((e) => print(e));
+      // TODO : // COMPLETE THiS FUNCTIONS BODY
       return [];
     }
   }
 
-  Future<bool> checkMessageUpdate(MessageModel lastMessage) async {
-    // check if message i have are updates
-    DataSnapshot lastId = await _fireBase
-        .child(userData.phone)
-        .child("messages")
-        .child("lastId")
-        .get();
-    if (lastId.exists) {
-      return lastMessage.id == lastId.value;
-    } else {
-      return true;
-    }
-  }
-
-  void saveMessage(
+  Future<bool> saveMessage(
       {bool mine = true,
       Map<String, dynamic>? messageMap,
-      MessageModel? messageModel}) {
-    messageMap ??= messageModel!.toMap();
+      MessageModel? messageModel}) async {
+    if (await _isConnected()) {
+      messageMap ??= messageModel!.toMap();
+      numberOfOrders++;
+      if (mine) {
+        _fireStore
+            .collection("users")
+            .doc(userData.phone)
+            .collection("messages")
+            .add(messageMap)
+            .then((value) async {
+          messageMap!['id'] = value.id;
+          _dataBase.insert("messages", messageMap);
+          _fireBase
+              .child(userData.phone)
+              .child("messages")
+              .update({"lastID": value.id, "doctor": false});
 
-    // save to database
-    if (mine) {
-      // upload to fire and push notification and set doctor unread
-      _fireStore
-          .collection("users")
-          .doc(userData.phone)
-          .collection("messages")
-          .add(messageMap)
-          .then((value) async {
-        messageMap!['id'] = value.id;
+          DioHelper dioHelper = DioHelper();
+          print(await dioHelper.postData(
+              sendData: {
+                "type": "newMessage",
+                "user": userData.phone,
+                "messageId": value.id,
+                "messageData": json.encode(messageMap)
+              },
+              title: "New order",
+              body: "Order received from ${userData.phone}",
+              receiverUId: "admin"));
+        }).catchError((err) {
+          print(err);
+          EasyLoading.showError("Error at sending message");
+        });
+      } else {
         _dataBase.insert("messages", messageMap);
-        _fireBase
-            .child(userData.phone)
-            .child("messages")
-            .update({"lastID": value.id, "doctor": false});
-
-        DioHelper dioHelper = DioHelper();
-        print(await dioHelper.postData(
-            sendData: {
-              "type": "newMessage",
-              "user": userData.phone,
-              "messageId": value.id,
-              "messageData": json.encode(messageMap)
-            },
-            title: "New order",
-            body: "Order received from ${userData.phone}",
-            receiverUId: "admin"));
-      }).catchError((err) {
-        print(err);
-        EasyLoading.showError("Error at sending message");
-      });
+      }
+      return true;
     } else {
-      _dataBase.insert("messages", messageMap);
+      return false;
     }
   }
-
-  ///-----------------------------------------------------------------///
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
     List<Map<String, dynamic>> queryData;
@@ -461,6 +471,8 @@ class AppCubit extends Cubit<AppStates> {
     }
     return queryData.map((e) => Drug(drudData: e)).toList();
   }
+
+  ///-----------------------------------------------------------------///
 
   /// helper for make order
   Future<String> uploadFile(File file, String place) async {
@@ -486,7 +498,7 @@ class AppCubit extends Cubit<AppStates> {
     return link;
   }
 
-  Future<String?> determinePosition() async {
+  Future<String?> determinePosition({bool latLan = false}) async {
     EasyLoading.show(status: 'getting location..');
 
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -499,8 +511,9 @@ class AppCubit extends Cubit<AppStates> {
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
-        EasyLoading.showError('Location permissions are denied',
-            maskType: EasyLoadingMaskType.clear);
+        if (!latLan) {
+          EasyLoading.showError('Location permissions are denied');
+        }
         return null;
       }
     } else if (permission == LocationPermission.deniedForever) {
@@ -510,6 +523,11 @@ class AppCubit extends Cubit<AppStates> {
     }
 
     Position pos = await Geolocator.getCurrentPosition();
+
+    if (latLan) {
+      return "${pos.latitude}, ${pos.longitude}";
+    }
+
     List<Placemark> placeMarks =
         await placemarkFromCoordinates(pos.latitude, pos.longitude)
             .catchError((err) {
@@ -528,9 +546,6 @@ class AppCubit extends Cubit<AppStates> {
     fullLocation += ' ';
     fullLocation += place.country ?? '';
 
-    // print(pos.longitude);
-    // print(pos.latitude);
-
     EasyLoading.dismiss();
     return fullLocation;
   }
@@ -542,6 +557,56 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       return true;
     }
+  }
+
+  /// notification receiver
+  void notificationHandler(Map<String, dynamic> data) {
+    String type = data['type'];
+    String title;
+    String body;
+
+    switch (type) {
+      case "orderConfirmation":
+        activeOrder = false;
+        _dataBase.update("orders", {"price": data['newPrice']},
+            where: "id == ${data['orderId']}");
+        body =
+            "your order has received the price is ${data['price']} , the delivery will contact you soon";
+        title = "Order confirmation";
+        emit(NotificationReceived());
+        break;
+      case "newMessage":
+        numberOfMessages++;
+        newMessage = true;
+        _dataBase.insert("messages", data["messageData"]);
+        body = "The doctor sent you a message see it";
+        title = "New message";
+        emit(NotificationReceived());
+        break;
+      case "offers":
+        body = "New offers available check them now";
+        title = "New offers";
+        _readOffers();
+        emit(NotificationReceived());
+        break;
+      default:
+        body = data['body'];
+        title = data['title'];
+    }
+    showDialog(
+      context: navigatorKey.currentState!.context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(title),
+          content: Text(body),
+          actions: [
+            OutlinedButton(
+                onPressed: () => Navigator.of(context).pop(),
+                child: const Text("Ok")),
+          ],
+        );
+      },
+    );
   }
 
   /// logOut

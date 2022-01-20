@@ -21,7 +21,7 @@ class ArchiveOrderDetails extends StatelessWidget {
           context: context,
         ),
         body: SingleChildScrollView(
-physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(15.0),
             child: Column(
@@ -77,7 +77,7 @@ physics: const BouncingScrollPhysics(),
                   visible: data.description != null,
                   child: Row(
                     children: [
-                      const Expanded(flex: 2, child: Text("Order price")),
+                      const Expanded(flex: 2, child: Text("description")),
                       Expanded(flex: 4, child: Text(data.description!))
                     ],
                   ),
@@ -162,7 +162,7 @@ physics: const BouncingScrollPhysics(),
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: PageView.builder(
-physics: const BouncingScrollPhysics(),
+          physics: const BouncingScrollPhysics(),
           itemCount: 2,
           itemBuilder: (_, index) {
             switch (index) {

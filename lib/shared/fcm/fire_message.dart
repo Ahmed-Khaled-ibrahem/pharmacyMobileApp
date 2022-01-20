@@ -1,12 +1,15 @@
 import 'dart:async';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_vibrate/flutter_vibrate.dart';
+import 'package:sqflite/sqflite.dart';
 
 class FireNotificationHelper {
   static Future<String?> token() => FirebaseMessaging.instance.getToken();
+
+  Function(Map<String, dynamic>) cubitHandler;
   // String? token = await FireNotificationHelper.token() ;
 
-  FireNotificationHelper() {
+  FireNotificationHelper(this.cubitHandler) {
     FirebaseMessaging.onMessage
         .listen(_firebaseMessagingForegroundHandler)
         .onError((err) {
@@ -27,16 +30,33 @@ class FireNotificationHelper {
   Future<void> _firebaseMessagingForegroundHandler(
       RemoteMessage message) async {
     Vibrate.vibrate();
-    print("here when front ${message.data}");
+    cubitHandler(message.data);
   }
 
   Future<void> _firebaseMessagingBackgroundHandler(
       RemoteMessage message) async {
-    print("here when back ${message.data}");
+    cubitHandler(message.data);
   }
 }
 
 Future<void> _firebaseMessagingBackgroundCloseHandler(
     RemoteMessage message) async {
-  print("here when closing ${message.data}");
+  Map<String, dynamic> data = message.data;
+  String databasePath = await getDatabasesPath();
+  String path = "$databasePath/${data["user"]}-drugs.db";
+  bool exists = await databaseExists(path);
+  if (exists) {
+    Database _dataBase = await openDatabase(path);
+    String type = data['type'];
+
+    switch (type) {
+      case "orderConfirmation":
+        _dataBase.update("orders", {"price": data['newPrice']},
+            where: "id == ${data['orderId']}");
+        break;
+      case "newMessage":
+        _dataBase.insert("messages", data["messageData"]);
+        break;
+    }
+  }
 }
