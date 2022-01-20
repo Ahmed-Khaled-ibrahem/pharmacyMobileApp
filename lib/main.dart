@@ -4,26 +4,20 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'screens/show_screens/main_screen.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
-import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'shared/pref_helper.dart';
 import 'cubit/operation_cubit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
-// GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-
-  if (await Permission.notification.request().isGranted) {
-    FireNotificationHelper();
-  }
 
   SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
     // navigation bar color
@@ -62,7 +56,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (BuildContext context) => SigningCubit()),
       ],
       child: MaterialApp(
-        // navigatorKey: navigatorKey,
+        navigatorKey: navigatorKey,
         locale: lang == 'English'
             ? const Locale('en')
             : lang == 'Arabic'

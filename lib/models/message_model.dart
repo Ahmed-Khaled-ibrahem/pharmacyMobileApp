@@ -33,12 +33,12 @@ class MessageModel {
       isMine = jsonData['sender'] == 0;
       seen = jsonData['status'] == 1;
     } else {
-      id = mId!;
+      id = mSender! ? "" : mId!;
       body = mBody!;
       type = mType!;
       size = mSize;
       width = mWidth;
-      isMine = mSender!;
+      isMine = mSender;
       seen = mStatus ?? false;
       time = mTime!;
     }
