@@ -28,12 +28,6 @@ class SearchResultsScreen extends StatelessWidget {
         return GestureDetector(
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
-                floatingActionButton: FloatingActionButton(
-                  child: const Text("test"),
-                  onPressed: () {
-                    cubit.getAllMessages();
-                  },
-                ),
                 appBar: myAppBar(
                     text: "Search",
                     context: context,
