@@ -8,15 +8,15 @@ class Drug {
   late int id;
   late bool isFav;
 
-  Drug({required Map<String, dynamic> drudData}) {
-    name = drudData['name'];
-    id = drudData['id'];
-    price = drudData['price'];
-    scientificName = drudData['scientific_name'];
-    companies = drudData['companies'].toString().split(",");
-    picture = drudData['picture'];
-    details = drudData['details'];
-    isFav = drudData['favorite'] == 1;
+  Drug({required Map<String, dynamic> drugData}) {
+    name = drugData['name'];
+    id = drugData['id'];
+    price = drugData['price'];
+    scientificName = drugData['scientific_name'];
+    companies = drugData['companies'].toString().split(",");
+    picture = drugData['picture'];
+    details = drugData['details'];
+    isFav = drugData['favorite'] == 1;
   }
 }
 

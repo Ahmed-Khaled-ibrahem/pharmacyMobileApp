@@ -26,10 +26,12 @@ class ChattingScreen extends StatefulWidget {
 class _ChattingScreenState extends State<ChattingScreen> {
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
+
   @override
   void initState() {
     super.initState();
     _loadMessages();
+    // build listener on doctor seen if there is a message
   }
 
   void _addMessage(types.Message message) {
@@ -38,7 +40,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
     });
   }
 
-  void _handleAtachmentPressed() {
+  void _handleAttachmentPressed() {
     showModalBottomSheet<void>(
       context: context,
       builder: (BuildContext context) {
@@ -237,7 +239,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
             showUserAvatars: true,
             showUserNames: true,
             messages: _messages,
-            onAttachmentPressed: _handleAtachmentPressed,
+            onAttachmentPressed: _handleAttachmentPressed,
             onMessageTap: _handleMessageTap,
             onPreviewDataFetched: _handlePreviewDataFetched,
             onSendPressed: _handleSendPressed,

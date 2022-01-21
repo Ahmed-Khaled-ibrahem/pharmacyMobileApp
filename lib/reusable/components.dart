@@ -5,16 +5,15 @@ import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/settings.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-Widget defaultTextField({
-  required TextEditingController controller,
-  required String validateString,
-  required String label,
-  required IconData prefixIcon,
-  TextInputType? keyboardType,
-  int? lineCount,
-  String? initialValue,
-  bool? readonly
-}) {
+Widget defaultTextField(
+    {required TextEditingController controller,
+    required String validateString,
+    required String label,
+    required IconData prefixIcon,
+    TextInputType? keyboardType,
+    int? lineCount,
+    String? initialValue,
+    bool? readonly}) {
   return TextFormField(
     controller: controller,
     keyboardType: keyboardType,
@@ -25,7 +24,7 @@ Widget defaultTextField({
         return null;
       }
     },
-    readOnly: readonly??false,
+    readOnly: readonly ?? false,
     initialValue: initialValue,
     maxLines: lineCount,
     decoration: InputDecoration(
@@ -59,13 +58,17 @@ Widget optionsWidget(BuildContext context) {
           child: Row(
             children: [
               choice == setText
-                  ?  Icon(
+                  ? Icon(
                       Icons.settings,
-                   color:  cubit.themeState=='Dark'? Colors.white: Colors.black,
+                      color: cubit.themeState == 'Dark'
+                          ? Colors.white
+                          : Colors.black,
                     )
-                  :  Icon(
+                  : Icon(
                       Icons.logout,
-                color:  cubit.themeState=='Dark'? Colors.white: Colors.black,
+                      color: cubit.themeState == 'Dark'
+                          ? Colors.white
+                          : Colors.black,
                     ),
               const SizedBox(
                 width: 10,
@@ -121,11 +124,17 @@ Widget photoWithError(
       error,
       stackTrace,
     ) {
-      return errorWidget ??
-          const Icon(
-            Icons.downloading,
-            size: 30,
-          );
+      return SizedBox(
+        width: width,
+        height: height,
+        child: Center(
+          child: errorWidget ??
+              const Icon(
+                Icons.downloading,
+                size: 30,
+              ),
+        ),
+      );
     },
     image: imageLink,
   );

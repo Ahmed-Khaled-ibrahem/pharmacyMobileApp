@@ -52,7 +52,7 @@ class AppCubit extends Cubit<AppStates> {
 
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
-  List<OfferItem> offerItems = [];
+  List<OfferItem> offersList = [];
 
   // start function
   void mainStart() {
@@ -60,8 +60,6 @@ class AppCubit extends Cubit<AppStates> {
     print("att main");
 
     _loadDataBase();
-
-    _readOffers();
 
     _fireBase.child(userData.phone).get().then((snapshot) {
       /// check if there any active orders
@@ -113,8 +111,38 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  void _readOffers() {
-    offerItems = [];
+  Future<void> _readOffers() async {
+    offersList = [
+      OfferItem((await findInDataBase(id: 10))[0], 30),
+      OfferItem((await findInDataBase(id: 15))[0], 15),
+      OfferItem((await findInDataBase(id: 32))[0], 60, isPercentage: false),
+    ];
+    // [
+    //    {
+    //      "id": 200,
+    //      "name": "Head and Shoulders Shampoo 400 ml",
+    //      "priceorperc": true,
+    //      "value": 30,
+    //      "image": "https://m.media-amazon.com/images/I/71+Zza6xeNL._SY355_.jpg",
+    //    },
+    //    {
+    //      "id": 201,
+    //      "name": "Sun block Cream 250 ml",
+    //      "priceorperc": true,
+    //      "value": 15,
+    //      "image":
+    //      "https://api.watsons.com.ph/medias/Sun-Light-Gel-SPF50-50ml-50020619.jpg?context=bWFzdGVyfHd0Y3BoL2ltYWdlc3w1OTg3OXxpbWFnZS9qcGVnfGhjNS9oZDgvOTA5ODQ2MDEwMjY4Ni9TdW4gTGlnaHQgR2VsIFNQRjUwIDUwbWwtNTAwMjA2MTkuanBnfGQxZGRlNmJkZGFmNDI4OWZhN2QxY2U3ZWQ4MzU1YjgxNDVmNTQxNmIxZWIwYzUwOTYyMTcwN2QyOGYzYjlkYjA",
+    //    },
+    //    {
+    //      "id": 202,
+    //      "name": "Axe Body Spray 150 ml",
+    //      "priceorperc": false,
+    //      "value": 60,
+    //      "image":
+    //      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTheyuwVZM2IZWg8MztfoDyg-mEnrWsrMDj_SyPVSvbTXQpM07XT9XNE7gjglhyopano&usqp=CAU",
+    //    },
+    //  ];
+
     emit(OffersListReady());
   }
 
@@ -138,6 +166,9 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void addToCart(Drug drug) {
+    if (!EasyLoading.isShow) {
+      EasyLoading.showToast("Item added to cart");
+    }
     if (cartItems.map((e) => e.drug.id).toList().contains(drug.id)) {
       EasyLoading.showToast("Item already in cart");
     } else {
@@ -319,6 +350,8 @@ class AppCubit extends Cubit<AppStates> {
       });
     }
 
+    _readOffers();
+
     emit(InitialStateDone());
   }
 
@@ -332,7 +365,7 @@ class AppCubit extends Cubit<AppStates> {
   Future<List<Drug>> getFavoriteList() async {
     List<Map<String, dynamic>> queryData =
         await _dataBase.query("data", where: "favorite = 1");
-    return queryData.map((e) => Drug(drudData: e)).toList();
+    return queryData.map((e) => Drug(drugData: e)).toList();
   }
 
   Future<List<OrderModel>> getAllArchiveData() async {
@@ -487,7 +520,7 @@ class AppCubit extends Cubit<AppStates> {
     } else {
       queryData = await _dataBase.query("data", where: "id =  $id");
     }
-    return queryData.map((e) => Drug(drudData: e)).toList();
+    return queryData.map((e) => Drug(drugData: e)).toList();
   }
 
   ///-----------------------------------------------------------------///
