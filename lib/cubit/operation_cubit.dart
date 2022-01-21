@@ -305,8 +305,6 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  ///-----------------------------------------------------------------------///
-
   /// deal with data base
   Future<void> _loadDataBase() async {
     String databasePath = await getDatabasesPath();
@@ -507,8 +505,6 @@ class AppCubit extends Cubit<AppStates> {
     }
     return queryData.map((e) => Drug(drugData: e)).toList();
   }
-
-  ///-----------------------------------------------------------------///
 
   /// helper for make order
   Future<String> uploadFile(File file, String place) async {

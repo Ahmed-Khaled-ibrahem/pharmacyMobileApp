@@ -268,17 +268,20 @@ class SignUpPage extends StatelessWidget {
       duration: const Duration(seconds: 1),
       child: Column(
         children: [
-          Stack(
-            children: [
-              InkWell(
-                child: CircleAvatar(
-                  backgroundColor: Colors.white,
-                  radius: 105,
+          const SizedBox(
+            height: 10,
+          ),
+          CircleAvatar(
+            backgroundColor: Colors.white,
+            radius: 80,
+            child: Stack(
+              children: [
+                InkWell(
                   child: ClipOval(
                     child: Image.network(
                       photo,
-                      width: 200,
-                      height: 200,
+                      width: 150,
+                      height: 150,
                       errorBuilder: (_, __, ___) {
                         return const Padding(
                           padding: EdgeInsets.all(20.0),
@@ -290,42 +293,42 @@ class SignUpPage extends StatelessWidget {
                       },
                     ),
                   ),
-                ),
-                onTap: () {
-                  navigateTo(context, ViewPhoto(photo), true);
-                },
-              ),
-              Positioned(
-                bottom: -20,
-                right: -20,
-                child: InkWell(
-                  onTap: () async {
-                    XFile? photoFile = await _takePhoto(context);
-                    if (photoFile != null) {
-                      AppCubit appCubit = AppCubit.get(context);
-                      photo = await appCubit.uploadFile(
-                          File(photoFile.path), "users");
-                      cubit.emitGeneralState();
-                    }
+                  onTap: () {
+                    navigateTo(context, ViewPhoto(photo), true);
                   },
-                  child: Container(
-                      width: 50,
-                      height: 50,
-                      decoration: const BoxDecoration(
-                        color: Colors.black87,
-                        borderRadius: BorderRadius.all(Radius.circular(40)),
-                      ),
-                      child: const Icon(
-                        Icons.edit,
-                        size: 30,
-                        color: Colors.orange,
-                      )),
                 ),
-              ),
-            ],
+                Positioned(
+                  bottom: 2,
+                  right: 2,
+                  child: InkWell(
+                    onTap: () async {
+                      XFile? photoFile = await _takePhoto(context);
+                      if (photoFile != null) {
+                        AppCubit appCubit = AppCubit.get(context);
+                        photo = await appCubit.uploadFile(
+                            File(photoFile.path), "users");
+                        cubit.emitGeneralState();
+                      }
+                    },
+                    child: Container(
+                        width: 50,
+                        height: 50,
+                        decoration: const BoxDecoration(
+                          color: Colors.black87,
+                          borderRadius: BorderRadius.all(Radius.circular(40)),
+                        ),
+                        child: const Icon(
+                          Icons.edit,
+                          size: 30,
+                          color: Colors.orange,
+                        )),
+                  ),
+                ),
+              ],
+            ),
           ),
           const SizedBox(
-            height: 10,
+            height: 20,
           ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
