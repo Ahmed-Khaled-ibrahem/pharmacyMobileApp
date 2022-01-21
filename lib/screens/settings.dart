@@ -42,248 +42,249 @@ class _SettingsScreenState extends State<SettingsScreen> {
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
           child: Scaffold(
-              appBar: AppBar(
-                  centerTitle: true,
-                  toolbarHeight: 60,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      bottom: Radius.circular(30),
-                    ),
+            appBar: AppBar(
+                centerTitle: true,
+                toolbarHeight: 60,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
                   ),
-                  backgroundColor: themeColor,
-                  elevation: 0,
-                  title: const Text(
-                    "Settings",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  )),
-              body: SingleChildScrollView(
-                physics: defaultScrollPhysics,
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            "Language",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          DecoratedBox(
-                              decoration: BoxDecoration(
-                                color:
-                                    themeColor, //background color of dropdown button
-                                border: Border.all(
-                                    color: Colors.black38,
-                                    width: 1), //border of dropdown button
-                                borderRadius: BorderRadius.circular(
-                                    50), //border raiuds of dropdown button
+                ),
+                backgroundColor: themeColor,
+                elevation: 0,
+                title: const Text(
+                  "Settings",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
+            body: SingleChildScrollView(
+              physics: defaultScrollPhysics,
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 15),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ListTile(
+                          onTap: () {
+                            navigateTo(context, ProfileScreen(), true);
+                          },
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            radius: 32,
+                            child: ClipOval(
+                              child: Image.network(
+                                AppCubit.userData.photo,
+                                width: 50,
+                                errorBuilder: (_, __, ___) {
+                                  return const Icon(Icons.person);
+                                },
                               ),
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 30, right: 30),
-                                  child: DropdownButton(
-                                    value: cubit.languageState,
-                                    items: const [
-                                      DropdownMenuItem(
-                                        child: Text("English"),
-                                        value: "English",
-                                      ),
-                                      DropdownMenuItem(
-                                          child: Text("Arabic"),
-                                          value: "Arabic"),
-                                      DropdownMenuItem(
-                                        child: Text("System"),
-                                        value: "System",
-                                      )
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        if (cubit.languageState !=
-                                            value.toString()) {
-                                          cubit.languageState =
-                                              value.toString();
-                                          PreferenceHelper
-                                              .putDataInSharedPreference(
-                                                  key: 'language',
-                                                  value: value.toString());
-                                          RestartWidget.restartApp(context);
-                                          // EasyLoading.showInfo(
-                                          //     "Restart the App to make changes");
-                                        }
-                                      });
-                                    },
-                                    icon: const Padding(
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.language)),
-                                    iconEnabledColor: Colors.white,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                    dropdownColor: Colors.blueGrey,
-                                    underline: Container(),
-                                    isExpanded: true,
-                                  ))),
-                          const Divider(
-                            thickness: 2,
+                            ),
                           ),
-                          const Text(
-                            "Theme",
-                            style: TextStyle(
-                                fontSize: 20, fontWeight: FontWeight.bold),
+                          title: Text(
+                            AppCubit.userData.fullName(),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          DecoratedBox(
-                              decoration: BoxDecoration(
-                                color:
-                                    themeColor, //background color of dropdown button
-                                border: Border.all(
-                                    color: Colors.black38,
-                                    width: 1), //border of dropdown button
-                                borderRadius: BorderRadius.circular(
-                                    50), //border raiuds of dropdown button
-                              ),
-                              child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 30, right: 30),
-                                  child: DropdownButton(
-                                    value: cubit.themeState,
-                                    items: const [
-                                      //add items in the dropdown
-                                      DropdownMenuItem(
-                                        child: Text("Light"),
-                                        value: "Light",
-                                      ),
-                                      DropdownMenuItem(
-                                          child: Text("Dark"), value: "Dark"),
-                                      DropdownMenuItem(
-                                        child: Text("System"),
-                                        value: "System",
-                                      )
-                                    ],
-                                    onChanged: (value) {
-                                      setState(() {
-                                        cubit.themeState = value.toString();
+                          trailing: SizedBox(
+                              height: 40,
+                              width: 30,
+                              child: Icon(
+                                Icons.edit,
+                                color: Theme.of(context).indicatorColor,
+                              )),
+                          subtitle: Text(AppCubit.userData.phone),
+                          horizontalTitleGap: 20,
+                        ),
+                        const Divider(
+                          thickness: 2,
+                        ),
+                        const Text(
+                          "Language",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DecoratedBox(
+                            decoration: BoxDecoration(
+                              color:
+                                  themeColor, //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 1), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
+                            ),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 30, right: 30),
+                                child: DropdownButton(
+                                  value: cubit.languageState,
+                                  items: const [
+                                    DropdownMenuItem(
+                                      child: Text("English"),
+                                      value: "English",
+                                    ),
+                                    DropdownMenuItem(
+                                        child: Text("Arabic"), value: "Arabic"),
+                                    DropdownMenuItem(
+                                      child: Text("System"),
+                                      value: "System",
+                                    )
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      if (cubit.languageState !=
+                                          value.toString()) {
+                                        cubit.languageState = value.toString();
                                         PreferenceHelper
                                             .putDataInSharedPreference(
-                                                key: 'ThemeState',
+                                                key: 'language',
                                                 value: value.toString());
-                                        if (value.toString() == 'Light') {
-                                          EasyDynamicTheme.of(context)
-                                              .changeTheme(dark: false);
-                                        } else if (value.toString() == 'Dark') {
-                                          EasyDynamicTheme.of(context)
-                                              .changeTheme(dark: true);
-                                        } else {
-                                          EasyDynamicTheme.of(context)
-                                              .changeTheme(dynamic: true);
-                                        }
-                                      });
-                                    },
-                                    icon: const Padding(
-                                        padding: EdgeInsets.only(left: 20),
-                                        child: Icon(Icons.color_lens_rounded)),
-                                    iconEnabledColor: Colors.white,
-                                    style: const TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                    dropdownColor: Colors.blueGrey,
-                                    underline: Container(),
-                                    isExpanded: true,
-                                  ))),
-                          const Divider(
-                            thickness: 2,
-                          ),
-                          ListTile(
-                            onTap: () {
-                              navigateTo(context, ProfileScreen(), true);
-                            },
-                            leading: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 31,
-                              child: ClipOval(
-                                child: Image.network(
-                                  AppCubit.userData.photo,
-                                  width: 60,
-                                  errorBuilder: (_, __, ___) {
-                                    return const Icon(Icons.person);
+                                        RestartWidget.restartApp(context);
+                                        // EasyLoading.showInfo(
+                                        //     "Restart the App to make changes");
+                                      }
+                                    });
                                   },
-                                ),
-                              ),
+                                  icon: const Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.language)),
+                                  iconEnabledColor: Colors.white,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                  dropdownColor: Colors.blueGrey,
+                                  underline: Container(),
+                                  isExpanded: true,
+                                ))),
+                        const Divider(
+                          thickness: 2,
+                        ),
+                        const Text(
+                          "Theme",
+                          style: TextStyle(
+                              fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        DecoratedBox(
+                            decoration: BoxDecoration(
+                              color:
+                                  themeColor, //background color of dropdown button
+                              border: Border.all(
+                                  color: Colors.black38,
+                                  width: 1), //border of dropdown button
+                              borderRadius: BorderRadius.circular(
+                                  50), //border raiuds of dropdown button
                             ),
-                            title: Text(
-                              AppCubit.userData.fullName(),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                            trailing: SizedBox(
-                                height: 40,
-                                width: 30,
-                                child: Icon(
-                                  Icons.edit,
-                                  color: Theme.of(context).indicatorColor,
-                                )),
-                            subtitle: Text(AppCubit.userData.phone),
-                            horizontalTitleGap: 20,
-                          ),
-                          const Divider(
-                            thickness: 2,
-                          ),
-                        ],
-                      ),
+                            child: Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 30, right: 30),
+                                child: DropdownButton(
+                                  value: cubit.themeState,
+                                  items: const [
+                                    //add items in the dropdown
+                                    DropdownMenuItem(
+                                      child: Text("Light"),
+                                      value: "Light",
+                                    ),
+                                    DropdownMenuItem(
+                                        child: Text("Dark"), value: "Dark"),
+                                    DropdownMenuItem(
+                                      child: Text("System"),
+                                      value: "System",
+                                    )
+                                  ],
+                                  onChanged: (value) {
+                                    setState(() {
+                                      cubit.themeState = value.toString();
+                                      PreferenceHelper
+                                          .putDataInSharedPreference(
+                                              key: 'ThemeState',
+                                              value: value.toString());
+                                      if (value.toString() == 'Light') {
+                                        EasyDynamicTheme.of(context)
+                                            .changeTheme(dark: false);
+                                      } else if (value.toString() == 'Dark') {
+                                        EasyDynamicTheme.of(context)
+                                            .changeTheme(dark: true);
+                                      } else {
+                                        EasyDynamicTheme.of(context)
+                                            .changeTheme(dynamic: true);
+                                      }
+                                    });
+                                  },
+                                  icon: const Padding(
+                                      padding: EdgeInsets.only(left: 20),
+                                      child: Icon(Icons.color_lens_rounded)),
+                                  iconEnabledColor: Colors.white,
+                                  style: const TextStyle(
+                                      color: Colors.white, fontSize: 20),
+                                  dropdownColor: Colors.blueGrey,
+                                  underline: Container(),
+                                  isExpanded: true,
+                                ))),
+                        const Divider(
+                          thickness: 2,
+                        ),
+                      ],
                     ),
-                    ListView.builder(
-                        physics: const NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 2,
-                        itemBuilder: (BuildContext context, int i) {
-                          return Card(
-                            margin: const EdgeInsets.fromLTRB(
-                                10.0, 15.0, 10.0, 0.0),
-                            child: ExpansionPanelList(
-                              elevation: 0.0,
-                              animationDuration: const Duration(seconds: 1),
-                              expansionCallback: (int index, bool status) {
-                                setState(() {
-                                  _activeMeterIndex =
-                                      _activeMeterIndex == i ? null : i;
-                                });
-                              },
-                              children: [
-                                ExpansionPanel(
-                                    canTapOnHeader: true,
-                                    backgroundColor: _activeMeterIndex == i
-                                        ? Colors.cyan
-                                        : null,
-                                    isExpanded: _activeMeterIndex == i,
-                                    headerBuilder: (BuildContext context,
-                                            bool isExpanded) =>
-                                        Container(
-                                            padding:
-                                                const EdgeInsets.only(left: 10),
-                                            alignment: Alignment.centerLeft,
-                                            child: SingleChildScrollView(
-                                              scrollDirection: Axis.vertical,
-                                              child: Row(
-                                                children: [
-                                                  headList[i],
-                                                ],
-                                              ),
-                                            )),
-                                    body: contentList[i]),
-                              ],
-                            ),
-                          );
-                        }),
-                    footer(),
-                  ],
-                ),
-              )),
+                  ),
+                  ListView.builder(
+                      physics: const NeverScrollableScrollPhysics(),
+                      shrinkWrap: true,
+                      itemCount: 2,
+                      itemBuilder: (BuildContext context, int i) {
+                        return Card(
+                          margin:
+                              const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
+                          child: ExpansionPanelList(
+                            elevation: 0.0,
+                            animationDuration: const Duration(seconds: 1),
+                            expansionCallback: (int index, bool status) {
+                              setState(() {
+                                _activeMeterIndex =
+                                    _activeMeterIndex == i ? null : i;
+                              });
+                            },
+                            children: [
+                              ExpansionPanel(
+                                  canTapOnHeader: true,
+                                  backgroundColor: _activeMeterIndex == i
+                                      ? Colors.cyan
+                                      : null,
+                                  isExpanded: _activeMeterIndex == i,
+                                  headerBuilder: (BuildContext context,
+                                          bool isExpanded) =>
+                                      Container(
+                                          padding:
+                                              const EdgeInsets.only(left: 10),
+                                          alignment: Alignment.centerLeft,
+                                          child: SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: Row(
+                                              children: [
+                                                headList[i],
+                                              ],
+                                            ),
+                                          )),
+                                  body: contentList[i]),
+                            ],
+                          ),
+                        );
+                      }),
+                ],
+              ),
+            ),
+            bottomNavigationBar: BottomAppBar(
+              child: footer(),
+            ),
+          ),
         );
       },
     );
@@ -427,31 +428,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   Widget footer() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 4.0),
-      child: Column(
+      padding: const EdgeInsets.symmetric(vertical: 10),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Image.asset(
-                "assets/images/HomationLogo.png",
-                height: 30,
-                color: themeColor,
-              ),
-              const SizedBox(
-                width: 7,
-              ),
-              Column(
-                children: const [
-                  Text("By Homation"),
-                  Text("Version 1.0"),
-                ],
-              ),
-            ],
+          Image.asset(
+            "assets/images/HomationLogo.png",
+            height: 20,
+            color: themeColor,
           ),
           const SizedBox(
-            height: 5,
-          )
+            width: 10,
+          ),
+          SizedBox(
+            height: 30,
+            child: Column(
+              children: const [
+                Text("Powered by Homation"),
+                Text(
+                  "Version 1.0.0",
+                  style: TextStyle(fontSize: 10),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );

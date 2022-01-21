@@ -58,55 +58,62 @@ class ProfileScreen extends StatelessWidget {
                   scrollDirection: Axis.vertical,
                   child: Column(
                     children: [
-                      Stack(
-                        children: [
-                          InkWell(
-                            child: CircleAvatar(
-                              backgroundColor: Colors.white,
-                              radius: 105,
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        radius: 105,
+                        child: Stack(
+                          children: [
+                            InkWell(
                               child: ClipOval(
                                 child: Image.network(
                                   AppCubit.userData.photo,
                                   width: 200,
                                   height: 200,
                                   errorBuilder: (_, __, ___) {
-                                    return const Icon(Icons.person);
+                                    return const Padding(
+                                      padding: EdgeInsets.all(20.0),
+                                      child: Icon(
+                                        Icons.person,
+                                        size: 150,
+                                      ),
+                                    );
                                   },
                                 ),
                               ),
-                            ),
-                            onTap: () {
-                              navigateTo(context,
-                                  ViewPhoto(AppCubit.userData.photo), true);
-                            },
-                          ),
-                          Positioned(
-                            bottom: -20,
-                            right: -20,
-                            child: InkWell(
-                              onTap: () async {
-                                XFile? photo = await _takePhoto(context);
-                                if (photo != null) {
-                                  AppCubit.userData.photo = await cubit
-                                      .uploadFile(File(photo.path), "users");
-                                  cubit.emitGeneralState();
-                                }
+                              onTap: () {
+                                navigateTo(context,
+                                    ViewPhoto(AppCubit.userData.photo), true);
                               },
-                              child: Container(
-                                  width: 80,
-                                  height: 80,
-                                  decoration: BoxDecoration(
-                                    color: Colors.black87,
-                                    borderRadius: BorderRadius.circular(40),
-                                  ),
-                                  child: const Icon(
-                                    Icons.edit,
-                                    size: 30,
-                                    color: Colors.orange,
-                                  )),
                             ),
-                          ),
-                        ],
+                            Positioned(
+                              bottom: 2,
+                              right: 2,
+                              child: InkWell(
+                                onTap: () async {
+                                  XFile? photo = await _takePhoto(context);
+                                  if (photo != null) {
+                                    AppCubit.userData.photo = await cubit
+                                        .uploadFile(File(photo.path), "users");
+                                    cubit.emitGeneralState();
+                                  }
+                                },
+                                child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: const BoxDecoration(
+                                      color: Colors.black87,
+                                      borderRadius:
+                                          BorderRadius.all(Radius.circular(40)),
+                                    ),
+                                    child: const Icon(
+                                      Icons.edit,
+                                      size: 30,
+                                      color: Colors.orange,
+                                    )),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
                       const SizedBox(
                         height: 20,

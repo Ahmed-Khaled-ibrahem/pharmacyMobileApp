@@ -280,7 +280,13 @@ class SignUpPage extends StatelessWidget {
                       width: 200,
                       height: 200,
                       errorBuilder: (_, __, ___) {
-                        return const Icon(Icons.person);
+                        return const Padding(
+                          padding: EdgeInsets.all(20.0),
+                          child: Icon(
+                            Icons.person,
+                            size: 150,
+                          ),
+                        );
                       },
                     ),
                   ),
@@ -303,11 +309,11 @@ class SignUpPage extends StatelessWidget {
                     }
                   },
                   child: Container(
-                      width: 80,
-                      height: 80,
-                      decoration: BoxDecoration(
+                      width: 50,
+                      height: 50,
+                      decoration: const BoxDecoration(
                         color: Colors.black87,
-                        borderRadius: BorderRadius.circular(40),
+                        borderRadius: BorderRadius.all(Radius.circular(40)),
                       ),
                       child: const Icon(
                         Icons.edit,
