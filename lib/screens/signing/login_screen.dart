@@ -47,7 +47,7 @@ class LoginScreenState extends State<LoginScreen>
                 actions: [
                   IconButton(
                     onPressed: () {
-                      navigateTo(context, const SettingsScreen(), true);
+                      navigateTo(context, SettingsScreen(true), true);
                     },
                     icon: const Icon(Icons.settings),
                   ),

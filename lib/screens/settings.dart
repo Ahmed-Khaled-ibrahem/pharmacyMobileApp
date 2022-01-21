@@ -13,17 +13,13 @@ import '../contsants/const_colors.dart';
 import '../main.dart';
 import '../reusable/components.dart';
 
-class SettingsScreen extends StatefulWidget {
-  const SettingsScreen({Key? key}) : super(key: key);
+// ignore: must_be_immutable
+class SettingsScreen extends StatelessWidget {
+  SettingsScreen(this.fromSign, {Key? key}) : super(key: key);
 
-  @override
-  _SettingsScreenState createState() => _SettingsScreenState();
-}
-
-class _SettingsScreenState extends State<SettingsScreen> {
   TextEditingController message = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-
+  bool fromSign;
   int? _activeMeterIndex = 1000;
 
   @override
@@ -66,40 +62,48 @@ class _SettingsScreenState extends State<SettingsScreen> {
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        ListTile(
-                          onTap: () {
-                            navigateTo(context, ProfileScreen(), true);
-                          },
-                          leading: CircleAvatar(
-                            backgroundColor: Colors.white,
-                            radius: 32,
-                            child: ClipOval(
-                              child: Image.network(
-                                AppCubit.userData.photo,
-                                width: 50,
-                                errorBuilder: (_, __, ___) {
-                                  return const Icon(Icons.person);
-                                },
-                              ),
-                            ),
-                          ),
-                          title: Text(
-                            AppCubit.userData.fullName(),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          trailing: SizedBox(
-                              height: 40,
-                              width: 30,
-                              child: Icon(
-                                Icons.edit,
-                                color: Theme.of(context).indicatorColor,
-                              )),
-                          subtitle: Text(AppCubit.userData.phone),
-                          horizontalTitleGap: 20,
+                        Visibility(
+                          visible: !fromSign,
+                          child: fromSign
+                              ? Container()
+                              : ListTile(
+                                  onTap: () {
+                                    navigateTo(context, ProfileScreen(), true);
+                                  },
+                                  leading: CircleAvatar(
+                                    backgroundColor: Colors.white,
+                                    radius: 32,
+                                    child: ClipOval(
+                                      child: Image.network(
+                                        AppCubit.userData.photo,
+                                        width: 50,
+                                        errorBuilder: (_, __, ___) {
+                                          return const Icon(Icons.person);
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                  title: Text(
+                                    AppCubit.userData.fullName(),
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                  trailing: SizedBox(
+                                      height: 40,
+                                      width: 30,
+                                      child: Icon(
+                                        Icons.edit,
+                                        color: Theme.of(context).indicatorColor,
+                                      )),
+                                  subtitle: Text(AppCubit.userData.phone),
+                                  horizontalTitleGap: 20,
+                                ),
                         ),
-                        const Divider(
-                          thickness: 2,
+                        Visibility(
+                          visible: fromSign,
+                          child: const Divider(
+                            thickness: 2,
+                          ),
                         ),
                         const Text(
                           "Language",
@@ -137,19 +141,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     )
                                   ],
                                   onChanged: (value) {
-                                    setState(() {
-                                      if (cubit.languageState !=
-                                          value.toString()) {
-                                        cubit.languageState = value.toString();
-                                        PreferenceHelper
-                                            .putDataInSharedPreference(
-                                                key: 'language',
-                                                value: value.toString());
-                                        RestartWidget.restartApp(context);
-                                        // EasyLoading.showInfo(
-                                        //     "Restart the App to make changes");
-                                      }
-                                    });
+                                    if (cubit.languageState !=
+                                        value.toString()) {
+                                      cubit.languageState = value.toString();
+                                      PreferenceHelper
+                                          .putDataInSharedPreference(
+                                              key: 'language',
+                                              value: value.toString());
+                                      cubit.emitGeneralState();
+                                      RestartWidget.restartApp(context);
+                                    }
                                   },
                                   icon: const Padding(
                                       padding: EdgeInsets.only(left: 20),
@@ -201,23 +202,21 @@ class _SettingsScreenState extends State<SettingsScreen> {
                                     )
                                   ],
                                   onChanged: (value) {
-                                    setState(() {
-                                      cubit.themeState = value.toString();
-                                      PreferenceHelper
-                                          .putDataInSharedPreference(
-                                              key: 'ThemeState',
-                                              value: value.toString());
-                                      if (value.toString() == 'Light') {
-                                        EasyDynamicTheme.of(context)
-                                            .changeTheme(dark: false);
-                                      } else if (value.toString() == 'Dark') {
-                                        EasyDynamicTheme.of(context)
-                                            .changeTheme(dark: true);
-                                      } else {
-                                        EasyDynamicTheme.of(context)
-                                            .changeTheme(dynamic: true);
-                                      }
-                                    });
+                                    cubit.themeState = value.toString();
+                                    PreferenceHelper.putDataInSharedPreference(
+                                        key: 'ThemeState',
+                                        value: value.toString());
+                                    if (value.toString() == 'Light') {
+                                      EasyDynamicTheme.of(context)
+                                          .changeTheme(dark: false);
+                                    } else if (value.toString() == 'Dark') {
+                                      EasyDynamicTheme.of(context)
+                                          .changeTheme(dark: true);
+                                    } else {
+                                      EasyDynamicTheme.of(context)
+                                          .changeTheme(dynamic: true);
+                                    }
+                                    cubit.emitGeneralState();
                                   },
                                   icon: const Padding(
                                       padding: EdgeInsets.only(left: 20),
@@ -247,10 +246,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             elevation: 0.0,
                             animationDuration: const Duration(seconds: 1),
                             expansionCallback: (int index, bool status) {
-                              setState(() {
-                                _activeMeterIndex =
-                                    _activeMeterIndex == i ? null : i;
-                              });
+                              _activeMeterIndex =
+                                  _activeMeterIndex == i ? null : i;
+                              cubit.emitGeneralState();
                             },
                             children: [
                               ExpansionPanel(
@@ -419,9 +417,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       EasyLoading.showToast("message sent successfully");
       message.clear();
     }).catchError((err) {
-      setState(() {
-        EasyLoading.dismiss();
-      });
+      EasyLoading.dismiss();
       EasyLoading.showError("Error while sending the message");
     });
   }

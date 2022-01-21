@@ -46,7 +46,7 @@ Widget optionsWidget(BuildContext context) {
   return PopupMenuButton<String>(
     onSelected: (index) {
       if (index == setText) {
-        navigateTo(context, const SettingsScreen(), true);
+        navigateTo(context, SettingsScreen(false), true);
       } else if (index == logoutText) {
         cubit.logout(context);
       }

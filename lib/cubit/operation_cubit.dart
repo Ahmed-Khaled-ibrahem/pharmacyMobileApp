@@ -351,7 +351,7 @@ class AppCubit extends Cubit<AppStates> {
     return queryData.map((e) => Drug(drugData: e)).toList();
   }
 
-  Future<List<OrderModel>> getAllArchiveData() async {
+  Future<List<OrderModel>> getAllOrders() async {
     List<OrderModel> returnedData = [];
     List<Map<String, dynamic>> queryData;
     DataSnapshot fireOrder =
@@ -451,12 +451,12 @@ class AppCubit extends Cubit<AppStates> {
       {bool mine = true,
       Map<String, dynamic>? messageMap,
       MessageModel? messageModel}) async {
-    if (await _isConnected()) {
       messageMap ??= messageModel!.toMap();
       numberOfMessages++;
       if (mine) {
-        String id = "$numberOfMessages";
-        _fireStore
+        if (await _isConnected()){
+          String id = "$numberOfMessages";
+       await  _fireStore
             .collection("users")
             .doc(userData.phone)
             .collection("messages")
@@ -486,13 +486,14 @@ class AppCubit extends Cubit<AppStates> {
           print(err);
           EasyLoading.showError("Error at sending message");
         });
-      } else {
+       return true ;
+      }else{
+          return false ;
+        }
+      }else {
         _dataBase.insert("messages", messageMap);
+        return true;
       }
-      return true;
-    } else {
-      return false;
-    }
   }
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
@@ -682,24 +683,28 @@ class AppCubit extends Cubit<AppStates> {
       {required String firstName,
       required String secondName,
       String? address,
-      required BuildContext context}) {
-    userData.firstName = firstName;
-    userData.lastName = secondName;
-    userData.address = address;
-    _fireStore.collection("users").doc(userData.phone).update({
-      "name": {"first": firstName, "second": secondName},
-      "photo": userData.photo,
-      "address": address
-    });
+      required BuildContext context}) async {
+    if (await _isConnected()) {
+      userData.firstName = firstName;
+      userData.lastName = secondName;
+      userData.address = address;
 
-    PreferenceHelper.putDataInSharedPreference(
-        key: "photo", value: userData.photo);
-    PreferenceHelper.putDataInSharedPreference(key: "address", value: address);
-    PreferenceHelper.putDataInSharedPreference(
-        key: "userName", value: {"first": firstName, "second": secondName});
-    EasyLoading.showToast("profile changed successfully");
-    emit(ChangeUserProfileData());
-    Navigator.of(context).pop();
+      await _fireStore.collection("users").doc(userData.phone).update({
+        "name": {"first": firstName, "second": secondName},
+        "photo": userData.photo,
+        "address": address
+      });
+
+      PreferenceHelper.putDataInSharedPreference(
+          key: "photo", value: userData.photo);
+      PreferenceHelper.putDataInSharedPreference(
+          key: "address", value: address);
+      PreferenceHelper.putDataInSharedPreference(
+          key: "userName", value: {"first": firstName, "second": secondName});
+      EasyLoading.showToast("profile changed successfully");
+      emit(ChangeUserProfileData());
+      Navigator.of(context).pop();
+    }
   }
 
   void emitGeneralState() {

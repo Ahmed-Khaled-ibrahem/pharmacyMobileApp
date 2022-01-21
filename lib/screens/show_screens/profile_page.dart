@@ -9,6 +9,7 @@ import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/reusable/components.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
 import 'package:pharmacyapp/screens/signing/forget_password_page.dart';
@@ -220,17 +221,11 @@ class ProfileScreen extends StatelessWidget {
                             ),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                              child: TextFormField(
-                                keyboardType: TextInputType.text,
+                              child: defaultTextField(
                                 controller: address,
-                                decoration: InputDecoration(
-                                    labelText: 'address',
-                                    prefixIcon: const Icon(Icons.home),
-                                    enabledBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors.blueGrey, width: 1),
-                                      borderRadius: BorderRadius.circular(40),
-                                    )),
+                                validateString: 'address cannot be Empty',
+                                label: 'Address',
+                                prefixIcon: Icons.home_filled,
                               ),
                             ),
                             const SizedBox(

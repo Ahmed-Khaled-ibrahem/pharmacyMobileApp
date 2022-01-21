@@ -41,7 +41,7 @@ class ArchiveOrders extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 5),
                 child: FutureBuilder<List<OrderModel>>(
-                  future: cubit.getAllArchiveData(),
+                  future: cubit.getAllOrders(),
                   builder: (BuildContext context,
                       AsyncSnapshot<List<OrderModel>> snapshot) {
                     switch (snapshot.connectionState) {
