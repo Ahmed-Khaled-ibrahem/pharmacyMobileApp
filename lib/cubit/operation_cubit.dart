@@ -102,8 +102,14 @@ class AppCubit extends Cubit<AppStates> {
     if (uPhone != null) {
       String name =
           PreferenceHelper.getDataFromSharedPreference(key: "userName");
+      String? address =
+          PreferenceHelper.getDataFromSharedPreference(key: "address");
+      String photo = PreferenceHelper.getDataFromSharedPreference(
+              key: "photo") ??
+          "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4";
       Map<String, dynamic> name_ = json.decode(name);
-      userData = AppUser(uPhone, name_['first']!, name_['second']!);
+      userData =
+          AppUser(uPhone, name_['first']!, name_['second']!, photo, address);
       mainStart();
     }
   }
@@ -289,7 +295,7 @@ class AppCubit extends Cubit<AppStates> {
     String databasePath = await getDatabasesPath();
     String path = "$databasePath/${userData.phone}-drugs.db";
 
-    //await deleteDatabase(path);
+    // await deleteDatabase(path);
 
     bool exists = await databaseExists(path);
     if (!exists) {
@@ -647,6 +653,30 @@ class AppCubit extends Cubit<AppStates> {
         }
       }
     });
+  }
+
+  void changeUserData(
+      {required String firstName,
+      required String secondName,
+      String? address,
+      required BuildContext context}) {
+    userData.firstName = firstName;
+    userData.lastName = secondName;
+    userData.address = address;
+    _fireStore.collection("users").doc(userData.phone).update({
+      "name": {"first": firstName, "second": secondName},
+      "photo": userData.photo,
+      "address": address
+    });
+
+    PreferenceHelper.putDataInSharedPreference(
+        key: "photo", value: userData.photo);
+    PreferenceHelper.putDataInSharedPreference(key: "address", value: address);
+    PreferenceHelper.putDataInSharedPreference(
+        key: "userName", value: {"first": firstName, "second": secondName});
+    EasyLoading.showToast("profile changed successfully");
+    emit(ChangeUserProfileData());
+    Navigator.of(context).pop();
   }
 
   void emitGeneralState() {

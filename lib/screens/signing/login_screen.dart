@@ -224,8 +224,12 @@ class LoginScreenState extends State<LoginScreen>
                             InkWell(
                               onTap: () {
                                 navigateTo(context, MainScreen(null), false);
-                                AppCubit.userData =
-                                    AppUser("dev account", "dev", "acc");
+                                AppCubit.userData = AppUser(
+                                    "dev account",
+                                    "dev",
+                                    "acc",
+                                    "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4",
+                                    null);
                                 stopAnimation();
                               },
                               child: SizedBox(

@@ -15,7 +15,8 @@ class OrderSubmissionScreen extends StatelessWidget {
       TextEditingController(text: AppCubit.userData.fullName());
   TextEditingController phoneNumber =
       TextEditingController(text: AppCubit.userData.phone);
-  TextEditingController address = TextEditingController();
+  TextEditingController address =
+      TextEditingController(text: AppCubit.userData.address);
   bool locationReady = false;
   TextEditingController descriptionText = TextEditingController();
 

@@ -200,28 +200,34 @@ class _SettingsScreenState extends State<SettingsScreen> {
                             thickness: 2,
                           ),
                           ListTile(
+                            onTap: () {
+                              navigateTo(context, ProfileScreen(), true);
+                            },
                             leading: CircleAvatar(
-                              radius: 30,
-                              child: Image.network(
-                                AppCubit.userData.photo,
-                                scale: 2,
-                                errorBuilder: (_, __, ___) {
-                                  return const Icon(Icons.person);
-                                },
+                              backgroundColor: Colors.white,
+                              radius: 31,
+                              child: ClipOval(
+                                child: Image.network(
+                                  AppCubit.userData.photo,
+                                  width: 60,
+                                  errorBuilder: (_, __, ___) {
+                                    return const Icon(Icons.person);
+                                  },
+                                ),
                               ),
                             ),
-                            title: Text(AppCubit.userData.fullName()),
-                            trailing: InkWell(
-                                onTap: () {
-                                  navigateTo(context, ProfileScreen(), true);
-                                },
-                                child: SizedBox(
-                                    height: 40,
-                                    width: 30,
-                                    child: Icon(
-                                      Icons.edit,
-                                      color: Theme.of(context).indicatorColor,
-                                    ))),
+                            title: Text(
+                              AppCubit.userData.fullName(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            trailing: SizedBox(
+                                height: 40,
+                                width: 30,
+                                child: Icon(
+                                  Icons.edit,
+                                  color: Theme.of(context).indicatorColor,
+                                )),
                             subtitle: Text(AppCubit.userData.phone),
                             horizontalTitleGap: 20,
                           ),

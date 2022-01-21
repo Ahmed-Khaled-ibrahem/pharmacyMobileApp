@@ -32,7 +32,6 @@ Future<void> main() async {
   runApp(EasyDynamicThemeWidget(child: MyApp(phone)));
 }
 
-// ignore: must_be_immutable
 class MyApp extends StatelessWidget {
   MyApp(this.phone, {Key? key}) : super(key: key);
 

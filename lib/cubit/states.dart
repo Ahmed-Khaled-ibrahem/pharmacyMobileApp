@@ -27,3 +27,5 @@ class GetFireStateDone extends AppStates {}
 class NotificationReceived extends AppStates {}
 
 class OffersListReady extends AppStates {}
+
+class ChangeUserProfileData extends AppStates {}

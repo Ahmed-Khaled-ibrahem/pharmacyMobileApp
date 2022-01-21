@@ -1,12 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lottie/lottie.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/reusable/view_photo.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../../contsants/const_colors.dart';
@@ -23,6 +29,9 @@ class SignUpPage extends StatelessWidget {
   TextEditingController passwordSignUp = TextEditingController();
   TextEditingController passwordSignUpConf = TextEditingController();
   TextEditingController mobileCodeText = TextEditingController();
+  TextEditingController address = TextEditingController();
+  String photo =
+      "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4";
 
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
   bool showPasswordSignUp = true;
@@ -70,7 +79,7 @@ class SignUpPage extends StatelessWidget {
                     child: Stack(
                       children: [
                         _confirmOtpWidget(cubit, context),
-                        _inputUserWidget(cubit),
+                        _inputUserWidget(cubit, context),
                       ],
                     )),
               ),
@@ -180,7 +189,8 @@ class SignUpPage extends StatelessWidget {
                         phone: phoneNumber.text,
                         firstName: firstName.text,
                         secondName: secondName.text,
-                        password: passwordSignUp.text);
+                        password: passwordSignUp.text,
+                        address: address.text);
                   },
                   onChanged: (value) {},
                   beforeTextPaste: (text) {
@@ -229,7 +239,7 @@ class SignUpPage extends StatelessWidget {
     );
   }
 
-  Widget _inputUserWidget(SigningCubit cubit) {
+  Widget _inputUserWidget(SigningCubit cubit, BuildContext context) {
     return AnimatedContainer(
       transform: Matrix4(
         1,
@@ -255,11 +265,55 @@ class SignUpPage extends StatelessWidget {
       duration: const Duration(seconds: 1),
       child: Column(
         children: [
-          Center(
-            child: Lottie.asset(
-              'assets/lottie/login.zip',
-              height: 250,
-            ),
+          Stack(
+            children: [
+              InkWell(
+                child: CircleAvatar(
+                  backgroundColor: Colors.white,
+                  radius: 105,
+                  child: ClipOval(
+                    child: Image.network(
+                      photo,
+                      width: 200,
+                      height: 200,
+                      errorBuilder: (_, __, ___) {
+                        return const Icon(Icons.person);
+                      },
+                    ),
+                  ),
+                ),
+                onTap: () {
+                  navigateTo(context, ViewPhoto(photo), true);
+                },
+              ),
+              Positioned(
+                bottom: -20,
+                right: -20,
+                child: InkWell(
+                  onTap: () async {
+                    XFile? photoFile = await _takePhoto(context);
+                    if (photoFile != null) {
+                      AppCubit appCubit = AppCubit.get(context);
+                      photo = await appCubit.uploadFile(
+                          File(photoFile.path), "users");
+                      cubit.emitGeneralState();
+                    }
+                  },
+                  child: Container(
+                      width: 80,
+                      height: 80,
+                      decoration: BoxDecoration(
+                        color: Colors.black87,
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      child: const Icon(
+                        Icons.edit,
+                        size: 30,
+                        color: Colors.orange,
+                      )),
+                ),
+              ),
+            ],
           ),
           const SizedBox(
             height: 10,
@@ -349,6 +403,27 @@ class SignUpPage extends StatelessWidget {
               decoration: InputDecoration(
                   labelText: 'Phone number',
                   prefixIcon: const Icon(Icons.phone),
+                  enabledBorder: OutlineInputBorder(
+                    borderSide:
+                        const BorderSide(color: Colors.blueGrey, width: 1),
+                    borderRadius: BorderRadius.circular(40),
+                  )),
+            ),
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Padding(
+            padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+            child: TextFormField(
+              keyboardType: TextInputType.number,
+              inputFormatters: <TextInputFormatter>[
+                FilteringTextInputFormatter.digitsOnly
+              ],
+              controller: address,
+              decoration: InputDecoration(
+                  labelText: 'address',
+                  prefixIcon: const Icon(Icons.home),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
                         const BorderSide(color: Colors.blueGrey, width: 1),
@@ -458,5 +533,78 @@ class SignUpPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  Future<XFile?> _takePhoto(BuildContext context) async {
+    if (await Permission.camera.request().isGranted) {
+      ImageSource? source = await showGeneralDialog<ImageSource>(
+        barrierLabel: "Barrier",
+        barrierDismissible: true,
+        barrierColor: Colors.black.withOpacity(0.5),
+        transitionDuration: const Duration(milliseconds: 700),
+        context: context,
+        pageBuilder: (_, __, ___) {
+          return Align(
+            alignment: Alignment.bottomCenter,
+            child: Material(
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 10, left: 12, right: 12),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(40),
+                ),
+                height: 70,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    OutlinedButton.icon(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                      ),
+                      label: const Text("Gallery"),
+                      onPressed: () =>
+                          Navigator.pop(context, ImageSource.gallery),
+                      icon: const Icon(
+                        Icons.image,
+                        size: 35,
+                      ),
+                    ),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    OutlinedButton.icon(
+                      style: ButtonStyle(
+                        foregroundColor: MaterialStateProperty.all(themeColor),
+                      ),
+                      label: const Text("Camera"),
+                      onPressed: () =>
+                          Navigator.pop(context, ImageSource.camera),
+                      icon: const Icon(
+                        Icons.camera_alt_outlined,
+                        size: 35,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+        transitionBuilder: (_, anim, __, child) {
+          return SlideTransition(
+            position: Tween(begin: const Offset(0, 1), end: const Offset(0, 0))
+                .animate(anim),
+            child: child,
+          );
+        },
+      );
+      if (source != null) {
+        XFile? pickedFile = await ImagePicker().pickImage(source: source);
+        return pickedFile;
+      }
+    } else {
+      EasyLoading.showToast("Can't open camera");
+    }
   }
 }

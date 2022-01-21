@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,7 +17,8 @@ import 'package:pharmacyapp/screens/signing/forget_password_page.dart';
 class ProfileScreen extends StatelessWidget {
   ProfileScreen({Key? key}) : super(key: key);
 
-  TextEditingController address = TextEditingController();
+  TextEditingController address =
+      TextEditingController(text: AppCubit.userData.address);
   TextEditingController firstName =
       TextEditingController(text: AppCubit.userData.firstName);
   TextEditingController secondName =
@@ -58,12 +61,19 @@ class ProfileScreen extends StatelessWidget {
                       Stack(
                         children: [
                           InkWell(
-                            child: Image.network(
-                              AppCubit.userData.photo,
-                              width: 200,
-                              errorBuilder: (_, __, ___) {
-                                return const Icon(Icons.person);
-                              },
+                            child: CircleAvatar(
+                              backgroundColor: Colors.white,
+                              radius: 105,
+                              child: ClipOval(
+                                child: Image.network(
+                                  AppCubit.userData.photo,
+                                  width: 200,
+                                  height: 200,
+                                  errorBuilder: (_, __, ___) {
+                                    return const Icon(Icons.person);
+                                  },
+                                ),
+                              ),
                             ),
                             onTap: () {
                               navigateTo(context,
@@ -77,7 +87,9 @@ class ProfileScreen extends StatelessWidget {
                               onTap: () async {
                                 XFile? photo = await _takePhoto(context);
                                 if (photo != null) {
-                                  cubit.addOrderImage(photo);
+                                  AppCubit.userData.photo = await cubit
+                                      .uploadFile(File(photo.path), "users");
+                                  cubit.emitGeneralState();
                                 }
                               },
                               child: Container(
@@ -202,18 +214,8 @@ class ProfileScreen extends StatelessWidget {
                             Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: TextFormField(
-                                keyboardType: TextInputType.number,
-                                inputFormatters: <TextInputFormatter>[
-                                  FilteringTextInputFormatter.digitsOnly
-                                ],
+                                keyboardType: TextInputType.text,
                                 controller: address,
-                                validator: (value) {
-                                  if (value!.isEmpty) {
-                                    return 'address cannot be Empty';
-                                  } else {
-                                    return null;
-                                  }
-                                },
                                 decoration: InputDecoration(
                                     labelText: 'address',
                                     prefixIcon: const Icon(Icons.home),
@@ -242,7 +244,13 @@ class ProfileScreen extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(80))),
                                   onPressed: () {
-                                    if (formKey.currentState!.validate()) {}
+                                    if (formKey.currentState!.validate()) {
+                                      cubit.changeUserData(
+                                          firstName: firstName.text,
+                                          secondName: secondName.text,
+                                          context: context,
+                                          address: address.text);
+                                    }
                                   },
                                 ),
                               ),

@@ -69,6 +69,9 @@ class SigningCubit extends Cubit<AppStates> {
       required String phone,
       String? firstName,
       String? secondName,
+      String? address,
+      String photo =
+          "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4",
       required String password,
       bool create = true}) async {
     EasyLoading.show(status: 'creating user..');
@@ -84,6 +87,8 @@ class SigningCubit extends Cubit<AppStates> {
           _fireStore.collection("users").doc(phone).set({
             "name": {"first": firstName, "second": secondName},
             "pass": password,
+            "photo": photo,
+            "address": address
           });
           _fireBase
               .child(phone)
@@ -92,17 +97,22 @@ class SigningCubit extends Cubit<AppStates> {
           PreferenceHelper.putDataInSharedPreference(
               key: "phone", value: phone);
           PreferenceHelper.putDataInSharedPreference(
+              key: "photo", value: photo);
+          PreferenceHelper.putDataInSharedPreference(
+              key: "address", value: address);
+          PreferenceHelper.putDataInSharedPreference(
               key: "userName",
               value: {"first": firstName, "second": secondName});
-          AppCubit.userData = AppUser(phone, firstName!, secondName!);
+          AppCubit.userData =
+              AppUser(phone, firstName!, secondName!, photo, address);
           swipeBackScreen();
           navigateTo(context, MainScreen(context), false);
         } else {
-          EasyLoading.showToast("password changed successfully");
-          navigateTo(context, const LoginScreen(), false);
           _fireStore.collection("users").doc(phone).update({
             "pass": password,
           });
+          EasyLoading.showToast("password changed successfully");
+          navigateTo(context, const LoginScreen(), false);
         }
       }
     }).catchError((err) {
@@ -132,7 +142,14 @@ class SigningCubit extends Cubit<AppStates> {
             key: "userName", value: collectionRef.get("name"));
         EasyLoading.dismiss();
         Map<String, dynamic> name = collectionRef.get("name");
-        AppCubit.userData = AppUser(phone, name['first']!, name['second']!);
+        String? address = collectionRef.get("address");
+        String photo = collectionRef.get("photo");
+        PreferenceHelper.putDataInSharedPreference(key: "photo", value: photo);
+        PreferenceHelper.putDataInSharedPreference(
+            key: "address", value: address);
+
+        AppCubit.userData =
+            AppUser(phone, name['first']!, name['second']!, photo, address);
         navigateTo(context, MainScreen(context), false);
       } else {
         EasyLoading.showError("Wrong password");
