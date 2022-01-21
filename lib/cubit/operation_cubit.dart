@@ -111,39 +111,24 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  Future<void> _readOffers() async {
-    offersList = [
-      OfferItem((await findInDataBase(id: 10))[0], 30),
-      OfferItem((await findInDataBase(id: 15))[0], 15),
-      OfferItem((await findInDataBase(id: 32))[0], 60, isPercentage: false),
-    ];
-    // [
-    //    {
-    //      "id": 200,
-    //      "name": "Head and Shoulders Shampoo 400 ml",
-    //      "priceorperc": true,
-    //      "value": 30,
-    //      "image": "https://m.media-amazon.com/images/I/71+Zza6xeNL._SY355_.jpg",
-    //    },
-    //    {
-    //      "id": 201,
-    //      "name": "Sun block Cream 250 ml",
-    //      "priceorperc": true,
-    //      "value": 15,
-    //      "image":
-    //      "https://api.watsons.com.ph/medias/Sun-Light-Gel-SPF50-50ml-50020619.jpg?context=bWFzdGVyfHd0Y3BoL2ltYWdlc3w1OTg3OXxpbWFnZS9qcGVnfGhjNS9oZDgvOTA5ODQ2MDEwMjY4Ni9TdW4gTGlnaHQgR2VsIFNQRjUwIDUwbWwtNTAwMjA2MTkuanBnfGQxZGRlNmJkZGFmNDI4OWZhN2QxY2U3ZWQ4MzU1YjgxNDVmNTQxNmIxZWIwYzUwOTYyMTcwN2QyOGYzYjlkYjA",
-    //    },
-    //    {
-    //      "id": 202,
-    //      "name": "Axe Body Spray 150 ml",
-    //      "priceorperc": false,
-    //      "value": 60,
-    //      "image":
-    //      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQzTheyuwVZM2IZWg8MztfoDyg-mEnrWsrMDj_SyPVSvbTXQpM07XT9XNE7gjglhyopano&usqp=CAU",
-    //    },
-    //  ];
+  void _readOffers() {
+    _fireStore.collection("global").doc("offers").get().then((value) async {
+      List<dynamic> offersData = value['offer'];
+      for (var element in offersData) {
+        OfferItem item = OfferItem((await findInDataBase(id: element['id']))[0],
+            (element['offer'] * 1.0),
+            isPercentage: element['isPercentage']);
+        item.drug.price = element['isPercentage']
+            ? item.drug.price * (element['offer'] / 100)
+            : element['offer'] * 1.0;
+        print(element['photo']);
+        offersList.add(item);
+      }
 
-    emit(OffersListReady());
+      emit(OffersListReady());
+    }).catchError((err) {
+      print(err);
+    });
   }
 
   /// cart an order functions

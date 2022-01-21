@@ -414,9 +414,11 @@ class MainScreen extends StatelessWidget {
               child: Container(
                 child: Center(
                   child: Text(
-                    items.percentage ? "${items.offer}%" : "${items.offer} LE",
+                    items.percentage
+                        ? "${items.offer} % "
+                        : "${items.offer} LE",
                     style: TextStyle(
-                        fontSize: items.percentage ? 30 : 20,
+                        fontSize: items.percentage ? 18 : 15,
                         color: Colors.white,
                         fontWeight: FontWeight.w900),
                   ),

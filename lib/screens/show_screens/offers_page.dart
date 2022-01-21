@@ -97,7 +97,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                             ? "${item.offer}%"
                                             : "${item.offer} LE",
                                         style: TextStyle(
-                                            fontSize: item.percentage ? 30 : 20,
+                                            fontSize: item.percentage ? 20 : 18,
                                             color: Colors.white,
                                             fontWeight: FontWeight.w900),
                                       ),
