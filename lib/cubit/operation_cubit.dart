@@ -57,6 +57,7 @@ class AppCubit extends Cubit<AppStates> {
   // start function
   void mainStart() {
     emit(InitialStateLoading());
+    print("att main");
 
     _loadDataBase();
 
@@ -77,10 +78,8 @@ class AppCubit extends Cubit<AppStates> {
         String map = json.encode(messages.value);
         Map<String, dynamic> mapA = json.decode(map);
         newMessage = !mapA['user'];
+        numberOfMessages = mapA['numberOfMessages'] ?? 0;
       }
-
-      numberOfMessages =
-          int.parse(snapshot.child("numberOfMessages").value.toString());
       numberOfOrders =
           int.parse(snapshot.child("numberOfOrders").value.toString());
 
@@ -238,24 +237,26 @@ class AppCubit extends Cubit<AppStates> {
           "description": description,
           "location": await determinePosition(latLan: true) ?? "denied",
         };
+        String id = "$numberOfOrders";
 
         _fireStore
             .collection("active orders")
             .doc("current")
             .collection(userData.phone)
-            .add(orderData)
+            .doc(id)
+            .set(orderData)
             .then((value) async {
+          _fireBase.child(userData.phone).child("orders").update({id: "wait"});
           _fireBase
               .child(userData.phone)
-              .child("orders")
-              .update({value.id: "wait"});
+              .update({"numberOfOrders": numberOfOrders});
 
           DioHelper dioHelper = DioHelper();
           print(await dioHelper.postData(
               sendData: {
                 "type": "newOrder",
                 "user": userData.phone,
-                "orderId": value.id,
+                "orderId": id,
                 "orderData": json.encode(orderData)
               },
               title: "New order",
@@ -263,7 +264,7 @@ class AppCubit extends Cubit<AppStates> {
               receiverUId: "admin"));
 
           _dataBase.insert("orders", {
-            "id": value.id,
+            "id": id,
             "price": orderData['Items Price'],
             "itemsCount": cartItems.length,
             "imageCount": orderImages.length,
@@ -419,7 +420,6 @@ class AppCubit extends Cubit<AppStates> {
           .doc(userData.phone)
           .collection("messages")
           .get();
-      print("jj");
       messagesData = [];
       for (var e in data.docs) {
         Map<String, dynamic> messageMap = e.data();
@@ -437,27 +437,30 @@ class AppCubit extends Cubit<AppStates> {
       MessageModel? messageModel}) async {
     if (await _isConnected()) {
       messageMap ??= messageModel!.toMap();
-      numberOfOrders++;
+      numberOfMessages++;
       if (mine) {
+        String id = "$numberOfMessages";
         _fireStore
             .collection("users")
             .doc(userData.phone)
             .collection("messages")
-            .add(messageMap)
+            .doc(id)
+            .set(messageMap)
             .then((value) async {
-          messageMap!['id'] = value.id;
+          messageMap!['id'] = id;
           _dataBase.insert("messages", messageMap);
-          _fireBase
-              .child(userData.phone)
-              .child("messages")
-              .update({"lastID": value.id, "doctor": false});
+          _fireBase.child(userData.phone).child("messages").update({
+            "numberOfMessages": numberOfMessages,
+            "doctor": false,
+            "user": true
+          });
 
           DioHelper dioHelper = DioHelper();
           print(await dioHelper.postData(
               sendData: {
                 "type": "newMessage",
                 "user": userData.phone,
-                "messageId": value.id,
+                "messageId": id,
                 "messageData": json.encode(messageMap)
               },
               title: "New order",
@@ -514,11 +517,15 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Future<String?> determinePosition({bool latLan = false}) async {
-    EasyLoading.show(status: 'getting location..');
+    if (!latLan) {
+      EasyLoading.show(status: 'getting location..');
+    }
 
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
     if (!serviceEnabled) {
-      EasyLoading.showError('Location services are disabled.');
+      if (!latLan) {
+        EasyLoading.showError('Location services are disabled.');
+      }
       return null;
     }
 
@@ -532,8 +539,10 @@ class AppCubit extends Cubit<AppStates> {
         return null;
       }
     } else if (permission == LocationPermission.deniedForever) {
-      EasyLoading.showError(
-          'Location permissions are permanently denied, we cannot request permissions.');
+      if (!latLan) {
+        EasyLoading.showError(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
       return null;
     }
 

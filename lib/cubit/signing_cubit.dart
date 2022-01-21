@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -23,7 +22,6 @@ class SigningCubit extends Cubit<AppStates> {
 
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _fireStore = FirebaseFirestore.instance;
-  final DatabaseReference _fireBase = FirebaseDatabase.instance.ref();
 
   late String _validateCode;
 
@@ -90,9 +88,6 @@ class SigningCubit extends Cubit<AppStates> {
             "photo": photo,
             "address": address
           });
-          _fireBase
-              .child(phone)
-              .set({"numberOfMessages": 0, "numberOfOrders": 0});
           FirebaseMessaging.instance.subscribeToTopic(phone);
           PreferenceHelper.putDataInSharedPreference(
               key: "phone", value: phone);

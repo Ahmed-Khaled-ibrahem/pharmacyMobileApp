@@ -43,45 +43,48 @@ class SignUpPage extends StatelessWidget {
       builder: (BuildContext context, AppStates state) {
         SigningCubit cubit = SigningCubit.get(context);
 
-        return Scaffold(
-          appBar: AppBar(
-              actions: [
-                IconButton(
-                  onPressed: () {
-                    navigateTo(context, const SettingsScreen(), true);
-                  },
-                  icon: const Icon(Icons.settings),
-                ),
-              ],
-              centerTitle: true,
-              toolbarHeight: 60,
-              shape: const RoundedRectangleBorder(
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(30),
-                ),
-              ),
-              backgroundColor: themeColor,
-              elevation: 0,
-              title: const Text(
-                "Sign up",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              )),
-          body: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Form(
-                key: formKey,
-                child: GestureDetector(
-                    onTap: () {
-                      FocusScope.of(context).requestFocus(FocusNode());
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Scaffold(
+            appBar: AppBar(
+                actions: [
+                  IconButton(
+                    onPressed: () {
+                      navigateTo(context, const SettingsScreen(), true);
                     },
-                    child: Stack(
-                      children: [
-                        _confirmOtpWidget(cubit, context),
-                        _inputUserWidget(cubit, context),
-                      ],
-                    )),
+                    icon: const Icon(Icons.settings),
+                  ),
+                ],
+                centerTitle: true,
+                toolbarHeight: 60,
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    bottom: Radius.circular(30),
+                  ),
+                ),
+                backgroundColor: themeColor,
+                elevation: 0,
+                title: const Text(
+                  "Sign up",
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                )),
+            body: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 10.0),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Form(
+                  key: formKey,
+                  child: GestureDetector(
+                      onTap: () {
+                        FocusScope.of(context).requestFocus(FocusNode());
+                      },
+                      child: Stack(
+                        children: [
+                          _confirmOtpWidget(cubit, context),
+                          _inputUserWidget(cubit, context),
+                        ],
+                      )),
+                ),
               ),
             ),
           ),
@@ -416,10 +419,6 @@ class SignUpPage extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
-              keyboardType: TextInputType.number,
-              inputFormatters: <TextInputFormatter>[
-                FilteringTextInputFormatter.digitsOnly
-              ],
               controller: address,
               decoration: InputDecoration(
                   labelText: 'address',
