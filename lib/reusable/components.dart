@@ -87,9 +87,12 @@ AppBar myAppBar({
   Color color = themeColor,
   required BuildContext context,
   Widget? actionIcon,
+  PreferredSizeWidget? bottomBar
 }) {
+
   return AppBar(
-      actions: [
+      bottom: bottomBar ,
+  actions: [
         actionIcon ?? Container(),
         optionsWidget(context),
       ],

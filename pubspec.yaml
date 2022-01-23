@@ -83,6 +83,7 @@ dependencies:
   flutter_chat_ui: ^1.5.4
   uuid: ^3.0.5
   intl: ^0.17.0
+  flutter_slidable: ^1.2.0
 
 
 dev_dependencies:

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/admin_screens/admin_main_screen.dart';
 import '../../contsants/const_colors.dart';
 import '../show_screens/main_screen.dart';
 import '../settings.dart';
@@ -223,13 +224,16 @@ class LoginScreenState extends State<LoginScreen>
                             ),
                             InkWell(
                               onTap: () {
-                                navigateTo(context, MainScreen(null), false);
+                                navigateTo(context, AdminMainScreen(), false);
+                                /*
                                 AppCubit.userData = AppUser(
                                     "dev account",
                                     "dev",
                                     "acc",
                                     "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4",
                                     null);
+
+                                 */
                                 stopAnimation();
                               },
                               child: SizedBox(
