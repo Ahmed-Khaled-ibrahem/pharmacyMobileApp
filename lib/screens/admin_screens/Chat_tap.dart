@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_chat_ui/flutter_chat_ui.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
@@ -173,109 +174,127 @@ class _ChatTapState extends State<ChatTap> {
               },
               child: Scrollbar(
                 // isAlwaysShown: true,
-                child: ListView.builder(
+                child: ListView.separated(
                   itemCount: chatList.length,
                   physics: const AlwaysScrollableScrollPhysics(),
                   itemBuilder: (BuildContext context, int index) {
-                    return Column(
-                      children: [
-                        InkWell(
-                          onTap: () {
-                            setState(() {
-                              chatScreen = true;
-                              currentChatData = chatList[index];
-                            });
-                          },
-                          child: Card(
-                            color:  chatList[index]['new']?themeColor.withOpacity(0.5):null,
-                            elevation: 2,
-                            margin: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Stack(
-                                  children: [
-                                    CircleAvatar(
-                                      backgroundColor:
-                                          Theme.of(context).primaryColor,
-                                      radius: 40,
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(100),
-                                        child: CachedNetworkImage(
-                                          width: 150,
-                                          height: 150,
-                                          fit: BoxFit.cover,
-                                          placeholder: (context, url) =>
-                                              const CircularProgressIndicator(),
-                                          errorWidget: (context, url, error) =>
-                                              const Icon(
-                                            Icons.person,
-                                            size: 30,
-                                          ),
-                                          imageUrl:chatList[index]['image'],
+                    return Slidable(
+                      useTextDirection: true,
+                      startActionPane: ActionPane(
+                        motion: const ScrollMotion(),
+                        //dismissible: DismissiblePane(onDismissed: () {}),
+                        children: [
+                          SlidableAction(
+                            flex: 2,
+                            onPressed: (BuildContext context){},
+                            icon: Icons.block,
+                            label: 'Block',
+                          ),
+                          SlidableAction(
+                            flex: 2,
+                            onPressed: (BuildContext context){},
+                            icon: Icons.archive,
+                            label: 'Archive',
+                          ),
+                        ],
+                      ),
+
+                      child: InkWell(
+                        onTap: () {
+                          setState(() {
+                            chatScreen = true;
+                            currentChatData = chatList[index];
+                          });
+                        },
+                        child: Card(
+                          color:  chatList[index]['new']?themeColor.withOpacity(0.5):null,
+                          elevation: 2,
+                          margin: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Stack(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor:
+                                    Theme.of(context).primaryColor,
+                                    radius: 40,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: CachedNetworkImage(
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                        const Icon(
+                                          Icons.person,
+                                          size: 30,
                                         ),
+                                        imageUrl:chatList[index]['image'],
                                       ),
                                     ),
-                                    chatList[index]['online']?const Positioned(
-                                        right: 0,
-                                        child: Icon(
-                                          Icons.circle,
-                                          size: 20,
-                                          color: Colors.green,
-                                        )):Container(),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 20,
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    SizedBox(
-                                      width: 150,
-                                      child: Text(
-                                        chatList[index]['name'],
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                    Text(chatList[index]['number']),
-                                  ],
-                                ),
-                                const Spacer(),
-                                Column(
-                                  children: [
-                                    chatList[index]['seen']
-                                        ? const Icon(
-                                            Icons.done_all_rounded,
-                                            size: 20,
-                                            color: Colors.green,
-                                          )
-                                        : const Icon(
-                                            Icons.done_sharp,
-                                            size: 20,
-                                            color: Colors.blue,
-                                          ),
-                                    Text(
-                                      chatList[index]['time'],
+                                  ),
+                                  chatList[index]['online']?const Positioned(
+                                      right: 0,
+                                      child: Icon(
+                                        Icons.circle,
+                                        size: 20,
+                                        color: Colors.green,
+                                      )):Container(),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    child: Text(
+                                      chatList[index]['name'],
                                       style: const TextStyle(
-                                          color: Colors.blue,
-                                          fontSize: 15,
+                                          fontSize: 18,
                                           fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.ellipsis,
                                     ),
-                                  ],
-                                ),
-                                const SizedBox(
-                                  width: 10,
-                                )
-                              ],
-                            ),
+                                  ),
+                                  Text(chatList[index]['number']),
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                children: [
+                                  chatList[index]['seen']
+                                      ? const Icon(
+                                    Icons.done_all_rounded,
+                                    size: 20,
+                                    color: Colors.green,
+                                  )
+                                      : const Icon(
+                                    Icons.done_sharp,
+                                    size: 20,
+                                    color: Colors.blue,
+                                  ),
+                                  Text(
+                                    chatList[index]['time'],
+                                    style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              )
+                            ],
                           ),
                         ),
-                      ],
+                      ),
                     );
-                  },
+                  }, separatorBuilder: (BuildContext context, int index) { return const SizedBox(height: 10,); },
                 ),
               ),
             ),

@@ -51,15 +51,15 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
                     indicatorWeight: 3,
                     physics: defaultScrollPhysics,
                       tabs: [
+                        Tab(icon: Icon(Icons.chat_rounded)),
                   Tab(icon: Icon(Icons.home_rounded)),
-                  Tab(icon: Icon(Icons.chat_rounded)),
                   Tab(icon: Icon(Icons.local_offer)),
                   Tab(icon: Icon(Icons.delivery_dining_rounded)),
               ]),),
               body:const TabBarView(
                 children: [
-                  MainTap(),
                   ChatTap(),
+                  MainTap(),
                   OffersTab(),
                   DeliveryTab(),
                 ],
