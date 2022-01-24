@@ -13,6 +13,7 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
+
   List<Map<String, String>> notifications = [
     {"category": "App", "text": "you should login again", "time": "3:50 AM"},
     {"category": "Chat", "text": "new offers in the market check this out", "time": "6:22 PM"},
@@ -50,7 +51,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           children: const [
                             Icon(
                               Icons.notifications_off_outlined,
-                              size: 40,
+                              size: 60,
                             ),
                             Text("There is no notifications to show"),
                           ],

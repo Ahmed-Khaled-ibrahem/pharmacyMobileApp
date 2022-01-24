@@ -1,29 +1,29 @@
+import 'dart:convert';
+import 'package:flutter/services.dart' show rootBundle;
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
+import 'package:flutter_chat_ui/flutter_chat_ui.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mime/mime.dart';
+import 'package:open_file/open_file.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
-import '../../../reusable/components.dart';
-import 'dart:convert';
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/services.dart' show rootBundle;
-import 'package:flutter_chat_types/flutter_chat_types.dart' as types;
-import 'package:flutter_chat_ui/flutter_chat_ui.dart';
-import 'package:mime/mime.dart';
-import 'package:open_file/open_file.dart';
 import 'package:uuid/uuid.dart';
 
-class ChattingScreen extends StatefulWidget {
-  const ChattingScreen({Key? key}) : super(key: key);
+class ChatBodyScreen extends StatefulWidget {
+  const ChatBodyScreen({Key? key}) : super(key: key);
 
   @override
-  _ChattingScreenState createState() => _ChattingScreenState();
+  _ChatBodyScreenState createState() => _ChatBodyScreenState();
 }
 
-class _ChattingScreenState extends State<ChattingScreen> {
+class _ChatBodyScreenState extends State<ChatBodyScreen> {
   List<types.Message> _messages = [];
   final _user = const types.User(id: '06c33e8b-e835-4736-80f4-63f44b66666c');
 
@@ -187,7 +187,8 @@ class _ChattingScreenState extends State<ChattingScreen> {
   }
 
   void _loadMessages() async {
-    final response = await rootBundle.loadString('assets/chat_messages/messages.json');
+    final response =
+        await rootBundle.loadString('assets/chat_messages/messages.json');
     final messages = (jsonDecode(response) as List)
         .map((e) => types.Message.fromJson(e as Map<String, dynamic>))
         .toList();
@@ -202,48 +203,43 @@ class _ChattingScreenState extends State<ChattingScreen> {
       listener: (BuildContext context, AppStates state) {},
       builder: (BuildContext context, AppStates state) {
         AppCubit cubit = AppCubit.get(context);
-        return Scaffold(
-          backgroundColor:
-              cubit.themeState == "Light" ? null : ThemeData.dark().canvasColor,
-          appBar: myAppBar(text: "Direct Chatting", context: context),
-          body: Chat(
-            emptyState: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: const [
-                  Icon(
-                    Icons.chat,
-                    size: 60,
-                  ),
-                  Text("No Chat messages yet"),
-                ],
-              ),
+        return Chat(
+          emptyState: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: const [
+                Icon(
+                  Icons.chat,
+                  size: 60,
+                ),
+                Text("No Chat messages yet"),
+              ],
             ),
-            onAvatarTap: (img) {
-              navigateTo(context, ViewPhoto(img.imageUrl.toString()), true);
-            },
-            theme: cubit.themeState == "Light"
-                ? const DefaultChatTheme(
-                    primaryColor: themeColor,
-                    inputBackgroundColor: themeColor,
-                  )
-                : DarkChatTheme(
-                    primaryColor: themeColor,
-                    inputBackgroundColor: themeColor,
-                    backgroundColor: ThemeData.dark().canvasColor,
-                    secondaryColor: Colors.white10,
-                    inputPadding: const EdgeInsets.all(20),
-                    inputMargin: const EdgeInsets.all(0)),
-            showUserAvatars: true,
-            showUserNames: true,
-            messages: _messages,
-            onAttachmentPressed: _handleAttachmentPressed,
-            onMessageTap: _handleMessageTap,
-            onPreviewDataFetched: _handlePreviewDataFetched,
-            onSendPressed: _handleSendPressed,
-            user: _user,
           ),
+          onAvatarTap: (img) {
+            navigateTo(context, ViewPhoto(img.imageUrl.toString()), true);
+          },
+          theme: cubit.themeState == "Light"
+              ?  const DefaultChatTheme(
+                  primaryColor: themeColor,
+                  inputBackgroundColor: themeColor,
+                )
+              : DarkChatTheme(
+                  primaryColor: themeColor,
+                  inputBackgroundColor: themeColor,
+                  backgroundColor: ThemeData.dark().canvasColor,
+                  secondaryColor: Colors.white10,
+                  inputPadding: const EdgeInsets.all(20),
+                  inputMargin: const EdgeInsets.all(0)),
+          showUserAvatars: true,
+          showUserNames: true,
+          messages: _messages,
+          onAttachmentPressed: _handleAttachmentPressed,
+          onMessageTap: _handleMessageTap,
+          onPreviewDataFetched: _handlePreviewDataFetched,
+          onSendPressed: _handleSendPressed,
+          user: _user,
         );
       },
     );
