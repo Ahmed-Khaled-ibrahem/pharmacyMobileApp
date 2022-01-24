@@ -76,7 +76,7 @@ class SigningCubit extends Cubit<AppStates> {
 
     PhoneAuthCredential credential = PhoneAuthProvider.credential(
         verificationId: _validateCode, smsCode: smsOtp);
-    await _auth.signInWithCredential(credential).then((userCred) {
+    await _auth.signInWithCredential(credential).then((userCred) async {
       if (userCred.user == null) {
         EasyLoading.showError("wrong Code");
       } else {
@@ -87,27 +87,34 @@ class SigningCubit extends Cubit<AppStates> {
             "pass": password,
             "photo": photo,
             "address": address
+          }).then((value) {
+            FirebaseMessaging.instance.subscribeToTopic(phone);
+            PreferenceHelper.putDataInSharedPreference(
+                key: "phone", value: phone);
+            PreferenceHelper.putDataInSharedPreference(
+                key: "photo", value: photo);
+            PreferenceHelper.putDataInSharedPreference(
+                key: "address", value: address);
+            PreferenceHelper.putDataInSharedPreference(
+                key: "userName",
+                value: {"first": firstName, "second": secondName});
+            AppCubit.userData =
+                AppUser(phone, firstName!, secondName!, photo, address);
+            swipeBackScreen();
+            navigateTo(context, MainScreen(context), false);
+          }).catchError((err) {
+            EasyLoading.showToast("An error happened");
           });
-          FirebaseMessaging.instance.subscribeToTopic(phone);
-          PreferenceHelper.putDataInSharedPreference(
-              key: "phone", value: phone);
-          PreferenceHelper.putDataInSharedPreference(
-              key: "photo", value: photo);
-          PreferenceHelper.putDataInSharedPreference(
-              key: "address", value: address);
-          PreferenceHelper.putDataInSharedPreference(
-              key: "userName",
-              value: {"first": firstName, "second": secondName});
-          AppCubit.userData =
-              AppUser(phone, firstName!, secondName!, photo, address);
-          swipeBackScreen();
-          navigateTo(context, MainScreen(context), false);
         } else {
           _fireStore.collection("users").doc(phone).update({
             "pass": password,
+          }).then((value) {
+            swipeBackScreen();
+            EasyLoading.showToast("password changed successfully");
+            navigateTo(context, const LoginScreen(), false);
+          }).catchError((err) {
+            EasyLoading.showToast("An error happened");
           });
-          EasyLoading.showToast("password changed successfully");
-          navigateTo(context, const LoginScreen(), false);
         }
       }
     }).catchError((err) {
@@ -161,11 +168,6 @@ class SigningCubit extends Cubit<AppStates> {
   void swipeBackScreen() {
     angle1 = 0;
     angle2 = 3;
-    emit(GeneralState());
-  }
-
-  void incrementCounter() {
-    //angle+=40;
     emit(GeneralState());
   }
 

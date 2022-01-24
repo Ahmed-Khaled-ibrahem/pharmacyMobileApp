@@ -28,19 +28,21 @@ Future<void> main() async {
   await PreferenceHelper.init();
 
   String? phone = PreferenceHelper.getDataFromSharedPreference(key: "phone");
-
-  runApp(EasyDynamicThemeWidget(child: MyApp(phone)));
-}
-
-class MyApp extends StatelessWidget {
-  MyApp(this.phone, {Key? key}) : super(key: key);
-
   String lang = PreferenceHelper.getDataFromSharedPreference(key: 'language') ??
       "English";
   String theme =
       PreferenceHelper.getDataFromSharedPreference(key: 'ThemeState') ??
           'Light';
+
+  runApp(EasyDynamicThemeWidget(child: MyApp(phone, lang, theme)));
+}
+
+class MyApp extends StatelessWidget {
+  MyApp(this.phone, this.lang, this.theme, {Key? key}) : super(key: key);
+
   String? phone;
+  String lang;
+  String theme;
 
   @override
   Widget build(BuildContext context) {
@@ -85,11 +87,10 @@ class _RestartWidgetState extends State<RestartWidget> {
           "English";
       return MaterialApp(
         navigatorKey: navigatorKey,
-        locale: lang == 'English'
-            ? const Locale('en')
-            : lang == 'Arabic'
-                ? const Locale('ar')
-                : null,
+        locale: {
+          "English": const Locale('en'),
+          "Arabic": const Locale('ar')
+        }[lang],
         localizationsDelegates: const [
           AppLocalizations.delegate,
           GlobalMaterialLocalizations.delegate,
@@ -103,25 +104,10 @@ class _RestartWidgetState extends State<RestartWidget> {
         theme: ThemeData.light(),
         darkTheme: ThemeData.dark(),
         themeMode: EasyDynamicTheme.of(context).themeMode,
-        // navigatorKey: navigatorKey,
         builder: EasyLoading.init(),
         title: 'Pharmacy',
         debugShowCheckedModeBanner: false,
-        /*
-        theme: ThemeData(
-            backgroundColor: themeColor,
-            appBarTheme: const AppBarTheme(backgroundColor: themeColor),
-            //canvasColor: AppCubit().themeColor,
-            primaryColor: Colors.white,
-            focusColor: Colors.white,
-            unselectedWidgetColor: Colors.white,
-            splashColor: Colors.white,
-            scaffoldBackgroundColor: const Color(0xFFFFF9F9),
-        ),
-         */
-        home: widget.phone == null
-            ? const LoginScreen()
-            : MainScreen(null), //const MakeAnOrderScreen(), //
+        home: widget.phone == null ? const LoginScreen() : MainScreen(null),
       );
     });
   }

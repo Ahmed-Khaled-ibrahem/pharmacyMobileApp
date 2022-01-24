@@ -51,8 +51,8 @@ class MessageModel {
       'type': {
         MessageType.text: "text",
         MessageType.image: "image",
-        "file": MessageType.text
-      }[MessageType],
+        MessageType.file: "file"
+      }[type],
       'size': size,
       'width': width,
       'time': time,

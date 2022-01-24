@@ -29,3 +29,5 @@ class NotificationReceived extends AppStates {}
 class OffersListReady extends AppStates {}
 
 class ChangeUserProfileData extends AppStates {}
+
+class UserLogOut extends AppStates {}

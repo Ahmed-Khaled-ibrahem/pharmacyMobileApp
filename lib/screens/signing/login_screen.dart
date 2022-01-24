@@ -1,13 +1,10 @@
-import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/admin_screens/admin_main_screen.dart';
 import '../../contsants/const_colors.dart';
-import '../show_screens/main_screen.dart';
 import '../settings.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
@@ -224,7 +221,7 @@ class LoginScreenState extends State<LoginScreen>
                             ),
                             InkWell(
                               onTap: () {
-                                navigateTo(context, AdminMainScreen(), false);
+                                navigateTo(context, const AdminMainScreen(), false);
                                 /*
                                 AppCubit.userData = AppUser(
                                     "dev account",

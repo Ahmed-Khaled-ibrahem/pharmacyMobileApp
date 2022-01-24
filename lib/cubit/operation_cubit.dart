@@ -57,7 +57,6 @@ class AppCubit extends Cubit<AppStates> {
   // start function
   void mainStart() {
     emit(InitialStateLoading());
-    print("att main");
 
     _loadDataBase();
 
@@ -71,7 +70,7 @@ class AppCubit extends Cubit<AppStates> {
       }
 
       /// see if there message
-      DataSnapshot messages = snapshot.child("message");
+      DataSnapshot messages = snapshot.child("messages");
       if (messages.exists) {
         String map = json.encode(messages.value);
         Map<String, dynamic> mapA = json.decode(map);
@@ -131,7 +130,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  /// cart an order functions
+  /// cart and orders functions
   Future<void> addOrderImage(XFile file) async {
     String image = await uploadFile(File(file.path), "prec");
     orderImages.add(image);
@@ -314,7 +313,6 @@ class AppCubit extends Cubit<AppStates> {
 
     bool exists = await databaseExists(path);
     if (!exists) {
-      // database read before
       ByteData data = await rootBundle.load("assets/drugs_data/testSql.db");
       List<int> bytes =
           data.buffer.asUint8List(data.offsetInBytes, data.lengthInBytes);
@@ -322,6 +320,7 @@ class AppCubit extends Cubit<AppStates> {
     }
     _dataBase = await openDatabase(path);
 
+    // read local cart data if exist
     String? data =
         PreferenceHelper.getDataFromSharedPreference(key: "cartData");
     if (data != null) {
@@ -447,29 +446,50 @@ class AppCubit extends Cubit<AppStates> {
     }
   }
 
-  Future<bool> saveMessage(
-      {bool mine = true,
-      Map<String, dynamic>? messageMap,
-      MessageModel? messageModel}) async {
-      messageMap ??= messageModel!.toMap();
-      numberOfMessages++;
-      if (mine) {
-        if (await _isConnected()){
-          String id = "$numberOfMessages";
-       await  _fireStore
-            .collection("users")
-            .doc(userData.phone)
-            .collection("messages")
-            .doc(id)
-            .set(messageMap)
-            .then((value) async {
-          messageMap!['id'] = id;
-          _dataBase.insert("messages", messageMap);
+  Future<bool> saveMessage({
+    String? id,
+    required String body,
+    required MessageType type,
+    double? size,
+    double? width,
+    bool mine = true,
+    String? time,
+  }) async {
+    numberOfMessages++;
+    id ??= "$numberOfMessages";
+    time ??= DateTime.now().toString();
+    Map<String, dynamic> messageMap = {
+      'id': id,
+      'body': body,
+      'type': {
+        MessageType.text: "text",
+        MessageType.image: "image",
+        MessageType.file: "file"
+      }[type],
+      'size': size,
+      'width': width,
+      'time': time,
+      'sender': mine ? 0 : 1,
+      'status': 0
+    };
+    print(messageMap);
+
+    if (mine) {
+      if (await _isConnected()) {
+        try {
+          await _fireStore
+              .collection("users")
+              .doc(userData.phone)
+              .collection("messages")
+              .doc(id)
+              .set(messageMap);
+          messageMap['id'] = id;
           _fireBase.child(userData.phone).child("messages").update({
             "numberOfMessages": numberOfMessages,
             "doctor": false,
             "user": true
           });
+          _dataBase.insert("messages", messageMap);
 
           DioHelper dioHelper = DioHelper();
           print(await dioHelper.postData(
@@ -482,18 +502,18 @@ class AppCubit extends Cubit<AppStates> {
               title: "New order",
               body: "Order received from ${userData.phone}",
               receiverUId: "admin"));
-        }).catchError((err) {
+          return true;
+        } catch (err) {
           print(err);
-          EasyLoading.showError("Error at sending message");
-        });
-       return true ;
-      }else{
-          return false ;
+          return false;
         }
-      }else {
-        _dataBase.insert("messages", messageMap);
-        return true;
+      } else {
+        return false;
       }
+    } else {
+      _dataBase.insert("messages", messageMap);
+      return true;
+    }
   }
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
@@ -509,8 +529,6 @@ class AppCubit extends Cubit<AppStates> {
 
   /// helper for make order
   Future<String> uploadFile(File file, String place) async {
-    // to show the photo professional use Future builder this
-    // https://stackoverflow.com/questions/51983011/when-should-i-use-a-futurebuilder
     FirebaseStorage storage = FirebaseStorage.instance;
     Reference ref =
         storage.ref().child(place).child("file" + DateTime.now().toString());
@@ -573,6 +591,7 @@ class AppCubit extends Cubit<AppStates> {
       EasyLoading.dismiss();
     });
     Placemark place = placeMarks[0];
+
     String fullLocation = place.subThoroughfare ?? '';
     fullLocation += ' ';
     fullLocation += place.thoroughfare ?? '';
@@ -665,6 +684,7 @@ class AppCubit extends Cubit<AppStates> {
           orderImages = [];
           activeOrder = false;
           newMessage = false;
+          emit(UserLogOut());
           navigateTo(context, const LoginScreen(), false);
         } else {
           EasyLoading.showToast("You must login first");

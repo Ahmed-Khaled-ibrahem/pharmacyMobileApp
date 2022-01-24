@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
-import 'package:pharmacyapp/cubit/operation_cubit.dart';
+import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 
 class NotificationsScreen extends StatefulWidget {
@@ -13,21 +12,32 @@ class NotificationsScreen extends StatefulWidget {
 }
 
 class _NotificationsScreenState extends State<NotificationsScreen> {
-
   List<Map<String, String>> notifications = [
     {"category": "App", "text": "you should login again", "time": "3:50 AM"},
-    {"category": "Chat", "text": "new offers in the market check this out", "time": "6:22 PM"},
-    {"category": "Today Advice", "text": "today advice : لا تؤجل عمل اليوم الي الغد", "time": "12:01 AM"},
-    {"category": "Delivery", "text": "order number 3 is delivered", "time": "12:01 AM"},
+    {
+      "category": "Chat",
+      "text": "new offers in the market check this out",
+      "time": "6:22 PM"
+    },
+    {
+      "category": "Today Advice",
+      "text": "today advice : لا تؤجل عمل اليوم الي الغد",
+      "time": "12:01 AM"
+    },
+    {
+      "category": "Delivery",
+      "text": "order number 3 is delivered",
+      "time": "12:01 AM"
+    },
     {"category": "General", "text": "نصائح طبيه يوميه", "time": "3:50 PM"},
   ];
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<AppCubit, AppStates>(
+    return BlocConsumer<AdminCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
-          AppCubit cubit = AppCubit.get(context);
+          //AdminCubit cubit = AdminCubit.get(context);
 
           return Scaffold(
             appBar: AppBar(
@@ -68,41 +78,48 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           ),
                           Expanded(
                             child: ListView.separated(
-                                itemCount: notifications.length,
-                                physics: defaultScrollPhysics,
-                                itemBuilder: (BuildContext context, int index) {
-                                  return Column(
-                                    children: [
-                                      Dismissible(
-                                        background: Container(
-                                          color: Colors.red,
-                                          child: const Icon(
-                                            Icons.delete_outlined,
-                                            size: 40,
-                                          ),
+                              itemCount: notifications.length,
+                              physics: defaultScrollPhysics,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Column(
+                                  children: [
+                                    Dismissible(
+                                      background: Container(
+                                        color: Colors.red,
+                                        child: const Icon(
+                                          Icons.delete_outlined,
+                                          size: 40,
                                         ),
-                                        child: ListTile(
-                                          leading: const Icon(
-                                              Icons.notifications_none),
-                                          trailing:  Text(
-                                            notifications[index]['time']!,
-                                            style: const TextStyle(
-                                                color: Colors.green,
-                                                fontSize: 15),
-                                          ),
-                                          title: Text(notifications[index]['text']!),
-                                          subtitle: Text(notifications[index]['category']!),
-                                        ),
-                                        onDismissed: (direction) {
-                                          setState(() {
-                                            notifications.removeAt(index);
-                                          });
-                                        },
-                                        key: UniqueKey(),
                                       ),
-                                    ],
-                                  );
-                                }, separatorBuilder: (BuildContext context, int index) { return const Divider(); },),
+                                      child: ListTile(
+                                        leading: const Icon(
+                                            Icons.notifications_none),
+                                        trailing: Text(
+                                          notifications[index]['time']!,
+                                          style: const TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 15),
+                                        ),
+                                        title:
+                                            Text(notifications[index]['text']!),
+                                        subtitle: Text(
+                                            notifications[index]['category']!),
+                                      ),
+                                      onDismissed: (direction) {
+                                        setState(() {
+                                          notifications.removeAt(index);
+                                        });
+                                      },
+                                      key: UniqueKey(),
+                                    ),
+                                  ],
+                                );
+                              },
+                              separatorBuilder:
+                                  (BuildContext context, int index) {
+                                return const Divider();
+                              },
+                            ),
                           ),
                           TextButton(
                               style: ButtonStyle(
@@ -114,7 +131,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     notifications.removeAt(i - 1);
                                   });
                                 }
-                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text("all notifications are deleted")));
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                        content: Text(
+                                            "all notifications are deleted")));
                               },
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
