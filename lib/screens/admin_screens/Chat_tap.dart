@@ -1,19 +1,68 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
-import 'package:pharmacyapp/contsants/widgets.dart';
+import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
+import 'package:pharmacyapp/screens/show_screens/profile_page.dart';
 
 class ChatTap extends StatefulWidget {
   const ChatTap({Key? key}) : super(key: key);
+
   @override
   _ChatTapState createState() => _ChatTapState();
 }
 
 class _ChatTapState extends State<ChatTap> {
 
-
+  List<Map<String, dynamic>> chatList = [
+    {
+      "name": "Salma Raafat",
+      "number": "01055994809",
+      "time": "12:01 AM",
+      "seen": true,
+      "online": true,
+      "image": "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fA%3D%3D&w=1000&q=80",
+      "new":true
+    },
+    {
+      "name": "Mona Zaki",
+      "number": "01150394809",
+      "time": "12:01 AM",
+      "seen": false,
+      "online": false,
+      "image": "https://see.news/wp-content/uploads/2019/10/Mona-Zaki.jpg",
+      "new":false
+    },
+    {
+      "name": "Reem Mohammed ",
+      "number": "01200599808",
+      "time": "3:50 PM",
+      "seen": true,
+      "online": false,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYfdG-K_WIyFF8RQsr3xA5w0CyZhEYVXwyVg&usqp=CAU",
+      "new":true
+    },
+    {
+      "name": "Tarek Mohammed",
+      "number": "01055994810",
+      "time": "3:50 AM",
+      "seen": false,
+      "online": true,
+      "image": "https://4bgowik9viu406fbr2hsu10z-wpengine.netdna-ssl.com/wp-content/uploads/2020/03/Portrait_5-1.jpg",
+      "new":false
+    },
+    {
+      "name": "Ali Ashraf",
+      "number": "01066994809",
+      "time": "6:22 PM",
+      "seen": true,
+      "online": false,
+      "image": "https://4bgowik9viu406fbr2hsu10z-wpengine.netdna-ssl.com/wp-content/uploads/2020/03/Portrait_3.jpg",
+      "new":false
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +71,117 @@ class _ChatTapState extends State<ChatTap> {
         builder: (BuildContext context, AppStates state) {
           AppCubit cubit = AppCubit.get(context);
 
-          return Container();
+          return RefreshIndicator(
+            onRefresh: () async {
+              setState(() {});
+            },
+            child: Scrollbar(
+              // isAlwaysShown: true,
+              child: ListView.builder(
+                itemCount: chatList.length,
+                physics: const AlwaysScrollableScrollPhysics(),
+                itemBuilder: (BuildContext context, int index) {
+                  return Column(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          setState(() {
+
+                          });
+                        },
+                        child: Card(
+                          color:  chatList[index]['new']?themeColor.withOpacity(0.5):null,
+                          elevation: 2,
+                          margin: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Stack(
+                                children: [
+                                  CircleAvatar(
+                                    backgroundColor:
+                                        Theme.of(context).primaryColor,
+                                    radius: 40,
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(100),
+                                      child: CachedNetworkImage(
+                                        width: 150,
+                                        height: 150,
+                                        fit: BoxFit.cover,
+                                        placeholder: (context, url) =>
+                                            const CircularProgressIndicator(),
+                                        errorWidget: (context, url, error) =>
+                                            const Icon(
+                                          Icons.person,
+                                          size: 30,
+                                        ),
+                                        imageUrl:chatList[index]['image'],
+                                      ),
+                                    ),
+                                  ),
+                                  chatList[index]['online']?const Positioned(
+                                      right: 0,
+                                      child: Icon(
+                                        Icons.circle,
+                                        size: 20,
+                                        color: Colors.green,
+                                      )):Container(),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 20,
+                              ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  SizedBox(
+                                    width: 150,
+                                    child: Text(
+                                      chatList[index]['name'],
+                                      style: const TextStyle(
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
+                                  Text(chatList[index]['number']),
+                                ],
+                              ),
+                              const Spacer(),
+                              Column(
+                                children: [
+                                  chatList[index]['seen']
+                                      ? const Icon(
+                                          Icons.done_all_rounded,
+                                          size: 20,
+                                          color: Colors.green,
+                                        )
+                                      : const Icon(
+                                          Icons.done_sharp,
+                                          size: 20,
+                                          color: Colors.blue,
+                                        ),
+                                  Text(
+                                    chatList[index]['time'],
+                                    style: const TextStyle(
+                                        color: Colors.blue,
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+              ),
+            ),
+          );
         });
   }
 }

@@ -84,6 +84,7 @@ dependencies:
   uuid: ^3.0.5
   intl: ^0.17.0
   flutter_slidable: ^1.2.0
+  cached_network_image: ^3.2.0
 
 
 dev_dependencies:
