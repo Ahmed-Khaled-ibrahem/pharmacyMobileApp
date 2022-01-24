@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../reusable/components.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'Chat_tap.dart';
 import 'Main_tab.dart';
 import 'delivery_tab.dart';
+import 'notifications_page.dart';
 import 'offers_tab.dart';
 
 class AdminMainScreen extends StatefulWidget {
@@ -31,11 +35,22 @@ class _AdminMainScreenState extends State<AdminMainScreen> {
             child: Scaffold(
               appBar: myAppBar(
                 actionIcon: IconButton(
-                    onPressed: (){},
+                    onPressed: (){
+                      navigateTo(context, const NotificationsScreen(), true);
+                    },
                     icon: const Icon(Icons.notifications)),
                   text: AppLocalizations.of(context)!.tamerdewwek,
                   context: context,
-                  bottomBar: const TabBar(
+                  bottomBar:  const TabBar(
+                    //padding: EdgeInsets.all(20),
+                    //overlayColor: MaterialStateProperty.all(themeColor.withOpacity(0.5)),
+                    //automaticIndicatorColorAdjustment: true,
+                      //labelStyle: TextStyle(color: Colors.blue),
+                    indicatorColor: Colors.redAccent,
+                    //indicatorSize: TabBarIndicatorSize.label,
+                    isScrollable: true,
+                    indicatorWeight: 3,
+                    physics: defaultScrollPhysics,
                       tabs: [
                   Tab(icon: Icon(Icons.home_rounded)),
                   Tab(icon: Icon(Icons.chat_rounded)),
