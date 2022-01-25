@@ -37,7 +37,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     return BlocConsumer<AdminCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
-          //AdminCubit cubit = AdminCubit.get(context);
+          AdminCubit cubit = AdminCubit.get(context);
 
           return Scaffold(
             appBar: AppBar(

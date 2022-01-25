@@ -85,6 +85,7 @@ dependencies:
   intl: ^0.17.0
   flutter_slidable: ^1.2.0
   cached_network_image: ^3.2.0
+  url_launcher: ^6.0.18
 
 
 dev_dependencies:
