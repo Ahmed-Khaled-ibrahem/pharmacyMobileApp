@@ -79,8 +79,8 @@ class _DeliveryTabState extends State<DeliveryTab> {
             ],
           ):
           AnimatedSwitcher(
-            duration: const Duration(seconds: 4),
-            reverseDuration: const Duration(milliseconds: 2),
+            duration: const Duration(seconds: 1),
+            reverseDuration: const Duration(seconds: 1),
             switchInCurve: Curves.elasticOut,
             switchOutCurve: Curves.easeIn,
             transitionBuilder: (Widget child, Animation<double> animation) {

@@ -31,7 +31,7 @@ class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderSt
         builder: (BuildContext context, AppStates state) {
            AdminCubit cubit = AdminCubit.get(context);
 
-          late final _tabController = TabController(length: 4, vsync: this);
+           TabController _tabController = TabController(length: 4, vsync: this);
           cubit.controller  = _tabController;
 
           return DefaultTabController(
@@ -65,21 +65,16 @@ class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderSt
                         Tab(icon: Icon(Icons.delivery_dining_rounded)),
                       ]),
                 ),
-                body: Stack(
-                  children: [
-
-                     TabBarView(
-                       physics: defaultScrollPhysics,
-                      controller: _tabController,
-                      children: const [
-                        ChatTap(),
-                        MainTap(),
-                        OffersTab(),
-                        DeliveryTab(),
-                      ],
+                body: TabBarView(
+                  physics: defaultScrollPhysics,
+                 controller: _tabController,
+                 children: const [
+                   ChatTap(),
+                   MainTap(),
+                   OffersTab(),
+                   DeliveryTab(),
+                 ],
                     ),
-                  ],
-                ),
               ),
             ),
           );
