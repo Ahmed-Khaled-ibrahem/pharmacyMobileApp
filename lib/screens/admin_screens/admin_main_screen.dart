@@ -12,8 +12,15 @@ import 'delivery_tab.dart';
 import 'notifications_page.dart';
 import 'offers_tab.dart';
 
-class AdminMainScreen extends StatelessWidget {
+
+class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({Key? key}) : super(key: key);
+
+  @override
+  _AdminMainScreenState createState() => _AdminMainScreenState();
+}
+
+class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderStateMixin{
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +29,10 @@ class AdminMainScreen extends StatelessWidget {
       child: BlocConsumer<AdminCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
-          // AdminCubit cubit = AdminCubit.get(context);
+           AdminCubit cubit = AdminCubit.get(context);
+
+          late final _tabController = TabController(length: 4, vsync: this);
+          cubit.controller  = _tabController;
 
           return DefaultTabController(
             length: 4,
@@ -37,29 +47,37 @@ class AdminMainScreen extends StatelessWidget {
                       icon: const Icon(Icons.notifications)),
                   text: AppLocalizations.of(context)!.tamerdewwek,
                   context: context,
-                  bottomBar: const TabBar(
-                      //padding: EdgeInsets.all(20),
-                      //overlayColor: MaterialStateProperty.all(themeColor.withOpacity(0.5)),
-                      //automaticIndicatorColorAdjustment: true,
-                      //labelStyle: TextStyle(color: Colors.blue),
+                  bottomBar:  TabBar(
+                    controller: _tabController,
+                    //padding: EdgeInsets.all(20),
+                    //overlayColor: MaterialStateProperty.all(themeColor.withOpacity(0.5)),
+                    //automaticIndicatorColorAdjustment: true,
+                    //labelStyle: TextStyle(color: Colors.blue),
                       indicatorColor: Colors.redAccent,
                       //indicatorSize: TabBarIndicatorSize.label,
                       isScrollable: true,
                       indicatorWeight: 3,
                       physics: defaultScrollPhysics,
-                      tabs: [
+                      tabs: const [
                         Tab(icon: Icon(Icons.chat_rounded)),
                         Tab(icon: Icon(Icons.home_rounded)),
                         Tab(icon: Icon(Icons.local_offer)),
                         Tab(icon: Icon(Icons.delivery_dining_rounded)),
                       ]),
                 ),
-                body: const TabBarView(
+                body: Stack(
                   children: [
-                    ChatTap(),
-                    MainTap(),
-                    OffersTab(),
-                    DeliveryTab(),
+
+                     TabBarView(
+                       physics: defaultScrollPhysics,
+                      controller: _tabController,
+                      children: const [
+                        ChatTap(),
+                        MainTap(),
+                        OffersTab(),
+                        DeliveryTab(),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -72,22 +90,25 @@ class AdminMainScreen extends StatelessWidget {
 
   Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: Text(AppLocalizations.of(context)!.are_you_sure),
-            content: Text(AppLocalizations.of(context)!.do_you_want_to_exit),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(false),
-                child: Text(AppLocalizations.of(context)!.no),
-              ),
-              TextButton(
-                onPressed: () => Navigator.of(context).pop(true),
-                child: Text(AppLocalizations.of(context)!.yes),
-              ),
-            ],
+      context: context,
+      builder: (context) => AlertDialog(
+        title: Text(AppLocalizations.of(context)!.are_you_sure),
+        content: Text(AppLocalizations.of(context)!.do_you_want_to_exit),
+        actions: <Widget>[
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(false),
+            child: Text(AppLocalizations.of(context)!.no),
           ),
-        )) ??
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(true),
+            child: Text(AppLocalizations.of(context)!.yes),
+          ),
+        ],
+      ),
+    )) ??
         false;
   }
 }
+
+
+
