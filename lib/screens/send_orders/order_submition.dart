@@ -45,7 +45,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                                   validateString: 'First Name cannot be Empty',
                                   label: 'First Name',
                                   prefixIcon: Icons.person),
-                              defaultSpaceH,
+                              defaultSpaceH(20),
                               defaultTextField(
                                 controller: phoneNumber,
                                 validateString: 'Last Name cannot be Empty',
@@ -53,7 +53,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                                 prefixIcon: Icons.phone,
                                 keyboardType: TextInputType.number,
                               ),
-                              defaultSpaceH,
+                              defaultSpaceH(20),
                               defaultTextField(
                                 controller: address,
                                 validateString: 'address cannot be Empty',

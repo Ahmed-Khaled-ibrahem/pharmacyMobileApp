@@ -122,7 +122,7 @@ class SignUpPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            defaultSpaceH,
+            defaultSpaceH(20),
             Center(
               child: Lottie.asset(
                 'assets/lottie/otp.zip',
@@ -151,8 +151,7 @@ class SignUpPage extends StatelessWidget {
                   style: const TextStyle(color: Colors.black54, fontSize: 15)),
               textAlign: TextAlign.center,
             ),
-            defaultSpaceH,
-            defaultSpaceH,
+            defaultSpaceH(40),
             Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: PinCodeTextField(

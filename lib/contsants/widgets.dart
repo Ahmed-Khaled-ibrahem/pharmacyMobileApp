@@ -1,10 +1,15 @@
 import 'package:flutter/cupertino.dart';
 
-const Widget defaultSpaceH = SizedBox(
-  height: 20,
-);
-const Widget defaultSpaceW = SizedBox(
-  width: 20,
-);
+ Widget defaultSpaceW(double w){
+   return SizedBox(
+     width: w,
+   );
+ }
+
+ Widget defaultSpaceH(double h){
+   return SizedBox(
+     height: h,
+   );
+ }
 
 const ScrollPhysics defaultScrollPhysics = BouncingScrollPhysics();
