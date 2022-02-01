@@ -12,15 +12,6 @@ import 'delivery_tab.dart';
 import 'notifications_page.dart';
 import 'offers_tab.dart';
 
-class any extends StatelessWidget {
-  const any({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}
-
 
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({Key? key}) : super(key: key);

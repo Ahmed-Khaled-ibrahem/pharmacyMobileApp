@@ -90,195 +90,195 @@ class _DeliveryTabState extends State<DeliveryTab> {
                 child: child,
               );
             },
-            child: Column(
-              key: Key("${ allOrdersData.length}"),
-              children: [
-                ListView.builder(
-                   // physics: const NeverScrollableScrollPhysics(),
-                    shrinkWrap: true,
-                    itemCount: allOrdersData.length,
-                    itemBuilder: (BuildContext context, int i) {
-                      return Card(
-                        margin: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
-                        child: ExpansionPanelList(
-                          animationDuration: const Duration(seconds: 1),
-                          expansionCallback: (int index, bool status) {
-                            setState(() {
-                              _activeMeterIndex = _activeMeterIndex == i ? null : i;
-                            });
-                          },
-                          children: [
-                            ExpansionPanel(
-                              canTapOnHeader: true,
-                              backgroundColor: _activeMeterIndex == i
-                                  ? Colors.teal.withOpacity(0.5)
-                                  : null,
-                              isExpanded: _activeMeterIndex == i,
-                              headerBuilder:
-                                  (BuildContext context, bool isExpanded) =>
-                                      ListTile(
-                                horizontalTitleGap: 20,
-                                style: ListTileStyle.list,
-                                trailing:  Text(allOrdersData[i]['distance'],
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.green,
-                                        fontWeight: FontWeight.bold)),
-                                leading: CircleAvatar(
-                                  backgroundColor: Theme.of(context).primaryColor,
-                                  radius: 30,
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(100),
-                                    child: CachedNetworkImage(
-                                      width: 60,
-                                      height: 60,
-                                      fit: BoxFit.cover,
-                                      placeholder: (context, url) =>
-                                          const CircularProgressIndicator(),
-                                      errorWidget: (context, url, error) =>
-                                          const Icon(
-                                        Icons.person,
-                                        size: 40,
-                                      ),
-                                      imageUrl: allOrdersData[i]['image'],
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: ListView.builder(
+                scrollDirection: Axis.vertical,
+                  key: Key("${ allOrdersData.length}"),
+                  //physics: const NeverScrollableScrollPhysics(),
+                  //shrinkWrap: true,
+                  itemCount: allOrdersData.length,
+                  itemBuilder: (BuildContext context, int i) {
+                    return Card(
+                      margin: const EdgeInsets.fromLTRB(10.0, 15.0, 10.0, 0.0),
+                      child: ExpansionPanelList(
+                        animationDuration: const Duration(seconds: 1),
+                        expansionCallback: (int index, bool status) {
+                          setState(() {
+                            _activeMeterIndex = _activeMeterIndex == i ? null : i;
+                          });
+                        },
+                        children: [
+                          ExpansionPanel(
+                            canTapOnHeader: true,
+                            backgroundColor: _activeMeterIndex == i
+                                ? Colors.teal.withOpacity(0.5)
+                                : null,
+                            isExpanded: _activeMeterIndex == i,
+                            headerBuilder:
+                                (BuildContext context, bool isExpanded) =>
+                                    ListTile(
+                              horizontalTitleGap: 20,
+                              style: ListTileStyle.list,
+                              trailing:  Text(allOrdersData[i]['distance'],
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      color: Colors.green,
+                                      fontWeight: FontWeight.bold)),
+                              leading: CircleAvatar(
+                                backgroundColor: Theme.of(context).primaryColor,
+                                radius: 30,
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(100),
+                                  child: CachedNetworkImage(
+                                    width: 60,
+                                    height: 60,
+                                    fit: BoxFit.cover,
+                                    placeholder: (context, url) =>
+                                        const CircularProgressIndicator(),
+                                    errorWidget: (context, url, error) =>
+                                        const Icon(
+                                      Icons.person,
+                                      size: 40,
                                     ),
+                                    imageUrl: allOrdersData[i]['image'],
                                   ),
                                 ),
-                                subtitle:  Text(allOrdersData[i]['number'],
-                                    style: const TextStyle(fontWeight: FontWeight.bold)),
-                                title:  Text(allOrdersData[i]['name']),
                               ),
-                              body: Padding(
-                                padding: const EdgeInsets.all(15),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  mainAxisAlignment: MainAxisAlignment.start,
-                                  children: [
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children:  [
-                                        const Text(
-                                          "Time  ",
-                                          style: TextStyle(
-                                              color: Colors.cyan,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        Text(allOrdersData[i]['time']),
-                                      ],
-                                    ),
-                                    Row(
-                                      crossAxisAlignment: CrossAxisAlignment.center,
-                                      children:  [
-                                        const Text(
-                                          "Address  ",
-                                          style: TextStyle(
-                                              color: Colors.cyan,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
-                                        ),
-                                        SizedBox(
-                                            width: 220,
-                                            child: Text(allOrdersData[i]['address'])),
-                                      ],
-                                    ),
-                                    Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceEvenly,
-                                      children: [
-                                        ElevatedButton.icon(
-                                            icon: const Icon(Icons.location_on),
-                                            label:
-                                                const Text("Open Location in Map"),
-                                            style: ElevatedButton.styleFrom(
-                                                primary: themeColor,
-                                                //fixedSize: const Size(250, 35.0),
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(80))),
-                                            onPressed: () {
-                                              openMap(allOrdersData[i]['location']);
-                                            }),
-                                        ElevatedButton(
-                                            child: const Icon(Icons.chat_rounded),
-                                            style: ElevatedButton.styleFrom(
-                                                primary: themeColor,
-                                                shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(80))),
-                                            onPressed: () {
-                                              cubit.controller.animateTo(0
-                                                  ,duration: const Duration(milliseconds: 1500),);
-                                              //cubit.controller.index = 0;
-                                            }),
-                                      ],
-                                    ),
-                                    const Text(
-                                      "Items List",
-                                      style: TextStyle(
-                                          color: Colors.cyan,
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Center(
-                                      child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: [
-                                          Column(
-                                            //mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.stretch,
-                                            children:(allOrdersData[i]['itemsList'] as List).map(
-                                                  (e) => Row(
-                                                    children: [
-                                                      Text(
-                                                          "${(allOrdersData[i]['itemsList'] as List).indexOf(e) + 1}. "
-                                                          "${e['name']}   "),
-                                                      const Spacer(),
-                                                      Text("${e['quantity']} *"
-                                                          " ${e['price']} LE"),
-                                                    ],
-                                                  ),
-                                                )
-                                                .toList(),
-                                          ),
-                                          const Text("+ 10 LE delivery"),
-                                          Text("Total = ${calcSum(i).toString()} LE",
-                                              style: const TextStyle(
-                                                  color: Colors.cyan,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold)),
-                                        ],
+                              subtitle:  Text(allOrdersData[i]['number'],
+                                  style: const TextStyle(fontWeight: FontWeight.bold)),
+                              title:  Text(allOrdersData[i]['name']),
+                            ),
+                            body: Padding(
+                              padding: const EdgeInsets.all(15),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children:  [
+                                      const Text(
+                                        "Time  ",
+                                        style: TextStyle(
+                                            color: Colors.cyan,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ),
-                                    Center(
-                                      child: ElevatedButton.icon(
-                                          label: const Text("Done Delivered"),
-                                          icon: const Icon(
-                                              Icons.done_outline_rounded),
+                                      Text(allOrdersData[i]['time']),
+                                    ],
+                                  ),
+                                  Row(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children:  [
+                                      const Text(
+                                        "Address  ",
+                                        style: TextStyle(
+                                            color: Colors.cyan,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                      SizedBox(
+                                          width: 220,
+                                          child: Text(allOrdersData[i]['address'])),
+                                    ],
+                                  ),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceEvenly,
+                                    children: [
+                                      ElevatedButton.icon(
+                                          icon: const Icon(Icons.location_on),
+                                          label:
+                                              const Text("Open Location in Map"),
                                           style: ElevatedButton.styleFrom(
                                               primary: themeColor,
-                                              fixedSize: const Size(250, 35.0),
+                                              //fixedSize: const Size(250, 35.0),
                                               shape: RoundedRectangleBorder(
-                                                  borderRadius: BorderRadius.circular(80))),
+                                                  borderRadius:
+                                                      BorderRadius.circular(80))),
                                           onPressed: () {
-                                            setState(() {
-                                              _activeMeterIndex=1000;
-                                              allOrdersData.removeAt(i);
-                                            });
+                                            openMap(allOrdersData[i]['location']);
                                           }),
+                                      ElevatedButton(
+                                          child: const Icon(Icons.chat_rounded),
+                                          style: ElevatedButton.styleFrom(
+                                              primary: themeColor,
+                                              shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(80))),
+                                          onPressed: () {
+                                            cubit.controller.animateTo(0
+                                                ,duration: const Duration(milliseconds: 1500),);
+                                            //cubit.controller.index = 0;
+                                          }),
+                                    ],
+                                  ),
+                                  const Text(
+                                    "Items List",
+                                    style: TextStyle(
+                                        color: Colors.cyan,
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                  Center(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                        Column(
+                                          //mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.stretch,
+                                          children:(allOrdersData[i]['itemsList'] as List).map(
+                                                (e) => Row(
+                                                  children: [
+                                                    Text(
+                                                        "${(allOrdersData[i]['itemsList'] as List).indexOf(e) + 1}. "
+                                                        "${e['name']}   "),
+                                                    const Spacer(),
+                                                    Text("${e['quantity']} *"
+                                                        " ${e['price']} LE"),
+                                                  ],
+                                                ),
+                                              )
+                                              .toList(),
+                                        ),
+                                        const Text("+ 10 LE delivery"),
+                                        Text("Total = ${calcSum(i).toString()} LE",
+                                            style: const TextStyle(
+                                                color: Colors.cyan,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold)),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),
+                                  Center(
+                                    child: ElevatedButton.icon(
+                                        label: const Text("Done Delivered"),
+                                        icon: const Icon(
+                                            Icons.done_outline_rounded),
+                                        style: ElevatedButton.styleFrom(
+                                            primary: themeColor,
+                                            fixedSize: const Size(250, 35.0),
+                                            shape: RoundedRectangleBorder(
+                                                borderRadius: BorderRadius.circular(80))),
+                                        onPressed: () {
+                                          setState(() {
+                                            _activeMeterIndex=1000;
+                                            allOrdersData.removeAt(i);
+                                          });
+                                        }),
+                                  ),
+                                ],
                               ),
                             ),
-                          ],
-                        ),
-                      );
-                    }),
-              ],
+                          ),
+                        ],
+                      ),
+                    );
+                  }),
             ),
           ),
         );
