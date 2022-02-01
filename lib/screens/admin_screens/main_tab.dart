@@ -8,6 +8,8 @@ import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/search_reasults.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'drug_edit_page.dart';
+
 class MainTap extends StatefulWidget {
   const MainTap({Key? key}) : super(key: key);
 
@@ -356,8 +358,7 @@ class CustomSearchDelegate extends SearchDelegate{
                     height: 80,
                     fit: BoxFit.cover,
                     placeholder: (context, url) => const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) =>
-                        Center(
+                    errorWidget: (context, url, error) => Center(
                           child: Text(
                             drugItem[index]['name']!.length < 2 ? " "
                                 : drugItem[index]['name']!.trim().substring(0, 2),
@@ -413,7 +414,7 @@ class CustomSearchDelegate extends SearchDelegate{
                       child: IconButton(
                           color: Colors.white,
                           onPressed: () {
-                           // navigateTo(context, SearchResultsScreen(), true);
+                            navigateTo(context, DrugsInfoEditScreen(index), true);
                           },
                           icon: const Icon(Icons.edit)),
                     ),

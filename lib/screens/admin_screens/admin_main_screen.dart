@@ -22,17 +22,19 @@ class AdminMainScreen extends StatefulWidget {
 
 class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderStateMixin{
 
+
   @override
   Widget build(BuildContext context) {
+    TabController _tabController = TabController(length: 4, vsync: this);
+
     return BlocProvider(
       create: (BuildContext context) => AdminCubit()..startAdminProcess(),
       child: BlocConsumer<AdminCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
            AdminCubit cubit = AdminCubit.get(context);
+           cubit.controller  = _tabController;
 
-           TabController _tabController = TabController(length: 4, vsync: this);
-          cubit.controller  = _tabController;
 
           return DefaultTabController(
             length: 4,

@@ -29,18 +29,21 @@ class ViewPhoto extends StatelessWidget {
         key: const Key('key'),
         direction: DismissDirection.down,
         onDismissed: (_) => Navigator.pop(context),
-        child: PhotoView(
-          imageProvider: NetworkImage(photoUrl),
-          loadingBuilder: (_, __) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
-          errorBuilder: (_, __, ___) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+        child: Hero(
+          tag: 'image',
+          child: PhotoView(
+            imageProvider: NetworkImage(photoUrl),
+            loadingBuilder: (_, __) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+            errorBuilder: (_, __, ___) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ),
       ),
     );
