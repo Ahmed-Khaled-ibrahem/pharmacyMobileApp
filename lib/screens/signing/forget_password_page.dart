@@ -7,8 +7,7 @@ import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-
-import '../../contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/themes.dart';
 
 // ignore: must_be_immutable
 class ForgetPassPage extends StatelessWidget {

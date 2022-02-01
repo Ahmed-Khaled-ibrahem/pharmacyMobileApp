@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'const_colors.dart';
+const Color themeColor = Color(0xFF004282); //0A6889
 
 ThemeData lightThemeData = ThemeData(
   primaryColor: Colors.blue,

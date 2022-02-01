@@ -7,7 +7,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/favoriates_items.dart';
-import '../../../contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/themes.dart';
 import '../../../reusable/components.dart';
 
 // ignore: must_be_immutable

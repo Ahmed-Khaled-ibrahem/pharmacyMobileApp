@@ -3,7 +3,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
-import '../../../contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/themes.dart';
 import '../../../reusable/components.dart';
 
 class OffersScreen extends StatefulWidget {

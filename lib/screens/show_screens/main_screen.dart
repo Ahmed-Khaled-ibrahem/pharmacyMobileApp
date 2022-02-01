@@ -8,7 +8,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/search_reasults.dart';
-import '../../contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/themes.dart';
 import '../../reusable/components.dart';
 import 'chating_page.dart';
 import '../send_orders/make_order_page.dart';

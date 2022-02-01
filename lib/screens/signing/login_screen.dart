@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/admin_screens/admin_main_screen.dart';
-import '../../contsants/const_colors.dart';
+import 'package:pharmacyapp/contsants/themes.dart';
 import '../settings.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
