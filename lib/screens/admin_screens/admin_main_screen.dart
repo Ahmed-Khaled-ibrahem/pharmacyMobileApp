@@ -12,6 +12,15 @@ import 'delivery_tab.dart';
 import 'notifications_page.dart';
 import 'offers_tab.dart';
 
+class any extends StatelessWidget {
+  const any({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
+  }
+}
+
 
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({Key? key}) : super(key: key);
@@ -22,10 +31,10 @@ class AdminMainScreen extends StatefulWidget {
 
 class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderStateMixin{
 
-
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 4, vsync: this);
+    _tabController.animateTo(1);
 
     return BlocProvider(
       create: (BuildContext context) => AdminCubit()..startAdminProcess(),

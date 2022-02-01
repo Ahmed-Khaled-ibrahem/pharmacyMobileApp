@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/const_colors.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:pharmacyapp/main.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DeliveryTab extends StatefulWidget {
@@ -206,7 +207,9 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                                     borderRadius:
                                                         BorderRadius.circular(80))),
                                             onPressed: () {
-                                              cubit.controller.index = 0;
+                                              cubit.controller.animateTo(0
+                                                  ,duration: const Duration(milliseconds: 1500),);
+                                              //cubit.controller.index = 0;
                                             }),
                                       ],
                                     ),
