@@ -89,7 +89,7 @@ class ListWheelScrollViewX extends StatelessWidget {
       quarterTurns: scrollDirection == Axis.horizontal ? 3 : 0,
       child: ListWheelScrollView.useDelegate(
         controller: controller,
-        physics: FixedExtentScrollPhysics(),
+        physics: const FixedExtentScrollPhysics(),
         diameterRatio: diameterRatio,
         perspective: perspective,
         offAxisFraction: offAxisFraction,

@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
@@ -91,7 +93,11 @@ List<String> mostWanted = [
           Row(
             children: [
               defaultSpaceW(15),
-              const Text('The Most Ordered List',textAlign: TextAlign.start,style: TextStyle(fontWeight: FontWeight.bold,fontSize: 20),),
+                const Text('The Most Ordered List'
+                ,textAlign: TextAlign.start,
+                style: TextStyle(color: themeColor,fontSize: 20),
+                //style: Theme.of(context).textTheme.button,
+              ),
             ],
           ),
           SizedBox(
