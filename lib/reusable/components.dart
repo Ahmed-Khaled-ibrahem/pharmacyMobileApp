@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/settings.dart';
@@ -174,9 +175,7 @@ Widget optionsWidget(BuildContext context) {
                           ? Colors.white
                           : Colors.black,
                     ),
-              const SizedBox(
-                width: 10,
-              ),
+              defaultSpaceW(10),
               Text(choice),
             ],
           ),

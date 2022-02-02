@@ -266,9 +266,7 @@ class SignUpPage extends StatelessWidget {
       duration: const Duration(seconds: 1),
       child: Column(
         children: [
-          const SizedBox(
-            height: 10,
-          ),
+          defaultSpaceH(10),
           CircleAvatar(
             backgroundColor: Colors.white,
             radius: 80,
@@ -325,9 +323,7 @@ class SignUpPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 20,
-          ),
+          defaultSpaceH(20),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Row(
@@ -358,9 +354,7 @@ class SignUpPage extends StatelessWidget {
                         )),
                   ),
                 ),
-                const SizedBox(
-                  width: 10,
-                ),
+                defaultSpaceW(10),
                 Expanded(
                   child: TextFormField(
                     //onChanged: (v){runanimation();},
@@ -390,9 +384,7 @@ class SignUpPage extends StatelessWidget {
               ],
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -420,9 +412,7 @@ class SignUpPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -437,9 +427,7 @@ class SignUpPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(50),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -473,9 +461,7 @@ class SignUpPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -509,9 +495,7 @@ class SignUpPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SizedBox(
@@ -576,9 +560,7 @@ class SignUpPage extends StatelessWidget {
                         size: 35,
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    defaultSpaceW(10),
                     OutlinedButton.icon(
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),

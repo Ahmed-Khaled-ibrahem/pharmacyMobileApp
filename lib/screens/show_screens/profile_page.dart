@@ -7,6 +7,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/components.dart';
@@ -116,9 +117,7 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const SizedBox(
-                        height: 20,
-                      ),
+                      defaultSpaceH(20),
                       Form(
                         key: formKey,
                         child: Column(
@@ -154,9 +153,7 @@ class ProfileScreen extends StatelessWidget {
                                           )),
                                     ),
                                   ),
-                                  const SizedBox(
-                                    width: 10,
-                                  ),
+                                  defaultSpaceW(10),
                                   Expanded(
                                     child: TextFormField(
                                       controller: secondName,
@@ -187,9 +184,7 @@ class ProfileScreen extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            defaultSpaceH(15),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: TextFormField(
@@ -216,9 +211,7 @@ class ProfileScreen extends StatelessWidget {
                                     )),
                               ),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            defaultSpaceH(15),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: defaultTextField(
@@ -228,9 +221,7 @@ class ProfileScreen extends StatelessWidget {
                                 prefixIcon: Icons.home_filled,
                               ),
                             ),
-                            const SizedBox(
-                              height: 15,
-                            ),
+                            defaultSpaceH(15),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 8.0),
@@ -318,9 +309,7 @@ class ProfileScreen extends StatelessWidget {
                         size: 35,
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    defaultSpaceW(10),
                     OutlinedButton.icon(
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),

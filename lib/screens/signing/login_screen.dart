@@ -1,3 +1,4 @@
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:flutter/material.dart';
@@ -96,16 +97,12 @@ class LoginScreenState extends State<LoginScreen>
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            defaultSpaceH(20),
                             SizedBox(
                                 height: 120,
                                 child:
                                     Image.asset("assets/images/loginlogo.png")),
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            defaultSpaceH(20),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: TextFormField(
@@ -133,9 +130,7 @@ class LoginScreenState extends State<LoginScreen>
                                     )),
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            defaultSpaceH(10),
                             Padding(
                               padding: const EdgeInsets.fromLTRB(40, 0, 40, 0),
                               child: TextFormField(
@@ -176,9 +171,7 @@ class LoginScreenState extends State<LoginScreen>
                             //const SizedBox(height: 5,),
                             Row(
                               children: [
-                                const SizedBox(
-                                  width: 40,
-                                ),
+                                defaultSpaceW(40),
                                 TextButton(
                                     onPressed: () {
                                       navigateTo(
@@ -188,9 +181,7 @@ class LoginScreenState extends State<LoginScreen>
                                         const Text("Forget your Password ?")),
                               ],
                             ),
-                            const SizedBox(
-                              height: 20,
-                            ),
+                            defaultSpaceH(20),
                             ElevatedButton.icon(
                                 label: const Text("Login"),
                                 icon: const Icon(Icons.double_arrow),
@@ -209,16 +200,12 @@ class LoginScreenState extends State<LoginScreen>
                                     stopAnimation();
                                   }
                                 }),
-                            const SizedBox(
-                              height: 30,
-                            ),
+                            defaultSpaceH(30),
                             const Text(
                               "Or Sign in with Google Account",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(
-                              height: 10,
-                            ),
+                            defaultSpaceH(10),
                             InkWell(
                               onTap: () {
                                 navigateTo(context, const AdminMainScreen(), false);
@@ -238,16 +225,12 @@ class LoginScreenState extends State<LoginScreen>
                                   child: Image.asset(
                                       "assets/images/googleIcon.png")),
                             ),
-                            const SizedBox(
-                              height: 5,
-                            ),
+                            defaultSpaceH(5),
                             const Text(
                               "Gmail",
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
-                            const SizedBox(
-                              height: 30,
-                            ),
+                            defaultSpaceH(30),
                             const Text("You haven't account yet"),
                             TextButton(
                                 onPressed: () {

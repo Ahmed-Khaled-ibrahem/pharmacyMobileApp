@@ -107,9 +107,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                                 style: TextStyle(
                                     fontSize: 16, fontWeight: FontWeight.bold),
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              defaultSpaceH(10),
                               Row(
                                 children: [
                                   const Expanded(
@@ -128,9 +126,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                                   ))
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              defaultSpaceH(10),
                               Row(
                                 children: [
                                   const Expanded(
@@ -149,9 +145,7 @@ class OrderSubmissionScreen extends StatelessWidget {
                                   ))
                                 ],
                               ),
-                              const SizedBox(
-                                height: 10,
-                              ),
+                              defaultSpaceH(10),
                               Row(
                                 children: [
                                   const Expanded(

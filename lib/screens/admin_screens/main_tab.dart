@@ -49,9 +49,7 @@ List<String> mostWanted = [
                 child: Row(
                   children: [
                     const Icon(Icons.search),
-                    const SizedBox(
-                      width: 5,
-                    ),
+                    defaultSpaceW(5),
                     Text(AppLocalizations.of(context)!.search),
                     const Spacer(),
                     const Icon(Icons.local_pharmacy_rounded),

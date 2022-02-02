@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/order_model.dart';
 import 'package:pharmacyapp/reusable/components.dart';
@@ -32,18 +33,14 @@ class ArchiveOrderDetails extends StatelessWidget {
                     Expanded(flex: 4, child: Text(data.name))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                defaultSpaceH(10),
                 Row(
                   children: [
                     const Expanded(flex: 2, child: Text("maker phone")),
                     Expanded(flex: 4, child: Text(data.phone))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                defaultSpaceH(10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -52,27 +49,21 @@ class ArchiveOrderDetails extends StatelessWidget {
                     Expanded(flex: 4, child: Text(data.address))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                defaultSpaceH(10),
                 Row(
                   children: [
                     const Expanded(flex: 2, child: Text("Order price")),
                     Expanded(flex: 4, child: Text(data.price.toString()))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                defaultSpaceH(10),
                 Row(
                   children: [
                     const Expanded(flex: 2, child: Text("Order time")),
                     Expanded(flex: 4, child: Text(data.time))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                defaultSpaceH(10),
                 Visibility(
                   visible: data.description != null,
                   child: Row(
@@ -84,9 +75,7 @@ class ArchiveOrderDetails extends StatelessWidget {
                 ),
                 Visibility(
                   visible: data.description != null,
-                  child: const SizedBox(
-                    height: 10,
-                  ),
+                  child: defaultSpaceH(10),
                 ),
                 Row(
                   children: [
@@ -94,18 +83,14 @@ class ArchiveOrderDetails extends StatelessWidget {
                     Expanded(flex: 4, child: Text(data.itemsCount.toString()))
                   ],
                 ),
-                const SizedBox(
-                  height: 10,
-                ),
+                defaultSpaceH(10),
                 Row(
                   children: [
                     const Expanded(flex: 2, child: Text("images count")),
                     Expanded(flex: 4, child: Text(data.imagesCount.toString()))
                   ],
                 ),
-                const SizedBox(
-                  height: 20,
-                ),
+                defaultSpaceH(20),
                 SizedBox(
                   height: 400,
                   child: FutureBuilder<Map<String, dynamic>>(
@@ -259,9 +244,7 @@ class ArchiveOrderDetails extends StatelessWidget {
                           child: ListView.separated(
                               physics: const BouncingScrollPhysics(),
                               itemCount: images.length,
-                              separatorBuilder: (_, index) => const SizedBox(
-                                    height: 10,
-                                  ),
+                              separatorBuilder: (_, index) => defaultSpaceH(10),
                               itemBuilder: (_, index) => Center(
                                     child: Container(
                                       decoration: BoxDecoration(

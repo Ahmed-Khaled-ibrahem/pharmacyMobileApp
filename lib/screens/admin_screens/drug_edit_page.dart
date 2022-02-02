@@ -191,9 +191,7 @@ class DrugsInfoEditScreen extends StatelessWidget {
                         size: 35,
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    defaultSpaceW(10),
                     OutlinedButton.icon(
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),

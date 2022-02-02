@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/components.dart';
@@ -140,9 +141,7 @@ physics: const BouncingScrollPhysics(),
                                             color: Colors.blue,
                                           ),
                                         ),
-                                        const SizedBox(
-                                          width: 5,
-                                        ),
+                                        defaultSpaceW(5),
                                         InkWell(
                                           onTap: () {
                                             cubit.removeFromCart(index);
@@ -191,9 +190,7 @@ physics: const BouncingScrollPhysics(),
                                   physics: const BouncingScrollPhysics(),
                                   itemCount: cubit.orderImages.length,
                                   separatorBuilder: (_, index) =>
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
+                                       defaultSpaceH(10),
                                   itemBuilder: (_, index) => Center(
                                         child: Stack(
                                           alignment: Alignment.topRight,

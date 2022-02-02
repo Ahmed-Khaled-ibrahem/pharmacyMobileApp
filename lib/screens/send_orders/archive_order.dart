@@ -104,9 +104,7 @@ class ArchiveOrders extends StatelessWidget {
                                                   color: Colors.grey,
                                                   fontSize: 12,
                                                 )),
-                                            const SizedBox(
-                                              width: 20,
-                                            ),
+                                            defaultSpaceW(20),
                                             Text(
                                                 "Images count ${snapshot.data![index].imagesCount}",
                                                 style: const TextStyle(

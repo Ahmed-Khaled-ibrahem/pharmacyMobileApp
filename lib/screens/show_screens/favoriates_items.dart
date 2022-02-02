@@ -90,9 +90,7 @@ class FavoritesScreen extends StatelessWidget {
       color: Colors.blue,
       child: Column(
         children: [
-          const SizedBox(
-            height: 3,
-          ),
+          defaultSpaceH(3),
           Stack(
             alignment: Alignment.topLeft,
             children: [

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 
@@ -156,9 +157,7 @@ class _ChatTapState extends State<ChatTap> {
                                       : Container(),
                                 ],
                               ),
-                              const SizedBox(
-                                width: 20,
-                              ),
+                              defaultSpaceW(20),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -263,9 +262,7 @@ class _ChatTapState extends State<ChatTap> {
                                             : Container(),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      width: 20,
-                                    ),
+                                    defaultSpaceW(20),
                                     Column(
                                       crossAxisAlignment:
                                           CrossAxisAlignment.start,
@@ -306,9 +303,7 @@ class _ChatTapState extends State<ChatTap> {
                                         ),
                                       ],
                                     ),
-                                    const SizedBox(
-                                      width: 10,
-                                    )
+                                    defaultSpaceW(10),
                                   ],
                                 ),
                               ),
@@ -316,9 +311,7 @@ class _ChatTapState extends State<ChatTap> {
                           );
                         },
                         separatorBuilder: (BuildContext context, int index) {
-                          return const SizedBox(
-                            height: 10,
-                          );
+                          return defaultSpaceH(10);
                         },
                       ),
                     ),

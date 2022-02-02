@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
@@ -120,7 +121,7 @@ class _OffersTabState extends State<OffersTab> {
                   //hasOverlay: true,
                   //marginColor: Colors.deepOrange,
                 ),
-                  const SizedBox(height: 60,),
+                  defaultSpaceH(60),
                   //const Text("Item Selected",style: TextStyle(fontSize: 25),),
                   const Text("Panadol 50 mg 30Taps",style: TextStyle(fontSize: 25,fontWeight: FontWeight.bold),),
                   Row(
@@ -155,7 +156,7 @@ class _OffersTabState extends State<OffersTab> {
                             validateString: '', label: 'Value',
                             controller: percValue),
                       ),
-                      const SizedBox(width: 10,),
+                      defaultSpaceW(10),
                       AnimatedSwitcher(
                           duration: const Duration(seconds: 2),
                           reverseDuration: const Duration(milliseconds: 500),

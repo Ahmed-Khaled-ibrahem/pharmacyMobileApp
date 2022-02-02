@@ -245,9 +245,7 @@ class ForgetPassPage extends StatelessWidget {
               height: 250,
             ),
           ),
-          const SizedBox(
-            height: 10,
-          ),
+          defaultSpaceH(10),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -273,9 +271,7 @@ class ForgetPassPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -309,9 +305,7 @@ class ForgetPassPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
             child: TextFormField(
@@ -345,9 +339,7 @@ class ForgetPassPage extends StatelessWidget {
                   )),
             ),
           ),
-          const SizedBox(
-            height: 15,
-          ),
+          defaultSpaceH(15),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: SizedBox(

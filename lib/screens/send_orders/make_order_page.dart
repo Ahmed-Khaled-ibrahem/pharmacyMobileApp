@@ -4,6 +4,7 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
@@ -59,9 +60,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                 body: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(
-                      height: 20,
-                    ),
+                    defaultSpaceH(20),
                     Padding(
                       padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                       child: Row(
@@ -222,9 +221,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                         size: 35,
                       ),
                     ),
-                    const SizedBox(
-                      width: 10,
-                    ),
+                    defaultSpaceW(10),
                     OutlinedButton.icon(
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),

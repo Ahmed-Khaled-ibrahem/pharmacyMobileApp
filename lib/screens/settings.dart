@@ -110,9 +110,7 @@ class SettingsScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        defaultSpaceH(10),
                         DecoratedBox(
                             decoration: BoxDecoration(
                               color:
@@ -170,9 +168,7 @@ class SettingsScreen extends StatelessWidget {
                           style: TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        defaultSpaceH(10),
                         DecoratedBox(
                             decoration: BoxDecoration(
                               color:
@@ -433,9 +429,7 @@ class SettingsScreen extends StatelessWidget {
             height: 20,
             color: themeColor,
           ),
-          const SizedBox(
-            width: 10,
-          ),
+          defaultSpaceW(10),
           SizedBox(
             height: 30,
             child: Column(

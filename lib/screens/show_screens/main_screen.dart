@@ -93,9 +93,7 @@ class MainScreen extends StatelessWidget {
                     ),
                   ),
                 ),
-                const SizedBox(
-                  height: 5,
-                ),
+                defaultSpaceH(5),
                 FloatingActionButton(
                   tooltip: "Ask the Doctor",
                   elevation: 10,
@@ -154,9 +152,7 @@ class MainScreen extends StatelessWidget {
                                 child: Row(
                                   children: [
                                     const Icon(Icons.search),
-                                    const SizedBox(
-                                      width: 5,
-                                    ),
+                                    defaultSpaceW(5),
                                     Text(AppLocalizations.of(context)!.search),
                                     const Spacer(),
                                     const Icon(Icons.local_pharmacy_rounded),
