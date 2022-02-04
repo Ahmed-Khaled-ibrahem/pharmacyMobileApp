@@ -183,24 +183,6 @@ class LoginScreenState extends State<LoginScreen>
                               ],
                             ),
                             defaultSpaceH(20),
-                            ElevatedButton.icon(
-                                label:  Text(AppLocalizations.of(context)!.login_s),
-                                icon: const Icon(Icons.double_arrow),
-                                style: ElevatedButton.styleFrom(
-                                    primary: themeColor,
-                                    fixedSize: const Size(250, 35.0),
-                                    shape: RoundedRectangleBorder(
-                                        borderRadius:
-                                            BorderRadius.circular(80))),
-                                onPressed: () {
-                                  if (formKey.currentState!.validate()) {
-                                    cubit.loginButtonEvent(
-                                        context: context,
-                                        phone: username.text,
-                                        password: password.text);
-                                    stopAnimation();
-                                  }
-                                }),
                             Row(
                               children: [
                                 defaultSpaceW(50),
@@ -224,8 +206,25 @@ class LoginScreenState extends State<LoginScreen>
                                 Text(AppLocalizations.of(context)!.remember_me,style: TextStyle(fontSize: 12))
                               ],
                             ),
-
-                            defaultSpaceH(10),
+                            ElevatedButton.icon(
+                                label:  Text(AppLocalizations.of(context)!.login_s),
+                                icon: const Icon(Icons.double_arrow),
+                                style: ElevatedButton.styleFrom(
+                                    primary: themeColor,
+                                    fixedSize: const Size(250, 35.0),
+                                    shape: RoundedRectangleBorder(
+                                        borderRadius:
+                                            BorderRadius.circular(80))),
+                                onPressed: () {
+                                  if (formKey.currentState!.validate()) {
+                                    cubit.loginButtonEvent(
+                                        context: context,
+                                        phone: username.text,
+                                        password: password.text);
+                                    stopAnimation();
+                                  }
+                                }),
+                            defaultSpaceH(50),
                             InkWell(
                               onTap: () {
                                 navigateTo(context, const AdminMainScreen(), false);

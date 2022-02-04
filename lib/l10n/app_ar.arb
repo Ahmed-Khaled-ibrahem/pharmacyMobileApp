@@ -12,12 +12,21 @@
   "no": "لا",
   "login_c": "تسجيل الدخول",
   "error_user_name": "رقم الهاتف لا يمكن ان يكون فارغ",
-  "error_password": "كلمة المرو لا يمكن ان تكون فارغة",
+  "error_password": "كلمة المرور لا يمكن ان تكون فارغة",
   "mobile_phone": "رقم الهاتف",
   "password": "كلمة المرور",
   "forget_pass": "هل نسيت كلمة المرور ؟",
   "login_s": "دخول",
   "remember_me": "تذكرني",
   "havent_account": "ليس لديك حساب",
-  "signup": "إنشاء حساب"
+  "signup": "إنشاء حساب",
+  "changepass": "تغيير كلمة المرور",
+  "confirm_pass": "تأكيد كلمة المرور",
+  "confirm_change": "تأكيد التغيير",
+  "same_password": "يجب أن تكون كلمتا المرور متطابقتين",
+  "phone_number_verification": "التحقق من رقم الهاتف",
+  "enter_the_code": "أدخل الرمز المرسل إلى ",
+  "did_not_receive": "لم يصلك الرمز؟ ",
+  "resend": "إعادة إرسال",
+  "back": "رجوع"
 }

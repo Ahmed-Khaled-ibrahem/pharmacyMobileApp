@@ -19,5 +19,15 @@
     "login_s": "Login",
     "remember_me": "Remember me",
     "havent_account": "You Haven't account yet",
-    "signup": "Sign Up"
+    "signup": "Sign Up",
+
+    "changepass": "Change Password",
+    "confirm_pass": "Confirm Password",
+    "confirm_change": "Confirm Change",
+    "same_password": "Password must be the Same",
+    "phone_number_verification": "Phone Number Verification",
+    "enter_the_code": "Enter the code sent to ",
+    "did_not_receive": "Didn't receive the code? ",
+    "resend": "RESEND",
+    "back": "Back"
 }

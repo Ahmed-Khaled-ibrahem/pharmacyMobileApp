@@ -8,6 +8,7 @@ import 'package:pharmacyapp/cubit/signing_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class ForgetPassPage extends StatelessWidget {
@@ -39,9 +40,9 @@ class ForgetPassPage extends StatelessWidget {
               ),
               backgroundColor: themeColor,
               elevation: 0,
-              title: const Text(
-                "Change Password",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              title:  Text(
+                AppLocalizations.of(context)!.changepass,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               )),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -56,7 +57,7 @@ class ForgetPassPage extends StatelessWidget {
                     child: Stack(
                       children: [
                         _confirmOtpWidget(cubit, context),
-                        _inputUserWidget(cubit),
+                        _inputUserWidget(cubit, context),
                       ],
                     )),
               ),
@@ -103,17 +104,17 @@ class ForgetPassPage extends StatelessWidget {
                 height: 250,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+             Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'Phone Number Verification',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                AppLocalizations.of(context)!.phone_number_verification,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 textAlign: TextAlign.center,
               ),
             ),
             RichText(
               text: TextSpan(
-                  text: "Enter the code sent to ",
+                  text: AppLocalizations.of(context)!.enter_the_code,
                   children: [
                     TextSpan(
                         text: phoneNumber.text,
@@ -174,17 +175,17 @@ class ForgetPassPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Didn't receive the code? ",
-                  style: TextStyle(color: Colors.black54, fontSize: 15),
+                Text(
+                  AppLocalizations.of(context)!.did_not_receive,
+                  style: const TextStyle(color: Colors.black54, fontSize: 15),
                 ),
                 TextButton(
                     onPressed: () {
                       cubit.sendValidationCode(phoneNumber.text);
                     },
-                    child: const Text(
-                      "RESEND",
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.resend,
+                      style: const TextStyle(
                           color: themeColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
@@ -193,7 +194,7 @@ class ForgetPassPage extends StatelessWidget {
             ),
             Center(
               child: ElevatedButton.icon(
-                label: const Text("Back"),
+                label: Text(AppLocalizations.of(context)!.back),
                 icon: const Icon(Icons.arrow_back),
                 style: ElevatedButton.styleFrom(
                     primary: themeColor,
@@ -213,7 +214,7 @@ class ForgetPassPage extends StatelessWidget {
     );
   }
 
-  Widget _inputUserWidget(SigningCubit cubit) {
+  Widget _inputUserWidget(SigningCubit cubit, BuildContext context) {
     return AnimatedContainer(
       transform: Matrix4(
         1,
@@ -256,13 +257,13 @@ class ForgetPassPage extends StatelessWidget {
               controller: phoneNumber,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Phone number cannot be Empty';
+                  return AppLocalizations.of(context)!.error_user_name;
                 } else {
                   return null;
                 }
               },
               decoration: InputDecoration(
-                  labelText: 'Phone number',
+                  labelText: AppLocalizations.of(context)!.mobile_phone,
                   prefixIcon: const Icon(Icons.phone),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -280,14 +281,14 @@ class ForgetPassPage extends StatelessWidget {
               //onTap: (){runanimation();},
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Password cannot be Empty';
+                  return AppLocalizations.of(context)!.error_password;
                 } else {
                   return null;
                 }
               },
               obscureText: showPasswordSignUp,
               decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: AppLocalizations.of(context)!.password,
                   prefixIcon: const Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -314,14 +315,14 @@ class ForgetPassPage extends StatelessWidget {
               //onTap: (){runanimation();},
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Password cannot be Empty';
+                  return AppLocalizations.of(context)!.error_password;
                 } else {
                   return null;
                 }
               },
               obscureText: showPasswordSignUp,
               decoration: InputDecoration(
-                  labelText: 'Confirm Password',
+                  labelText: AppLocalizations.of(context)!.confirm_pass,
                   prefixIcon: const Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -346,8 +347,8 @@ class ForgetPassPage extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton.icon(
-                label: const Text("Change password"),
-                icon: const Icon(Icons.account_circle_sharp),
+                label: Text(AppLocalizations.of(context)!.confirm_change),
+                icon: const Icon(Icons.done_outline_rounded),
                 style: ElevatedButton.styleFrom(
                     primary: themeColor,
                     shape: RoundedRectangleBorder(
@@ -357,7 +358,7 @@ class ForgetPassPage extends StatelessWidget {
                     if (passwordSignUp.text == passwordSignUpConf.text) {
                       cubit.sendValidationCode(phoneNumber.text, create: false);
                     } else {
-                      EasyLoading.showToast("Password must be the same.");
+                      EasyLoading.showToast(AppLocalizations.of(context)!.same_password);
                     }
                   }
                 },
