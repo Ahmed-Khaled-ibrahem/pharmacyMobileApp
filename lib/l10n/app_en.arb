@@ -20,7 +20,6 @@
     "remember_me": "Remember me",
     "havent_account": "You Haven't account yet",
     "signup": "Sign Up",
-
     "changepass": "Change Password",
     "confirm_pass": "Confirm Password",
     "confirm_change": "Confirm Change",
@@ -29,5 +28,14 @@
     "enter_the_code": "Enter the code sent to ",
     "did_not_receive": "Didn't receive the code? ",
     "resend": "RESEND",
-    "back": "Back"
+    "back": "Back",
+
+    "error_firstname": "First Name cannot be Empty",
+    "firstname": "First Name",
+    "error_lastname": "Last Name cannot be Empty",
+    "lastname": "Last Name",
+    "address": "Address",
+    "gallery": "Gallery",
+    "camera": "Camera",
+    "error_camera": "Can't open the Camera"
 }

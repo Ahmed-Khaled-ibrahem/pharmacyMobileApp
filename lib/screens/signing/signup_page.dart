@@ -15,6 +15,8 @@ import 'package:pharmacyapp/reusable/view_photo.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
 import '../settings.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 // ignore: must_be_immutable
 class SignUpPage extends StatelessWidget {
@@ -62,9 +64,9 @@ class SignUpPage extends StatelessWidget {
                 ),
                 backgroundColor: themeColor,
                 elevation: 0,
-                title: const Text(
-                  "Sign up",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                title: Text(
+                  AppLocalizations.of(context)!.signup,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -127,17 +129,17 @@ class SignUpPage extends StatelessWidget {
                 height: 250,
               ),
             ),
-            const Padding(
-              padding: EdgeInsets.symmetric(vertical: 8.0),
+             Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
-                'Phone Number Verification',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                AppLocalizations.of(context)!.phone_number_verification,
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 textAlign: TextAlign.center,
               ),
             ),
             RichText(
               text: TextSpan(
-                  text: "Enter the code sent to ",
+                  text: AppLocalizations.of(context)!.enter_the_code,
                   children: [
                     TextSpan(
                         text: phoneNumber.text,
@@ -200,17 +202,17 @@ class SignUpPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const Text(
-                  "Didn't receive the code? ",
-                  style: TextStyle(color: Colors.black54, fontSize: 15),
+                 Text(
+                  AppLocalizations.of(context)!.did_not_receive,
+                  style: const TextStyle(color: Colors.black54, fontSize: 15),
                 ),
                 TextButton(
                     onPressed: () {
                       cubit.sendValidationCode(phoneNumber.text);
                     },
-                    child: const Text(
-                      "RESEND",
-                      style: TextStyle(
+                    child: Text(
+                      AppLocalizations.of(context)!.resend,
+                      style: const TextStyle(
                           color: themeColor,
                           fontWeight: FontWeight.bold,
                           fontSize: 16),
@@ -219,7 +221,7 @@ class SignUpPage extends StatelessWidget {
             ),
             Center(
               child: ElevatedButton.icon(
-                label: const Text("Back"),
+                label: Text(AppLocalizations.of(context)!.back),
                 icon: const Icon(Icons.arrow_back),
                 style: ElevatedButton.styleFrom(
                     primary: themeColor,
@@ -334,15 +336,15 @@ class SignUpPage extends StatelessWidget {
                     controller: firstName,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'First Name cannot be Empty';
+                        return AppLocalizations.of(context)!.error_firstname;
                       } else {
                         return null;
                       }
                     },
-                    decoration: const InputDecoration(
-                        labelText: 'First Name',
-                        prefixIcon: Icon(Icons.person),
-                        enabledBorder: OutlineInputBorder(
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.firstname,
+                        prefixIcon: const Icon(Icons.person),
+                        enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blueGrey, width: 1),
                           borderRadius: BorderRadius.only(
@@ -361,15 +363,15 @@ class SignUpPage extends StatelessWidget {
                     controller: secondName,
                     validator: (value) {
                       if (value!.isEmpty) {
-                        return 'Last Name cannot be Empty';
+                        return AppLocalizations.of(context)!.error_lastname;
                       } else {
                         return null;
                       }
                     },
-                    decoration: const InputDecoration(
-                        labelText: 'Last Name',
-                        prefixIcon: Icon(Icons.person),
-                        enabledBorder: OutlineInputBorder(
+                    decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.lastname,
+                        prefixIcon: const Icon(Icons.person),
+                        enabledBorder: const OutlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.blueGrey, width: 1),
                           borderRadius: BorderRadius.only(
@@ -396,13 +398,13 @@ class SignUpPage extends StatelessWidget {
               controller: phoneNumber,
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Phone number cannot be Empty';
+                  return AppLocalizations.of(context)!.error_user_name;
                 } else {
                   return null;
                 }
               },
               decoration: InputDecoration(
-                  labelText: 'Phone number',
+                  labelText: AppLocalizations.of(context)!.mobile_phone,
                   prefixIcon: const Icon(Icons.phone),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -417,7 +419,7 @@ class SignUpPage extends StatelessWidget {
             child: TextFormField(
               controller: address,
               decoration: InputDecoration(
-                  labelText: 'address',
+                  labelText: AppLocalizations.of(context)!.address,
                   prefixIcon: const Icon(Icons.home),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -435,14 +437,14 @@ class SignUpPage extends StatelessWidget {
               //onTap: (){runanimation();},
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Password cannot be Empty';
+                  return AppLocalizations.of(context)!.error_password;
                 } else {
                   return null;
                 }
               },
               obscureText: showPasswordSignUp,
               decoration: InputDecoration(
-                  labelText: 'Password',
+                  labelText: AppLocalizations.of(context)!.password,
                   prefixIcon: const Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -469,14 +471,14 @@ class SignUpPage extends StatelessWidget {
               //onTap: (){runanimation();},
               validator: (value) {
                 if (value!.isEmpty) {
-                  return 'Password cannot be Empty';
+                  return AppLocalizations.of(context)!.error_password;
                 } else {
                   return null;
                 }
               },
               obscureText: showPasswordSignUp,
               decoration: InputDecoration(
-                  labelText: 'Confirm Password',
+                  labelText: AppLocalizations.of(context)!.confirm_pass,
                   prefixIcon: const Icon(Icons.lock),
                   enabledBorder: OutlineInputBorder(
                     borderSide:
@@ -501,7 +503,7 @@ class SignUpPage extends StatelessWidget {
               width: double.infinity,
               height: 50,
               child: ElevatedButton.icon(
-                label: const Text("Sign up"),
+                label: Text(AppLocalizations.of(context)!.signup),
                 icon: const Icon(Icons.account_circle_sharp),
                 style: ElevatedButton.styleFrom(
                     primary: themeColor,
@@ -512,7 +514,7 @@ class SignUpPage extends StatelessWidget {
                     if (passwordSignUp.text == passwordSignUpConf.text) {
                       cubit.sendValidationCode(phoneNumber.text);
                     } else {
-                      EasyLoading.showToast("Password must be the same.");
+                      EasyLoading.showToast(AppLocalizations.of(context)!.same_password);
                     }
                   }
                 },
@@ -551,7 +553,7 @@ class SignUpPage extends StatelessWidget {
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      label: const Text("Gallery"),
+                      label: Text(AppLocalizations.of(context)!.gallery),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.gallery),
                       icon: const Icon(
@@ -564,7 +566,7 @@ class SignUpPage extends StatelessWidget {
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      label: const Text("Camera"),
+                      label: Text(AppLocalizations.of(context)!.camera),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.camera),
                       icon: const Icon(
@@ -591,7 +593,7 @@ class SignUpPage extends StatelessWidget {
         return pickedFile;
       }
     } else {
-      EasyLoading.showToast("Can't open camera");
+      EasyLoading.showToast(AppLocalizations.of(context)!.error_camera);
     }
   }
 }
