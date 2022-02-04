@@ -26,6 +26,7 @@ class LoginScreenState extends State<LoginScreen>
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
   bool showPassword = true;
+  bool rememberMe = false;
 
   @override
   void initState() {
@@ -200,11 +201,30 @@ class LoginScreenState extends State<LoginScreen>
                                     stopAnimation();
                                   }
                                 }),
-                            defaultSpaceH(30),
-                            const Text(
-                              "Or Sign in with Google Account",
-                              style: TextStyle(fontWeight: FontWeight.bold),
+                            Row(
+                              children: [
+                                defaultSpaceW(50),
+                                Transform.scale(
+                                  scale: 1.2,
+                                  child: SizedBox(
+                                    width: 30,
+                                    height: 30,
+                                    child: Checkbox(
+                                      value: rememberMe,
+                                      onChanged: (value) {
+                                        setState(() {
+                                          rememberMe = value!;
+                                        });
+                                      },
+                                      fillColor: MaterialStateProperty.all(themeColor),
+                                      shape:  const CircleBorder(),
+                                    ),
+                                  ),
+                                ),
+                                 const Text('Remember Me',style: TextStyle(fontSize: 12))
+                              ],
                             ),
+
                             defaultSpaceH(10),
                             InkWell(
                               onTap: () {
