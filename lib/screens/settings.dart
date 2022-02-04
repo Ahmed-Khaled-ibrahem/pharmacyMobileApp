@@ -12,6 +12,8 @@ import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
 import '../main.dart';
 import '../reusable/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 // ignore: must_be_immutable
 class SettingsScreen extends StatelessWidget {
@@ -30,10 +32,10 @@ class SettingsScreen extends StatelessWidget {
         AppCubit cubit = AppCubit.get(context);
 
         late List<Widget> headList = [
-          headTitle("Privacy Policies"),
-          headTitle("Message Developers"),
+          headTitle(AppLocalizations.of(context)!.privacy_policies),
+          headTitle(AppLocalizations.of(context)!.message_developers),
         ];
-        late List<Widget> contentList = [w1(), messageDevCont()];
+        late List<Widget> contentList = [w1(), messageDevCont(context)];
 
         return GestureDetector(
           onTap: () => FocusScope.of(context).unfocus(),
@@ -48,9 +50,9 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 backgroundColor: themeColor,
                 elevation: 0,
-                title: const Text(
-                  "Settings",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                title:  Text(
+                  AppLocalizations.of(context)!.settings,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             body: SingleChildScrollView(
               physics: defaultScrollPhysics,
@@ -105,9 +107,9 @@ class SettingsScreen extends StatelessWidget {
                             thickness: 2,
                           ),
                         ),
-                        const Text(
-                          "Language",
-                          style: TextStyle(
+                        Text(
+                          AppLocalizations.of(context)!.language,
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         defaultSpaceH(10),
@@ -132,7 +134,7 @@ class SettingsScreen extends StatelessWidget {
                                       value: "English",
                                     ),
                                     DropdownMenuItem(
-                                        child: Text("Arabic"), value: "Arabic"),
+                                        child: Text("العربية"), value: "Arabic"),
                                     DropdownMenuItem(
                                       child: Text("System"),
                                       value: "System",
@@ -163,9 +165,9 @@ class SettingsScreen extends StatelessWidget {
                         const Divider(
                           thickness: 2,
                         ),
-                        const Text(
-                          "Theme",
-                          style: TextStyle(
+                         Text(
+                          AppLocalizations.of(context)!.theme,
+                          style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
                         ),
                         defaultSpaceH(10),
@@ -276,7 +278,7 @@ class SettingsScreen extends StatelessWidget {
               ),
             ),
             bottomNavigationBar: BottomAppBar(
-              child: footer(),
+              child: footer(context),
             ),
           ),
         );
@@ -356,7 +358,7 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  Widget messageDevCont() {
+  Widget messageDevCont(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: Form(
@@ -364,14 +366,14 @@ class SettingsScreen extends StatelessWidget {
         child: Column(
           children: [
             defaultTextField(
-                label: "Message",
+                label: AppLocalizations.of(context)!.message,
                 controller: message,
                 prefixIcon: Icons.message_outlined,
-                validateString: "Message Shouldn't be Empty",
+                validateString: AppLocalizations.of(context)!.error_message,
                 keyboardType: TextInputType.multiline,
                 lineCount: 2),
             ElevatedButton.icon(
-                label: const Text("Send"),
+                label: Text(AppLocalizations.of(context)!.send),
                 icon: const Icon(Icons.send_rounded),
                 style: ElevatedButton.styleFrom(
                     primary: themeColor,
@@ -380,7 +382,7 @@ class SettingsScreen extends StatelessWidget {
                         borderRadius: BorderRadius.circular(80))),
                 onPressed: () {
                   if (formKey.currentState!.validate()) {
-                    sendMessage();
+                    sendMessage(context);
                   }
                 }),
           ],
@@ -389,8 +391,8 @@ class SettingsScreen extends StatelessWidget {
     );
   }
 
-  void sendMessage() {
-    EasyLoading.show(status: "sending message...");
+  void sendMessage(BuildContext context) {
+    EasyLoading.show(status: AppLocalizations.of(context)!.sending_message);
     String phone;
     String name;
 
@@ -410,15 +412,15 @@ class SettingsScreen extends StatelessWidget {
       "read": false,
       "time": DateTime.now().toString(),
     }).then((value) {
-      EasyLoading.showToast("message sent successfully");
+      EasyLoading.showToast(AppLocalizations.of(context)!.message_sent_successfully);
       message.clear();
     }).catchError((err) {
       EasyLoading.dismiss();
-      EasyLoading.showError("Error while sending the message");
+      EasyLoading.showError(AppLocalizations.of(context)!.error_sending_message);
     });
   }
 
-  Widget footer() {
+  Widget footer(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
@@ -426,18 +428,18 @@ class SettingsScreen extends StatelessWidget {
         children: [
           Image.asset(
             "assets/images/HomationLogo.png",
-            height: 20,
+            height: 25,
             color: themeColor,
           ),
           defaultSpaceW(10),
           SizedBox(
-            height: 30,
+            height: 45,
             child: Column(
-              children: const [
-                Text("Powered by Homation"),
+              children: [
+                Text(AppLocalizations.of(context)!.powered_by_homation),
                 Text(
-                  "Version 1.0.0",
-                  style: TextStyle(fontSize: 10),
+                  AppLocalizations.of(context)!.version + " 1.0.0",
+                  style: const TextStyle(fontSize: 10),
                 ),
               ],
             ),

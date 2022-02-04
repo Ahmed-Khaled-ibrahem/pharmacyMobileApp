@@ -36,5 +36,20 @@
   "address": "العنوان",
   "gallery": "المعرض",
   "camera": "كاميرا",
-  "error_camera": "هناك مشكله في فتح الكاميرا"
+  "error_camera": "هناك مشكله في فتح الكاميرا",
+  "privacy_policies": "سياسات الخصوصية",
+  "message_developers": "مراسلة المطورين",
+  "theme": "المظهر",
+  "language": "اللغة",
+  "light": "فاتح",
+  "dark": "داكن",
+  "system": "نظام",
+  "message": "الرسالة",
+  "error_message": "لا يمكن أن يكون محتوي الرسالة فارغًا",
+  "send": "إرسال",
+  "sending_message": "جار الإرسال...",
+  "powered_by_homation": "تطوير شركة Homation",
+  "version": "الإصدار",
+  "message_sent_successfully": "تم إرسال الرسالة بنجاح",
+  "error_sending_message": "حدث خطأ ما اثناء ارسال الرسالة"
 }
