@@ -9,5 +9,15 @@
     "are_you_sure": "Are you sure?",
     "do_you_want_to_exit": "Do you want to Exit",
     "yes": "Yes",
-    "no": "No"
+    "no": "No",
+    "login_c": "LOGIN",
+    "error_user_name": "Phone Number cannot be Empty",
+    "error_password": "Password cannot be Empty",
+    "mobile_phone": "Mobile Phone",
+    "password": "Password",
+    "forget_pass": "Forget Your Password ?",
+    "login_s": "Login",
+    "remember_me": "Remember me",
+    "havent_account": "You Haven't account yet",
+    "signup": "Sign Up"
 }

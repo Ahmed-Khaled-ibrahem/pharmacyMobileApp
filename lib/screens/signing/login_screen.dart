@@ -9,6 +9,7 @@ import 'package:pharmacyapp/contsants/themes.dart';
 import '../settings.dart';
 import 'signup_page.dart';
 import 'forget_password_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key}) : super(key: key);
@@ -61,9 +62,9 @@ class LoginScreenState extends State<LoginScreen>
                 ),
                 backgroundColor: themeColor,
                 elevation: 0,
-                title: const Text(
-                  "LOGIN",
-                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                title: Text(
+                    AppLocalizations.of(context)!.login_c,
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             body: Stack(
               children: [
@@ -116,13 +117,13 @@ class LoginScreenState extends State<LoginScreen>
                                 controller: username,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'User Name cannot be Empty';
+                                    return AppLocalizations.of(context)!.error_user_name;
                                   } else {
                                     return null;
                                   }
                                 },
                                 decoration: InputDecoration(
-                                    labelText: 'Mobile phone',
+                                    labelText: AppLocalizations.of(context)!.mobile_phone,
                                     prefixIcon: const Icon(Icons.person),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -144,14 +145,14 @@ class LoginScreenState extends State<LoginScreen>
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Password cannot be Empty';
+                                    return AppLocalizations.of(context)!.error_password;
                                   } else {
                                     return null;
                                   }
                                 },
                                 obscureText: showPassword,
                                 decoration: InputDecoration(
-                                    labelText: 'Password',
+                                    labelText: AppLocalizations.of(context)!.password,
                                     prefixIcon: const Icon(Icons.lock),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -178,13 +179,12 @@ class LoginScreenState extends State<LoginScreen>
                                       navigateTo(
                                           context, ForgetPassPage(), true);
                                     },
-                                    child:
-                                        const Text("Forget your Password ?")),
+                                    child: Text(AppLocalizations.of(context)!.forget_pass)),
                               ],
                             ),
                             defaultSpaceH(20),
                             ElevatedButton.icon(
-                                label: const Text("Login"),
+                                label:  Text(AppLocalizations.of(context)!.login_s),
                                 icon: const Icon(Icons.double_arrow),
                                 style: ElevatedButton.styleFrom(
                                     primary: themeColor,
@@ -221,7 +221,7 @@ class LoginScreenState extends State<LoginScreen>
                                     ),
                                   ),
                                 ),
-                                 const Text('Remember Me',style: TextStyle(fontSize: 12))
+                                Text(AppLocalizations.of(context)!.remember_me,style: TextStyle(fontSize: 12))
                               ],
                             ),
 
@@ -251,14 +251,14 @@ class LoginScreenState extends State<LoginScreen>
                               style: TextStyle(fontWeight: FontWeight.bold),
                             ),
                             defaultSpaceH(30),
-                            const Text("You haven't account yet"),
+                            Text(AppLocalizations.of(context)!.havent_account),
                             TextButton(
                                 onPressed: () {
                                   navigateTo(context, SignUpPage(), true);
                                 },
-                                child: const Text(
-                                  "Sign up",
-                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                child: Text(
+                                  AppLocalizations.of(context)!.signup,
+                                  style: const TextStyle(fontWeight: FontWeight.bold),
                                 )),
                           ],
                         ),
