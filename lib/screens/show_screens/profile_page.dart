@@ -94,6 +94,7 @@ class ProfileScreen extends StatelessWidget {
                                 onTap: () async {
                                   XFile? photo = await _takePhoto(context);
                                   if (photo != null) {
+                                    cubit.deleteFile(AppCubit.userData.photo);
                                     AppCubit.userData.photo = await cubit
                                         .uploadFile(File(photo.path), "users");
                                     cubit.emitGeneralState();
