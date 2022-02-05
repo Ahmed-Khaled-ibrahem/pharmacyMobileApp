@@ -9,6 +9,7 @@ import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/screens/show_screens/favoriates_items.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
 import '../../../reusable/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class SearchResultsScreen extends StatelessWidget {
@@ -29,10 +30,10 @@ class SearchResultsScreen extends StatelessWidget {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
                 appBar: myAppBar(
-                    text: "Search",
+                    text: AppLocalizations.of(context)!.search,
                     context: context,
                     actionIcon: IconButton(
-                        tooltip: "Favorites Screen",
+                        tooltip: AppLocalizations.of(context)!.favorites_items,
                         onPressed: () {
                           navigateTo(context, const FavoritesScreen(), true);
                         },
@@ -49,7 +50,7 @@ class SearchResultsScreen extends StatelessWidget {
                             cubit.emitGeneralState();
                           },
                           decoration: InputDecoration(
-                              labelText: 'Search',
+                              labelText: AppLocalizations.of(context)!.search,
                               prefixIcon: const Icon(Icons.search),
                               suffixIcon: IconButton(
                                 icon: const Icon(Icons.cancel_outlined),
@@ -65,7 +66,16 @@ class SearchResultsScreen extends StatelessWidget {
                     Expanded(
                       child: loadAgain
                           ? text == null
-                              ? const Center(child: Text("no data"))
+                              ?  Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children:  [
+                                  const Icon(
+                                    Icons.short_text,
+                                    size: 50,),
+                                  Text(AppLocalizations.of(context)!.no_results),
+                                ],
+                              )
                               : FutureBuilder<List<Drug>>(
                                   future: cubit.findInDataBase(subName: text),
                                   builder: (BuildContext context,
@@ -77,8 +87,8 @@ class SearchResultsScreen extends StatelessWidget {
                                         );
                                       default:
                                         if (snapshot.hasError) {
-                                          return const Center(
-                                              child: Text('Error'));
+                                          return  Center(
+                                              child: Text(AppLocalizations.of(context)!.error));
                                         } else if (snapshot.data != null &&
                                             snapshot.data!.isNotEmpty) {
                                           loadAgain = false;
@@ -90,15 +100,15 @@ class SearchResultsScreen extends StatelessWidget {
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: const [
-                                                Icon(
-                                                  Icons.shopping_bag_outlined,
+                                              children:  [
+                                                const Icon(
+                                                  Icons.search_off_outlined,
                                                   color: Colors.grey,
                                                   size: 100,
                                                 ),
                                                 Text(
-                                                  'No items',
-                                                  style: TextStyle(
+                                                  AppLocalizations.of(context)!.no_items,
+                                                  style: const TextStyle(
                                                       fontSize: 20,
                                                       fontWeight:
                                                           FontWeight.bold,
@@ -198,7 +208,7 @@ class SearchResultsScreen extends StatelessWidget {
                       width: 90,
                       child: SingleChildScrollView(
                         child: Text(
-                          "${drug.price} LE",
+                          "${drug.price}"+AppLocalizations.of(context)!.le,
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,
@@ -216,7 +226,7 @@ class SearchResultsScreen extends StatelessWidget {
                           color: Colors.white,
                           onPressed: () {
                             cubit.addToCart(drug);
-                            EasyLoading.showToast("Item added successfully.");
+                            EasyLoading.showToast(AppLocalizations.of(context)!.item_added_successfully);
                           },
                           icon: const Icon(Icons.add_shopping_cart_sharp)),
                     ),

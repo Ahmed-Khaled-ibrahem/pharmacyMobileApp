@@ -61,5 +61,11 @@
   "error": "حدث خطأ ما",
   "no_favorite_items": "لا توجد اصناف محفوظه",
   "item_added_successfully": "تمت الاضافه بنجاح",
-  "le": "ج.م"
+  "le": "ج.م",
+  "current_offers": "العروض الحالية",
+  "profile": "ملف شخصي",
+  "error_address": "لا يمكن ان يكون العنوان فارغا",
+  "update": "تحديث",
+  "no_results": "لا توجد نتائج",
+  "no_items": "لا توجد اصناف"
 }

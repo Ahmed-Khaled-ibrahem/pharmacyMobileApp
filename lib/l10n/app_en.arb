@@ -57,10 +57,23 @@
     "file": "File",
     "cancel": "Cancel",
     "no_chat_messages": "No Chat messages yet",
-
     "favorites_items": "Saved Items",
     "error": "Error",
     "no_favorite_items": "No favorite items",
     "item_added_successfully": "Item added successfully",
-    "le": "LE"
+    "le": "LE",
+    "current_offers": "Current Offers",
+    "profile": "Profile",
+    "error_address": "address cannot be Empty",
+    "update": "Update",
+    "no_results": "There is no Results",
+    "no_items": "No items",
+
+    "le3": "LE",
+    "le3": "LE",
+    "le3": "LE",
+    "le3": "LE",
+    "le3": "LE",
+    "le3": "LE",
+    "le4": "LE"
 }

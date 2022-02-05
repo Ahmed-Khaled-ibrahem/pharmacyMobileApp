@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -14,6 +13,7 @@ import 'package:pharmacyapp/reusable/components.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
 import 'package:pharmacyapp/screens/signing/forget_password_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class ProfileScreen extends StatelessWidget {
@@ -50,9 +50,9 @@ class ProfileScreen extends StatelessWidget {
                   ),
                   backgroundColor: themeColor,
                   elevation: 0,
-                  title: const Text(
-                    "Profile",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  title:  Text(
+                    AppLocalizations.of(context)!.profile,
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                   )),
               body: Padding(
                 padding: const EdgeInsets.all(15),
@@ -133,15 +133,15 @@ class ProfileScreen extends StatelessWidget {
                                       controller: firstName,
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return 'First Name cannot be Empty';
+                                          return AppLocalizations.of(context)!.error_firstname;
                                         } else {
                                           return null;
                                         }
                                       },
-                                      decoration: const InputDecoration(
-                                          labelText: 'First Name',
-                                          prefixIcon: Icon(Icons.person),
-                                          enabledBorder: OutlineInputBorder(
+                                      decoration:  InputDecoration(
+                                          labelText: AppLocalizations.of(context)!.firstname,
+                                          prefixIcon: const Icon(Icons.person),
+                                          enabledBorder: const OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.blueGrey,
                                                 width: 1),
@@ -160,15 +160,15 @@ class ProfileScreen extends StatelessWidget {
                                       controller: secondName,
                                       validator: (value) {
                                         if (value!.isEmpty) {
-                                          return 'Last Name cannot be Empty';
+                                          return AppLocalizations.of(context)!.error_lastname;
                                         } else {
                                           return null;
                                         }
                                       },
-                                      decoration: const InputDecoration(
-                                          labelText: 'Last Name',
-                                          prefixIcon: Icon(Icons.person),
-                                          enabledBorder: OutlineInputBorder(
+                                      decoration:  InputDecoration(
+                                          labelText: AppLocalizations.of(context)!.lastname,
+                                          prefixIcon: const Icon(Icons.person),
+                                          enabledBorder: const OutlineInputBorder(
                                             borderSide: BorderSide(
                                                 color: Colors.blueGrey,
                                                 width: 1),
@@ -197,13 +197,13 @@ class ProfileScreen extends StatelessWidget {
                                 controller: phoneNumber,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return 'Phone number cannot be Empty';
+                                    return AppLocalizations.of(context)!.error_user_name;
                                   } else {
                                     return null;
                                   }
                                 },
                                 decoration: InputDecoration(
-                                    labelText: 'Phone number',
+                                    labelText: AppLocalizations.of(context)!.mobile_phone,
                                     prefixIcon: const Icon(Icons.phone),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -217,8 +217,8 @@ class ProfileScreen extends StatelessWidget {
                               padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                               child: defaultTextField(
                                 controller: address,
-                                validateString: 'address cannot be Empty',
-                                label: 'Address',
+                                validateString: AppLocalizations.of(context)!.error_address,
+                                label: AppLocalizations.of(context)!.address,
                                 prefixIcon: Icons.home_filled,
                               ),
                             ),
@@ -230,7 +230,7 @@ class ProfileScreen extends StatelessWidget {
                                 width: double.infinity,
                                 height: 50,
                                 child: ElevatedButton.icon(
-                                  label: const Text("Update"),
+                                  label:  Text(AppLocalizations.of(context)!.update),
                                   icon: const Icon(Icons.account_circle_sharp),
                                   style: ElevatedButton.styleFrom(
                                       primary: themeColor,
@@ -255,12 +255,12 @@ class ProfileScreen extends StatelessWidget {
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.password_sharp),
-                                    SizedBox(
+                                  children:  [
+                                    const Icon(Icons.password_sharp),
+                                    const SizedBox(
                                       width: 10,
                                     ),
-                                    Text("Change Password"),
+                                    Text(AppLocalizations.of(context)!.changepass),
                                   ],
                                 )),
                           ],

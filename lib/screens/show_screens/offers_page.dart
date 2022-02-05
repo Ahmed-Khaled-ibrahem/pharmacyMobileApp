@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
 import 'package:pharmacyapp/contsants/themes.dart';
 import '../../../reusable/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OffersScreen extends StatefulWidget {
   const OffersScreen({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class _OffersScreenState extends State<OffersScreen> {
         AppCubit cubit = AppCubit.get(context);
 
         return Scaffold(
-            appBar: myAppBar(text: "Current Offers", context: context),
+            appBar: myAppBar(text: AppLocalizations.of(context)!.current_offers, context: context),
             body: Column(
               children: [
                 Expanded(
@@ -50,9 +51,9 @@ class _OffersScreenState extends State<OffersScreen> {
                                       onPressed: () =>
                                           cubit.addToCart(item.drug),
                                       child: Row(
-                                        children: const [
-                                          Icon(Icons.shopping_cart),
-                                          Text(" add to cart "),
+                                        children:  [
+                                          const Icon(Icons.shopping_cart),
+                                          Text(AppLocalizations.of(context)!.addtocart),
                                         ],
                                       ),
                                     )),
@@ -95,7 +96,7 @@ class _OffersScreenState extends State<OffersScreen> {
                                       child: Text(
                                         item.percentage
                                             ? "${item.offer}%"
-                                            : "${item.offer} LE",
+                                            : "${item.offer}"+ AppLocalizations.of(context)!.le,
                                         style: TextStyle(
                                             fontSize: item.percentage ? 20 : 18,
                                             color: Colors.white,
