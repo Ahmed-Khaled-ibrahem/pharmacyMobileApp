@@ -12,7 +12,6 @@ import 'delivery_tab.dart';
 import 'notifications_page.dart';
 import 'offers_tab.dart';
 
-
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({Key? key}) : super(key: key);
 
@@ -20,21 +19,20 @@ class AdminMainScreen extends StatefulWidget {
   _AdminMainScreenState createState() => _AdminMainScreenState();
 }
 
-class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderStateMixin{
-
+class _AdminMainScreenState extends State<AdminMainScreen>
+    with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 4, vsync: this);
-    _tabController.animateTo(1);
+    _tabController.animateTo(2);
 
     return BlocProvider(
       create: (BuildContext context) => AdminCubit()..startAdminProcess(),
       child: BlocConsumer<AdminCubit, AppStates>(
         listener: (BuildContext context, AppStates state) {},
         builder: (BuildContext context, AppStates state) {
-           AdminCubit cubit = AdminCubit.get(context);
-           cubit.controller  = _tabController;
-
+          AdminCubit cubit = AdminCubit.get(context);
+          cubit.controller = _tabController;
 
           return DefaultTabController(
             length: 4,
@@ -49,12 +47,12 @@ class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderSt
                       icon: const Icon(Icons.notifications)),
                   text: AppLocalizations.of(context)!.tamerdewwek,
                   context: context,
-                  bottomBar:  TabBar(
-                    controller: _tabController,
-                    //padding: EdgeInsets.all(20),
-                    //overlayColor: MaterialStateProperty.all(themeColor.withOpacity(0.5)),
-                    //automaticIndicatorColorAdjustment: true,
-                    //labelStyle: TextStyle(color: Colors.blue),
+                  bottomBar: TabBar(
+                      controller: _tabController,
+                      //padding: EdgeInsets.all(20),
+                      //overlayColor: MaterialStateProperty.all(themeColor.withOpacity(0.5)),
+                      //automaticIndicatorColorAdjustment: true,
+                      //labelStyle: TextStyle(color: Colors.blue),
                       indicatorColor: Colors.redAccent,
                       //indicatorSize: TabBarIndicatorSize.label,
                       isScrollable: true,
@@ -67,16 +65,18 @@ class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderSt
                         Tab(icon: Icon(Icons.delivery_dining_rounded)),
                       ]),
                 ),
-                body: TabBarView(
-                  physics: defaultScrollPhysics,
-                 controller: _tabController,
-                 children: const [
-                   ChatTap(),
-                   MainTap(),
-                   OffersTab(),
-                   DeliveryTab(),
-                 ],
-                    ),
+                body: state is AdminScreensDone
+                    ? const Center(child: CircularProgressIndicator())
+                    : TabBarView(
+                        physics: defaultScrollPhysics,
+                        controller: _tabController,
+                        children: const [
+                          ChatTap(),
+                          MainTap(),
+                          OffersTab(),
+                          DeliveryTab(),
+                        ],
+                      ),
               ),
             ),
           );
@@ -87,25 +87,22 @@ class _AdminMainScreenState extends State<AdminMainScreen> with TickerProviderSt
 
   Future<bool> onWillPop(BuildContext context) async {
     return (await showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: Text(AppLocalizations.of(context)!.are_you_sure),
-        content: Text(AppLocalizations.of(context)!.do_you_want_to_exit),
-        actions: <Widget>[
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(false),
-            child: Text(AppLocalizations.of(context)!.no),
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text(AppLocalizations.of(context)!.are_you_sure),
+            content: Text(AppLocalizations.of(context)!.do_you_want_to_exit),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: Text(AppLocalizations.of(context)!.no),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: Text(AppLocalizations.of(context)!.yes),
+              ),
+            ],
           ),
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(true),
-            child: Text(AppLocalizations.of(context)!.yes),
-          ),
-        ],
-      ),
-    )) ??
+        )) ??
         false;
   }
 }
-
-
-

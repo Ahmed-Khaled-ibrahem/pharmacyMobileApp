@@ -10,6 +10,7 @@ class FireNotificationHelper {
   // String? token = await FireNotificationHelper.token() ;
 
   FireNotificationHelper(this.cubitHandler) {
+    FirebaseMessaging.instance.subscribeToTopic("all");
     FirebaseMessaging.onMessage
         .listen(_firebaseMessagingForegroundHandler)
         .onError((err) {
