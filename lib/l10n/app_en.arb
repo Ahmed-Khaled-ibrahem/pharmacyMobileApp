@@ -56,7 +56,11 @@
     "photo": "Photo",
     "file": "File",
     "cancel": "Cancel",
-    "no_chat_messages": "No Chat messages yet"
+    "no_chat_messages": "No Chat messages yet",
 
-
+    "favorites_items": "Saved Items",
+    "error": "Error",
+    "no_favorite_items": "No favorite items",
+    "item_added_successfully": "Item added successfully",
+    "le": "LE"
 }

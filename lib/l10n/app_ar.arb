@@ -56,5 +56,10 @@
   "photo": "صورة",
   "file": "ملف",
   "cancel": "إلغاء",
-  "no_chat_messages": "لا توجد محادثات حالية"
+  "no_chat_messages": "لا توجد محادثات حالية",
+  "favorites_items": "الاصناف المحفوظه",
+  "error": "حدث خطأ ما",
+  "no_favorite_items": "لا توجد اصناف محفوظه",
+  "item_added_successfully": "تمت الاضافه بنجاح",
+  "le": "ج.م"
 }

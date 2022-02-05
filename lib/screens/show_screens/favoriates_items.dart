@@ -7,6 +7,7 @@ import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import '../../reusable/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class FavoritesScreen extends StatelessWidget {
@@ -21,7 +22,7 @@ class FavoritesScreen extends StatelessWidget {
 
         return Scaffold(
             appBar: myAppBar(
-              text: "Favorites Items",
+              text: AppLocalizations.of(context)!.favorites_items,
               context: context,
             ),
             body: FutureBuilder<List<Drug>>(
@@ -35,7 +36,7 @@ class FavoritesScreen extends StatelessWidget {
                     );
                   default:
                     if (snapshot.hasError) {
-                      return const Center(child: Text('Error'));
+                      return  Center(child: Text(AppLocalizations.of(context)!.error));
                     } else if (snapshot.data != null &&
                         snapshot.data!.isNotEmpty) {
                       return list(context, snapshot.data!, cubit);
@@ -43,15 +44,15 @@ class FavoritesScreen extends StatelessWidget {
                       return Center(
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
-                          children: const [
-                            Icon(
+                          children:  [
+                            const Icon(
                               Icons.shopping_bag_outlined,
                               color: Colors.grey,
                               size: 100,
                             ),
                             Text(
-                              'No favorite items',
-                              style: TextStyle(
+                              AppLocalizations.of(context)!.no_favorite_items,
+                              style: const TextStyle(
                                   fontSize: 20,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.grey),
@@ -142,7 +143,7 @@ class FavoritesScreen extends StatelessWidget {
                       width: 90,
                       child: SingleChildScrollView(
                         child: Text(
-                          "${drug.price} LE",
+                          "${drug.price}"+ AppLocalizations.of(context)!.le,
                           style: const TextStyle(
                               fontSize: 22,
                               fontWeight: FontWeight.w800,
@@ -160,7 +161,7 @@ class FavoritesScreen extends StatelessWidget {
                           color: Colors.white,
                           onPressed: () {
                             cubit.addToCart(drug);
-                            EasyLoading.showToast("Item added successfully.");
+                            EasyLoading.showToast(AppLocalizations.of(context)!.item_added_successfully);
                           },
                           icon: const Icon(Icons.add_shopping_cart_sharp)),
                     ),
