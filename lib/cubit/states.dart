@@ -28,6 +28,12 @@ class NotificationReceived extends AppStates {}
 
 class OffersListReady extends AppStates {}
 
+class OffersListLoading extends AppStates {}
+
 class ChangeUserProfileData extends AppStates {}
 
 class UserLogOut extends AppStates {}
+
+class AdminScreensLoading extends AppStates {}
+
+class AdminScreensDone extends AppStates {}

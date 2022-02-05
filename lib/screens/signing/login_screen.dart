@@ -234,25 +234,34 @@ class LoginScreenState extends State<LoginScreen>
                                   }
                                 }),
                             defaultSpaceH(50),
-                            InkWell(
-                              onTap: () {
-                                navigateTo(
-                                    context, const AdminMainScreen(), false);
-                                /*
-                                AppCubit.userData = AppUser(
-                                    "dev account",
-                                    "dev",
-                                    "acc",
-                                    "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4",
-                                    null);
-
-                                 */
-                                stopAnimation();
-                              },
-                              child: SizedBox(
-                                  height: 40,
-                                  child: Image.asset(
-                                      "assets/images/googleIcon.png")),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                InkWell(
+                                  onTap: () {
+                                    navigateTo(context, const AdminMainScreen(),
+                                        false);
+                                    stopAnimation();
+                                  },
+                                  child: SizedBox(
+                                      height: 40,
+                                      child: Image.asset(
+                                          "assets/images/googleIcon.png")),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    cubit.loginButtonEvent(
+                                        context: context,
+                                        phone: "01201838240",
+                                        password: "12345");
+                                    stopAnimation();
+                                  },
+                                  child: SizedBox(
+                                      height: 40,
+                                      child: Image.asset(
+                                          "assets/images/googleIcon.png")),
+                                ),
+                              ],
                             ),
                             defaultSpaceH(5),
                             const Text(
