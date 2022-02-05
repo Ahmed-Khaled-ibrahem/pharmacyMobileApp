@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void navigateTo(BuildContext context, Widget screen, bool push) {
   if (push) {
@@ -34,9 +35,9 @@ void customChoiceDialog(
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text(
-                    "no",
-                    style: TextStyle(color: Colors.green),
+                  child:  Text(
+                    AppLocalizations.of(context)!.no,
+                    style: const TextStyle(color: Colors.green),
                   )),
               OutlinedButton(
                   //isDefaultAction: true,
@@ -44,9 +45,9 @@ void customChoiceDialog(
                     Navigator.of(context).pop();
                     yesFunction();
                   },
-                  child: const Text(
-                    "Yes",
-                    style: TextStyle(color: Colors.red),
+                  child:  Text(
+                    AppLocalizations.of(context)!.yes,
+                    style: const TextStyle(color: Colors.red),
                   )),
             ],
           ));

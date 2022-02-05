@@ -12,6 +12,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/components.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DrugsInfoEditScreen extends StatelessWidget {
   final int drugId;
@@ -32,7 +33,7 @@ class DrugsInfoEditScreen extends StatelessWidget {
           TextEditingController drugPrice = TextEditingController(text: '30');
 
           return Scaffold(
-              appBar: myAppBar(text: "Edit Info", context: context),
+              appBar: myAppBar(text: AppLocalizations.of(context)!.edit_info, context: context),
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(15),
@@ -94,25 +95,26 @@ class DrugsInfoEditScreen extends StatelessWidget {
                         Row(
                           children: [
                             defaultSpaceW(10),
-                            const Text('Drug ID :',style: TextStyle(fontSize: 18,color: Colors.orange,fontWeight: FontWeight.w800),),
+                            Text(AppLocalizations.of(context)!.drug_name +' :',
+                              style: const TextStyle(fontSize: 18,color: Colors.orange,fontWeight: FontWeight.w800),),
                             defaultSpaceW(10),
                             Text(drugId.toString(),style: const TextStyle(fontSize: 18,fontWeight: FontWeight.bold),),
                           ],
                         ),
                         defaultSpaceH(20),
                         defaultTextField(
-                            label: "Drug Name",
+                            label: AppLocalizations.of(context)!.drug_name,
                             controller: drugName,
                             prefixIcon: Icons.drive_file_rename_outline_outlined,
-                            validateString: "Drug Name Shouldn't be Empty",
+                            validateString: AppLocalizations.of(context)!.error_drug,
                             keyboardType: TextInputType.text,
                             lineCount: 1),
                         defaultSpaceH(10),
                         defaultTextField(
-                            label: "Drug Price",
+                            label: AppLocalizations.of(context)!.drug_price,
                             controller: drugPrice,
                             prefixIcon: Icons.price_change,
-                            validateString: "Drug Price Shouldn't be Empty",
+                            validateString: AppLocalizations.of(context)!.error_drug_price,
                             keyboardType: TextInputType.number,
                             lineCount: 1),
                         defaultSpaceH(10),
@@ -138,14 +140,14 @@ class DrugsInfoEditScreen extends StatelessWidget {
 
                                   Timer(const Duration(seconds: 3),(){
                                     EasyLoading.dismiss();
-                                    EasyLoading.showSuccess('Done');
+                                    EasyLoading.showSuccess(AppLocalizations.of(context)!.done_edit);
                                   });
 
 
                                 }
 
                               },
-                              label: const Text('Save')),
+                              label:  Text(AppLocalizations.of(context)!.save)),
                         ),
                       ],
                     ),
@@ -183,7 +185,7 @@ class DrugsInfoEditScreen extends StatelessWidget {
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      label: const Text("Gallery"),
+                      label:  Text(AppLocalizations.of(context)!.gallery),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.gallery),
                       icon: const Icon(
@@ -196,7 +198,7 @@ class DrugsInfoEditScreen extends StatelessWidget {
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      label: const Text("Camera"),
+                      label: Text(AppLocalizations.of(context)!.camera),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.camera),
                       icon: const Icon(
@@ -223,7 +225,7 @@ class DrugsInfoEditScreen extends StatelessWidget {
         return pickedFile;
       }
     } else {
-      EasyLoading.showToast("Can't open camera");
+      EasyLoading.showToast(AppLocalizations.of(context)!.error_camera);
     }
   }
 }

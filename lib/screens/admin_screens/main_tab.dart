@@ -4,7 +4,6 @@ import 'package:pharmacyapp/contsants/themes.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import 'drug_edit_page.dart';
 
 class MainTap extends StatefulWidget {
@@ -77,26 +76,26 @@ class _MainTapState extends State<MainTap> {
             crossAxisAlignment: WrapCrossAlignment.center,
             alignment: WrapAlignment.center,
             children: [
-              cardDesign('Followers', 200.toString()),
-              cardDesign('Orders', 2.toString()),
-              cardDesign('Chat', 1.toString()),
-              cardDesign('Offers', 6.toString()),
-              cardDesign('all day Orders', 15.toString()),
+              cardDesign(AppLocalizations.of(context)!.followers, 200.toString()),
+              cardDesign(AppLocalizations.of(context)!.orders, 2.toString()),
+              cardDesign(AppLocalizations.of(context)!.chat, 1.toString()),
+              cardDesign(AppLocalizations.of(context)!.offers, 6.toString()),
+              cardDesign(AppLocalizations.of(context)!.all_day_orders, 15.toString()),
             ],
           ),
           defaultSpaceH(10),
           Row(
             children: [
               defaultSpaceW(15),
-              const Text(
-                'The Most Ordered List', textAlign: TextAlign.start,
-                style: TextStyle(color: themeColor, fontSize: 20),
+               Text(
+                AppLocalizations.of(context)!.the_most_ordered_list, textAlign: TextAlign.start,
+                style: const TextStyle(color: themeColor, fontSize: 20),
                 //style: Theme.of(context).textTheme.button,
               ),
             ],
           ),
           SizedBox(
-            height: 190,
+            height: 120,
             child: ListView.separated(
                 padding: const EdgeInsets.all(15),
                 itemBuilder: (BuildContext context, int index) {
@@ -112,16 +111,16 @@ class _MainTapState extends State<MainTap> {
                 itemCount: mostWanted.length),
           ),
           //const Spacer(),
-          const Text(
-            'Timing of Delivery',
-            style: TextStyle(fontSize: 20),
+           Text(
+            AppLocalizations.of(context)!.timing_of_delivery,
+            style: const TextStyle(fontSize: 20),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'From',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+               Text(
+                AppLocalizations.of(context)!.from,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               defaultSpaceW(5),
               InkWell(
@@ -136,9 +135,9 @@ class _MainTapState extends State<MainTap> {
                         color: Colors.orange),
                   )),
               defaultSpaceW(5),
-              const Text(
-                'To',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+               Text(
+                AppLocalizations.of(context)!.to,
+                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               defaultSpaceW(5),
               InkWell(
@@ -182,14 +181,14 @@ class _MainTapState extends State<MainTap> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.delivery_dining_rounded,
                             size: 60,
                           ),
                           Text(
-                            'Orders Enabled',
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.orders_enabled,
+                            style: const TextStyle(
                                 fontSize: 25, fontWeight: FontWeight.w500),
                           ),
                         ],
@@ -209,14 +208,14 @@ class _MainTapState extends State<MainTap> {
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Icon(
+                        children:  [
+                          const Icon(
                             Icons.disabled_by_default_rounded,
                             size: 60,
                           ),
                           Text(
-                            'Orders Disabled',
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.orders_disabled,
+                            style: const TextStyle(
                                 fontSize: 30, fontWeight: FontWeight.w500),
                           ),
                         ],
@@ -231,8 +230,8 @@ class _MainTapState extends State<MainTap> {
 
   _selectTime(BuildContext context, bool toOrFrom) async {
     final TimeOfDay? timeOfDay = await showTimePicker(
-      cancelText: 'Cancel',
-      confirmText: 'OK',
+      cancelText: AppLocalizations.of(context)!.cancel,
+      confirmText: AppLocalizations.of(context)!.ok,
       context: context,
       initialTime: selectedTimeTo,
       initialEntryMode: TimePickerEntryMode.dial,
@@ -434,7 +433,7 @@ class CustomSearchDelegate extends SearchDelegate {
                       width: 90,
                       child: SingleChildScrollView(
                         child: Text(
-                          "${drugItem[index]['price']!} LE",
+                          "${drugItem[index]['price']!} "+ AppLocalizations.of(context)!.le,
                           style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w800,

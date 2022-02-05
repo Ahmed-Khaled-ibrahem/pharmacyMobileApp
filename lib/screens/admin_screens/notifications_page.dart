@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NotificationsScreen extends StatefulWidget {
   const NotificationsScreen({Key? key}) : super(key: key);
@@ -44,7 +45,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             return Scaffold(
               appBar: AppBar(
                 elevation: 0,
-                title: const Text("Notifications"),
+                title:  Text(AppLocalizations.of(context)!.notifications),
                 backgroundColor: Theme.of(context).canvasColor,
               ),
               body: Padding(
@@ -61,12 +62,12 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                       ? Center(
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
-                            children: const [
-                              Icon(
+                            children:  [
+                              const Icon(
                                 Icons.notifications_off_outlined,
                                 size: 60,
                               ),
-                              Text("There is no notifications to show"),
+                              Text(AppLocalizations.of(context)!.there_is_no_notifications_to_show),
                             ],
                           ),
                         )
@@ -74,9 +75,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           children: [
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
-                              children: const [
-                                Text("Swipe to remove  "),
-                                Icon(Icons.swipe),
+                              children:  [
+                                Text(AppLocalizations.of(context)!.swipe_to_remove+"  "),
+                                const Icon(Icons.swipe),
                               ],
                             ),
                             Expanded(
@@ -137,15 +138,15 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     });
                                   }
                                   ScaffoldMessenger.of(context).showSnackBar(
-                                      const SnackBar(
+                                       SnackBar(
                                           content: Text(
-                                              "all notifications are deleted")));
+                                          AppLocalizations.of(context)!.all_notifications_are_deleted)));
                                 },
                                 child: Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
-                                  children: const [
-                                    Icon(Icons.close),
-                                    Text("  Remove all"),
+                                  children: [
+                                    const Icon(Icons.close),
+                                    Text("  "+AppLocalizations.of(context)!.remove_all),
                                   ],
                                 ))
                           ],

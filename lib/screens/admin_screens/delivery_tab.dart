@@ -5,6 +5,7 @@ import 'package:pharmacyapp/contsants/themes.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class DeliveryTab extends StatefulWidget {
   const DeliveryTab({Key? key}) : super(key: key);
@@ -23,7 +24,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
       'image':
           'https://images.unsplash.com/photo-1547425260-76bcadfb4f2c?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxjb2xsZWN0aW9uLXBhZ2V8OXw4NzcyOTI0fHxlbnwwfHx8fA%3D%3D&w=1000&q=80',
       'time': '3:25 AM',
-      'distance': '10 KM',
+      'distance': '10',
       'address': ' شارع سعيد الجندي الحضره القبليه الدور السابع عماره 45 شقه13',
       'location': '31.2062316,29.9111692',
       'itemsList': [
@@ -39,7 +40,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
       'image':
           'https://cdn.al-ain.com/images/2021/1/13/133-195934-hanin-hossam-cairo-university-spreading-immorality_700x400.jpg',
       'time': '5:25 PM',
-      'distance': '3 KM',
+      'distance': '3',
       'address':
           '64 شارع نصر الدين امام سوبرماركت الهدايا الدور الاول علوي شقه 8',
       'location': '31.2062316,29.9111692',
@@ -76,12 +77,12 @@ class _DeliveryTabState extends State<DeliveryTab> {
               ? Column(
                   key: const Key("column2"),
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
-                    Icon(
+                  children:  [
+                    const Icon(
                       Icons.done_outline_rounded,
                       size: 60,
                     ),
-                    Text("There is no Orders Now"),
+                    Text(AppLocalizations.of(context)!.there_is_no_orders_now),
                   ],
                 )
               : AnimatedSwitcher(
@@ -128,7 +129,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                           ListTile(
                                     horizontalTitleGap: 20,
                                     style: ListTileStyle.list,
-                                    trailing: Text(allOrdersData[i]['distance'],
+                                    trailing: Text(allOrdersData[i]['distance']+' '+AppLocalizations.of(context)!.km,
                                         style: const TextStyle(
                                             fontSize: 18,
                                             color: Colors.green,
@@ -172,9 +173,9 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            const Text(
-                                              "Time  ",
-                                              style: TextStyle(
+                                             Text(
+                                              AppLocalizations.of(context)!.time+'  ',
+                                              style: const TextStyle(
                                                   color: Colors.cyan,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
@@ -186,9 +187,9 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.center,
                                           children: [
-                                            const Text(
-                                              "Address  ",
-                                              style: TextStyle(
+                                             Text(
+                                              AppLocalizations.of(context)!.address+'  ',
+                                              style: const TextStyle(
                                                   color: Colors.cyan,
                                                   fontSize: 20,
                                                   fontWeight: FontWeight.bold),
@@ -206,8 +207,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                             ElevatedButton.icon(
                                                 icon: const Icon(
                                                     Icons.location_on),
-                                                label: const Text(
-                                                    "Open Location in Map"),
+                                                label:  Text(AppLocalizations.of(context)!.open_location_in_map),
                                                 style: ElevatedButton.styleFrom(
                                                     primary: themeColor,
                                                     //fixedSize: const Size(250, 35.0),
@@ -242,9 +242,9 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                                 }),
                                           ],
                                         ),
-                                        const Text(
-                                          "Items List",
-                                          style: TextStyle(
+                                         Text(
+                                          AppLocalizations.of(context)!.items_list,
+                                          style: const TextStyle(
                                               color: Colors.cyan,
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold),
@@ -271,15 +271,18 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                                           const Spacer(),
                                                           Text(
                                                               "${e['quantity']} *"
-                                                              " ${e['price']} LE"),
+                                                              " ${e['price']} "+AppLocalizations.of(context)!.le),
                                                         ],
                                                       ),
                                                     )
                                                     .toList(),
                                               ),
-                                              const Text("+ 10 LE delivery"),
+                                              Text("+ 10 "+
+                                                  AppLocalizations.of(context)!.le+
+                                                  " "+
+                                                  AppLocalizations.of(context)!.delivery_taxes),
                                               Text(
-                                                  "Total = ${calcSum(i).toString()} LE",
+                                                  AppLocalizations.of(context)!.total_price+" = ${calcSum(i).toString()} "+AppLocalizations.of(context)!.le,
                                                   style: const TextStyle(
                                                       color: Colors.cyan,
                                                       fontSize: 20,
@@ -290,8 +293,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                         ),
                                         Center(
                                           child: ElevatedButton.icon(
-                                              label:
-                                                  const Text("Done Delivered"),
+                                              label: Text(AppLocalizations.of(context)!.done_delivered),
                                               icon: const Icon(
                                                   Icons.done_outline_rounded),
                                               style: ElevatedButton.styleFrom(

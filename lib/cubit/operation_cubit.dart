@@ -29,6 +29,7 @@ import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:pharmacyapp/shared/sub_/base_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'states.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -44,8 +45,7 @@ class AppCubit extends Cubit<AppStates> {
       FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
-  String languageState =
-      'English'; // all states is 'English' - 'Arabic' - 'System'
+  String languageState = 'English'; // all states is 'English' - 'Arabic' - 'System'
   String themeState = 'Light'; // all states is 'Light' - 'Dark' - 'System'
 
   bool newMessage = false;
@@ -679,9 +679,9 @@ class AppCubit extends Cubit<AppStates> {
   /// logOut
   void logout(BuildContext context) {
     customChoiceDialog(context,
-        title: "Logout",
-        content: "Are you sure you want to logout ?", yesFunction: () {
-      EasyLoading.show(status: "logging out...");
+        title: AppLocalizations.of(context)!.logout,
+        content: AppLocalizations.of(context)!.are_you_sure_want_logout, yesFunction: () {
+      EasyLoading.show(status: AppLocalizations.of(context)!.logging_out);
       try {
         if (userData.phone != "notYet") {
           FirebaseMessaging.instance.unsubscribeFromTopic(userData.phone);
@@ -696,13 +696,13 @@ class AppCubit extends Cubit<AppStates> {
           emit(UserLogOut());
           navigateTo(context, const LoginScreen(), false);
         } else {
-          EasyLoading.showToast("You must login first");
+          EasyLoading.showToast(AppLocalizations.of(context)!.you_must_login_first);
         }
       } catch (err) {
         if (err.toString().contains("LateInitializationError")) {
-          EasyLoading.showToast("You must login first");
+          EasyLoading.showToast(AppLocalizations.of(context)!.you_must_login_first);
         } else {
-          EasyLoading.showToast("An error happened at logout");
+          EasyLoading.showToast(AppLocalizations.of(context)!.error);
         }
       }
     });

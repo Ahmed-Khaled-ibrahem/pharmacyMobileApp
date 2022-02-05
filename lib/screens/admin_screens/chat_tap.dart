@@ -6,7 +6,7 @@ import 'package:pharmacyapp/contsants/themes.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'chat_body_page.dart';
 
 class ChatTap extends StatefulWidget {
@@ -200,13 +200,13 @@ class _ChatTapState extends State<ChatTap> {
                                   flex: 2,
                                   onPressed: (BuildContext context) {},
                                   icon: Icons.block,
-                                  label: 'Block',
+                                  label: AppLocalizations.of(context)!.block,
                                 ),
                                 SlidableAction(
                                   flex: 2,
                                   onPressed: (BuildContext context) {},
                                   icon: Icons.archive,
-                                  label: 'Archive',
+                                  label: AppLocalizations.of(context)!.archive,
                                 ),
                               ],
                             ),

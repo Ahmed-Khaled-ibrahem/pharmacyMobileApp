@@ -184,15 +184,15 @@ class MainScreen extends StatelessWidget {
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children: const [
-                                                Icon(
+                                              children:  [
+                                                const Icon(
                                                   Icons.redeem,
                                                   size: 50,
                                                   color: Colors.black,
                                                 ),
                                                 Text(
-                                                  "NO offers now",
-                                                  style: TextStyle(
+                                                  AppLocalizations.of(context)!.no_offers_now,
+                                                  style: const TextStyle(
                                                     fontSize: 25,
                                                     color: Colors.black,
                                                   ),
@@ -200,10 +200,10 @@ class MainScreen extends StatelessWidget {
                                                 SizedBox(
                                                     width: 250,
                                                     child: Text(
-                                                      "We will notify you about new offers",
+                                                      AppLocalizations.of(context)!.we_will_notify_you_about_new_offers,
                                                       textAlign:
                                                           TextAlign.center,
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 20,
                                                           fontWeight:
@@ -412,7 +412,7 @@ class MainScreen extends StatelessWidget {
                   child: Text(
                     items.percentage
                         ? "${items.offer} % "
-                        : "${items.offer} LE",
+                        : "${items.offer} "+AppLocalizations.of(context)!.le,
                     style: TextStyle(
                         fontSize: items.percentage ? 18 : 15,
                         color: Colors.white,

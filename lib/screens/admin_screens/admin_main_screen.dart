@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
+import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import '../../reusable/components.dart';
@@ -11,6 +12,7 @@ import 'main_tab.dart';
 import 'delivery_tab.dart';
 import 'notifications_page.dart';
 import 'offers_tab.dart';
+
 
 class AdminMainScreen extends StatefulWidget {
   const AdminMainScreen({Key? key}) : super(key: key);
@@ -24,7 +26,12 @@ class _AdminMainScreenState extends State<AdminMainScreen>
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 4, vsync: this);
-    _tabController.animateTo(2);
+    if( AppCubit.get(context).languageState == 'English'){
+      _tabController.animateTo(2);
+    }
+    else{
+      _tabController.animateTo(1);
+    }
 
     return BlocProvider(
       create: (BuildContext context) => AdminCubit()..startAdminProcess(),

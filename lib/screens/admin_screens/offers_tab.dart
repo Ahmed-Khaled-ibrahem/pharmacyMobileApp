@@ -10,6 +10,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
 import 'package:pharmacyapp/reusable/components.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OffersTab extends StatefulWidget {
   const OffersTab({Key? key}) : super(key: key);
@@ -67,7 +68,7 @@ class _OffersTabState extends State<OffersTab> {
                             return ListTile(
                               minLeadingWidth: 25,
                               title: Text(drug.name),
-                              subtitle: Text("price : ${drug.price}"),
+                              subtitle: Text(AppLocalizations.of(context)!.price+" : ${drug.price}"),
                               leading: SizedBox(
                                 width: 25,
                                 child: drug.picture
@@ -108,7 +109,7 @@ class _OffersTabState extends State<OffersTab> {
                           },
                           textFieldConfiguration: TextFieldConfiguration(
                             decoration: InputDecoration(
-                                labelText: 'Search',
+                                labelText: AppLocalizations.of(context)!.search,
                                 prefixIcon: const Icon(Icons.search),
                                 suffixIcon: IconButton(
                                   icon: const Icon(Icons.cancel_outlined),
@@ -124,7 +125,7 @@ class _OffersTabState extends State<OffersTab> {
                         ),
                         defaultSpaceH(40),
                         Text(
-                          newDrug != null ? newDrug!.name : "Choose drug first",
+                          newDrug != null ? newDrug!.name : AppLocalizations.of(context)!.choose_drug_first,
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
@@ -142,7 +143,7 @@ class _OffersTabState extends State<OffersTab> {
                                 });
                               },
                             ),
-                            const Text("Percentage"),
+                             Text(AppLocalizations.of(context)!.percentage),
                             Radio<bool>(
                                 groupValue: radioValue,
                                 value: false,
@@ -151,7 +152,7 @@ class _OffersTabState extends State<OffersTab> {
                                     radioValue = value ?? false;
                                   });
                                 }),
-                            const Text("Real value")
+                             Text(AppLocalizations.of(context)!.real_value)
                           ],
                         ),
                         Row(
@@ -165,7 +166,7 @@ class _OffersTabState extends State<OffersTab> {
                                 child: defaultTextField(
                                     prefixIcon: Icons.monetization_on_rounded,
                                     validateString: '',
-                                    label: 'Value',
+                                    label: AppLocalizations.of(context)!.value,
                                     controller: offerValue),
                               ),
                             ),
@@ -184,12 +185,12 @@ class _OffersTabState extends State<OffersTab> {
                                   );
                                 },
                                 child: !radioValue
-                                    ? const Text(
-                                        "LE",
-                                        style: TextStyle(
+                                    ?  Text(
+                                  AppLocalizations.of(context)!.le,
+                                        style: const TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold),
-                                        key: Key('20'),
+                                        key: const Key('20'),
                                       )
                                     : const Text(
                                         "%",
@@ -206,7 +207,7 @@ class _OffersTabState extends State<OffersTab> {
                             width: 170,
                             height: 50,
                             child: ElevatedButton.icon(
-                              label: const Text("Confirm"),
+                              label:  Text(AppLocalizations.of(context)!.confirm),
                               icon: const Icon(Icons.done),
                               style: ElevatedButton.styleFrom(
                                 primary: themeColor,
@@ -219,7 +220,7 @@ class _OffersTabState extends State<OffersTab> {
                                         isPercentage: radioValue));
                                     cubit.writeOffers();
                                   } else {
-                                    EasyLoading.showToast("No drug selected");
+                                    EasyLoading.showToast(AppLocalizations.of(context)!.no_drug_selected);
                                   }
                                   setState(() {
                                     switcher = false;
@@ -255,7 +256,7 @@ class _OffersTabState extends State<OffersTab> {
                                         cubit.writeOffers();
                                       },
                                       icon: Icons.delete,
-                                      label: 'Delete',
+                                      label: AppLocalizations.of(context)!.delete,
                                     ),
                                   ],
                                 ),
@@ -293,7 +294,7 @@ class _OffersTabState extends State<OffersTab> {
                                               Text(
                                                 item.percentage
                                                     ? "${item.offer}%"
-                                                    : "${item.offer} LE",
+                                                    : "${item.offer} "+ AppLocalizations.of(context)!.le,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
@@ -327,7 +328,7 @@ class _OffersTabState extends State<OffersTab> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton.icon(
-                            label: const Text("Add new offer"),
+                            label:  Text(AppLocalizations.of(context)!.add_new_offer),
                             icon: const Icon(Icons.add_circle_sharp),
                             style: ElevatedButton.styleFrom(
                               primary: themeColor,
@@ -339,7 +340,7 @@ class _OffersTabState extends State<OffersTab> {
                             },
                           ),
                           ElevatedButton.icon(
-                            label: const Text("Clear offers"),
+                            label:  Text(AppLocalizations.of(context)!.clear_offers),
                             icon: const Icon(Icons.clear),
                             style: ElevatedButton.styleFrom(
                               primary: themeColor,
