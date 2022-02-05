@@ -57,6 +57,8 @@ class AppCubit extends Cubit<AppStates> {
   List<String> orderImages = [];
   List<OfferItem> offersList = [];
 
+
+  bool locationIsDone = false;
   // start function
   void mainStart() {
     emit(InitialStateLoading());
@@ -549,6 +551,11 @@ class AppCubit extends Cubit<AppStates> {
           .then((value) => print("deleted successful"))
           .catchError((err) => print(err));
     }
+  }
+
+  void getLatLang() async {
+    locationIsDone = !locationIsDone;
+    emitGeneralState();
   }
 
   Future<String?> determinePosition({bool latLan = false}) async {

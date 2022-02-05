@@ -14,6 +14,7 @@ import 'package:pharmacyapp/contsants/themes.dart';
 import '../../reusable/components.dart';
 import 'order_list.dart';
 import 'order_submition.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class MakeAnOrderScreen extends StatelessWidget {
@@ -32,26 +33,32 @@ class MakeAnOrderScreen extends StatelessWidget {
             onTap: () => FocusScope.of(context).unfocus(),
             child: Scaffold(
                 appBar: myAppBar(
-                    text: "Make an Order",
+                    text: AppLocalizations.of(context)!.make_order,
                     context: context,
                     actionIcon: Stack(
-                      alignment: Alignment.topLeft,
                       children: [
-                        IconButton(
-                            tooltip: "Archived Orders",
-                            onPressed: () {
-                              navigateTo(context, ArchiveOrders(), true);
-                            },
-                            icon: const Icon(Icons.archive)),
-                        Visibility(
-                          visible: cubit.activeOrder,
-                          child: Padding(
-                            padding: const EdgeInsets.only(top: 8.0),
-                            child: CircleAvatar(
-                              radius: 10,
-                              backgroundColor: HSLColor.fromColor(Colors.green)
-                                  .withSaturation(1)
-                                  .toColor(),
+                        SizedBox(
+                          height: 80,
+                          child: IconButton(
+                              tooltip: "Archived Orders",
+                              onPressed: () {
+                                navigateTo(context, ArchiveOrders(), true);
+                              },
+                              icon: const Icon(Icons.archive)),
+                        ),
+                        Positioned(
+                          top: 5,
+                          right: 5,
+                          child: Visibility(
+                            visible: cubit.activeOrder,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: CircleAvatar(
+                                radius: 8,
+                                backgroundColor: HSLColor.fromColor(Colors.green)
+                                    .withSaturation(1)
+                                    .toColor(),
+                              ),
                             ),
                           ),
                         ),
@@ -77,7 +84,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                               return ListTile(
                                 minLeadingWidth: 25,
                                 title: Text(drug.name),
-                                subtitle: Text("price : ${drug.price}"),
+                                subtitle: Text(AppLocalizations.of(context)!.price+" : ${drug.price}"),
                                 leading: SizedBox(
                                   width: 25,
                                   child: drug.picture
@@ -119,7 +126,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                             },
                             textFieldConfiguration: TextFieldConfiguration(
                               decoration: InputDecoration(
-                                  labelText: 'Search',
+                                  labelText: AppLocalizations.of(context)!.search,
                                   prefixIcon: const Icon(Icons.search),
                                   suffixIcon: IconButton(
                                     icon: const Icon(Icons.cancel_outlined),
@@ -139,7 +146,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                           IconButton(
                               iconSize: 30,
                               splashRadius: 30,
-                              tooltip: "Send prescription",
+                              tooltip: AppLocalizations.of(context)!.send_prescription,
                               onPressed: () async {
                                 XFile? photo = await _takePhoto(context);
                                 if (photo != null) {
@@ -156,17 +163,17 @@ class MakeAnOrderScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        const Text(
-                          "Total Price",
-                          style: TextStyle(fontSize: 20),
+                         Text(
+                          AppLocalizations.of(context)!.total_price,
+                          style: const TextStyle(fontSize: 20),
                         ),
                         Text(
-                          "${cubit.calcOrderPrice()} LE",
+                          "${cubit.calcOrderPrice()} "+AppLocalizations.of(context)!.le,
                           style: const TextStyle(
                               fontWeight: FontWeight.bold, fontSize: 20),
                         ),
                         ElevatedButton.icon(
-                          label: const Text("Submit"),
+                          label:  Text(AppLocalizations.of(context)!.submit),
                           icon: const Icon(Icons.playlist_add_check),
                           style: ElevatedButton.styleFrom(
                             primary: themeColor,
@@ -213,7 +220,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      label: const Text("Gallery"),
+                      label:  Text(AppLocalizations.of(context)!.gallery),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.gallery),
                       icon: const Icon(
@@ -226,7 +233,7 @@ class MakeAnOrderScreen extends StatelessWidget {
                       style: ButtonStyle(
                         foregroundColor: MaterialStateProperty.all(themeColor),
                       ),
-                      label: const Text("Camera"),
+                      label:  Text(AppLocalizations.of(context)!.camera),
                       onPressed: () =>
                           Navigator.pop(context, ImageSource.camera),
                       icon: const Icon(
@@ -253,7 +260,7 @@ class MakeAnOrderScreen extends StatelessWidget {
         return pickedFile;
       }
     } else {
-      EasyLoading.showToast("Can't open camera");
+      EasyLoading.showToast(AppLocalizations.of(context)!.error_camera);
     }
   }
 }

@@ -68,12 +68,21 @@
     "update": "Update",
     "no_results": "There is no Results",
     "no_items": "No items",
+    "confirm_form": "Confirm Form",
+    "full_name": "Full Name",
+    "send_my_location": "Send my Location",
+    "description": "Description",
+    "order_details": "Order Details",
+    "prescription_images": "Prescription Images",
+    "image": "Image",
+    "order_items": "Order items",
+    "item": "item",
+    "total_items_price": "Total Items Price",
+    "confirm": "Confirm",
+    "make_order": "Make an Order",
+    "price": "Price",
+    "send_prescription": "Send prescription",
+    "total_price": "Total Price",
+    "submit": "Submit"
 
-    "le3": "LE",
-    "le3": "LE",
-    "le3": "LE",
-    "le3": "LE",
-    "le3": "LE",
-    "le3": "LE",
-    "le4": "LE"
 }

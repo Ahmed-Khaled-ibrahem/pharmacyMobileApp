@@ -67,5 +67,21 @@
   "error_address": "لا يمكن ان يكون العنوان فارغا",
   "update": "تحديث",
   "no_results": "لا توجد نتائج",
-  "no_items": "لا توجد اصناف"
+  "no_items": "لا توجد اصناف",
+  "confirm_form": "تأكيد الطلب",
+  "full_name": "الإسم كامل",
+  "send_my_location": "إرسال موقعي",
+  "description": "وصف",
+  "order_details": "تفاصيل الطلب",
+  "prescription_images": "صور الروشتات",
+  "image": "صوره",
+  "order_items": "العدد الكلي",
+  "item": "صنف",
+  "total_items_price": "السعر الكلي",
+  "confirm": "تأكيد",
+  "make_order": " إجراء طلب",
+  "price": "سعر",
+  "send_prescription": "ارسال روشته",
+  "total_price": "السعر الكلي",
+  "submit": "تأكيد"
 }

@@ -8,6 +8,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/components.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class OrderList extends StatelessWidget {
