@@ -15,6 +15,7 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
 import 'package:uuid/uuid.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChatBodyScreen extends StatefulWidget {
   const ChatBodyScreen({Key? key}) : super(key: key);
@@ -56,15 +57,15 @@ class _ChatBodyScreenState extends State<ChatBodyScreen> {
                     _handleImageSelection();
                   },
                   child: Row(
-                    children: const [
-                      SizedBox(
+                    children:  [
+                      const SizedBox(
                         width: 20,
                       ),
-                      Icon(Icons.photo),
-                      SizedBox(
+                      const Icon(Icons.photo),
+                      const SizedBox(
                         width: 5,
                       ),
-                      Text('Photo'),
+                      Text(AppLocalizations.of(context)!.photo),
                     ],
                   ),
                 ),
@@ -74,30 +75,30 @@ class _ChatBodyScreenState extends State<ChatBodyScreen> {
                     _handleFileSelection();
                   },
                   child: Row(
-                    children: const [
-                      SizedBox(
+                    children:  [
+                      const SizedBox(
                         width: 20,
                       ),
-                      Icon(Icons.file_copy_outlined),
-                      SizedBox(
+                      const Icon(Icons.file_copy_outlined),
+                      const SizedBox(
                         width: 5,
                       ),
-                      Text('File'),
+                      Text(AppLocalizations.of(context)!.file),
                     ],
                   ),
                 ),
                 TextButton(
                   onPressed: () => Navigator.pop(context),
                   child: Row(
-                    children: const [
-                      SizedBox(
+                    children:  [
+                      const SizedBox(
                         width: 20,
                       ),
-                      Icon(Icons.close),
-                      SizedBox(
+                      const Icon(Icons.close),
+                      const SizedBox(
                         width: 5,
                       ),
-                      Text('Cancel'),
+                      Text(AppLocalizations.of(context)!.cancel),
                     ],
                   ),
                 ),
@@ -208,12 +209,12 @@ class _ChatBodyScreenState extends State<ChatBodyScreen> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
-              children: const [
-                Icon(
+              children:  [
+                const Icon(
                   Icons.chat,
                   size: 60,
                 ),
-                Text("No Chat messages yet"),
+                Text(AppLocalizations.of(context)!.no_chat_messages),
               ],
             ),
           ),

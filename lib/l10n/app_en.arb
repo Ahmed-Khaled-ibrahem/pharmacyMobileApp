@@ -51,6 +51,12 @@
     "powered_by_homation": "Powered by Homation",
     "version": "Version",
     "message_sent_successfully": "Message Sent Successfully",
-    "error_sending_message": "Error while Sending the Message"
+    "error_sending_message": "Error while Sending the Message",
+    "direct_chatting": "Direct Chatting",
+    "photo": "Photo",
+    "file": "File",
+    "cancel": "Cancel",
+    "no_chat_messages": "No Chat messages yet"
+
 
 }

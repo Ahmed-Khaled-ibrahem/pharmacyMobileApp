@@ -51,5 +51,10 @@
   "powered_by_homation": "تطوير شركة Homation",
   "version": "الإصدار",
   "message_sent_successfully": "تم إرسال الرسالة بنجاح",
-  "error_sending_message": "حدث خطأ ما اثناء ارسال الرسالة"
+  "error_sending_message": "حدث خطأ ما اثناء ارسال الرسالة",
+  "direct_chatting": "محادثه مباشره",
+  "photo": "صورة",
+  "file": "ملف",
+  "cancel": "إلغاء",
+  "no_chat_messages": "لا توجد محادثات حالية"
 }

@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:pharmacyapp/screens/admin_screens/chat_body_page.dart';
 import '../../../reusable/components.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ChattingScreen extends StatefulWidget {
   const ChattingScreen({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class _ChattingScreenState extends State<ChattingScreen> {
         return Scaffold(
           backgroundColor:
               cubit.themeState == "Light" ? null : ThemeData.dark().canvasColor,
-          appBar: myAppBar(text: "Direct Chatting", context: context),
+          appBar: myAppBar(text: AppLocalizations.of(context)!.direct_chatting, context: context),
           body: const ChatBodyScreen(),
         );
       },
