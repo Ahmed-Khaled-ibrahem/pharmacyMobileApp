@@ -7,7 +7,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:pharmacyapp/cubit/signing_cubit.dart';
-
 import 'screens/show_screens/main_screen.dart';
 import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'shared/pref_helper.dart';

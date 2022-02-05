@@ -14,15 +14,10 @@ import '../main.dart';
 import '../reusable/components.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 // ignore: must_be_immutable
 class SettingsScreen extends StatelessWidget {
-  SettingsScreen(this.fromSign, {Key? key}) : super(key: key) {
-    try {
-      AppCubit.userData.phone;
-    } catch (err) {
-      fromSign = true;
-    }
-  }
+  SettingsScreen(this.fromSign, {Key? key}) : super(key: key);
 
   TextEditingController message = TextEditingController();
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -55,10 +50,9 @@ class SettingsScreen extends StatelessWidget {
                 ),
                 backgroundColor: themeColor,
                 elevation: 0,
-                title: Text(
+                title:  Text(
                   AppLocalizations.of(context)!.settings,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             body: SingleChildScrollView(
               physics: defaultScrollPhysics,
@@ -140,8 +134,7 @@ class SettingsScreen extends StatelessWidget {
                                       value: "English",
                                     ),
                                     DropdownMenuItem(
-                                        child: Text("العربية"),
-                                        value: "Arabic"),
+                                        child: Text("العربية"), value: "Arabic"),
                                     DropdownMenuItem(
                                       child: Text("System"),
                                       value: "System",
@@ -172,7 +165,7 @@ class SettingsScreen extends StatelessWidget {
                         const Divider(
                           thickness: 2,
                         ),
-                        Text(
+                         Text(
                           AppLocalizations.of(context)!.theme,
                           style: const TextStyle(
                               fontSize: 20, fontWeight: FontWeight.bold),
@@ -419,13 +412,11 @@ class SettingsScreen extends StatelessWidget {
       "read": false,
       "time": DateTime.now().toString(),
     }).then((value) {
-      EasyLoading.showToast(
-          AppLocalizations.of(context)!.message_sent_successfully);
+      EasyLoading.showToast(AppLocalizations.of(context)!.message_sent_successfully);
       message.clear();
     }).catchError((err) {
       EasyLoading.dismiss();
-      EasyLoading.showError(
-          AppLocalizations.of(context)!.error_sending_message);
+      EasyLoading.showError(AppLocalizations.of(context)!.error_sending_message);
     });
   }
 

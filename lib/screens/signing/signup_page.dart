@@ -17,6 +17,7 @@ import 'package:pharmacyapp/contsants/themes.dart';
 import '../settings.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+
 // ignore: must_be_immutable
 class SignUpPage extends StatelessWidget {
   SignUpPage({Key? key}) : super(key: key);
@@ -65,8 +66,7 @@ class SignUpPage extends StatelessWidget {
                 elevation: 0,
                 title: Text(
                   AppLocalizations.of(context)!.signup,
-                  style: const TextStyle(
-                      fontSize: 20, fontWeight: FontWeight.bold),
+                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             body: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -129,12 +129,11 @@ class SignUpPage extends StatelessWidget {
                 height: 250,
               ),
             ),
-            Padding(
+             Padding(
               padding: const EdgeInsets.symmetric(vertical: 8.0),
               child: Text(
                 AppLocalizations.of(context)!.phone_number_verification,
-                style:
-                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -187,15 +186,13 @@ class SignUpPage extends StatelessWidget {
                   ],
                   onCompleted: (v) {
                     cubit.otpCheck(
-                      context: context,
-                      smsOtp: v,
-                      phone: phoneNumber.text,
-                      firstName: firstName.text,
-                      secondName: secondName.text,
-                      password: passwordSignUp.text,
-                      address: address.text,
-                      photo: photo,
-                    );
+                        context: context,
+                        smsOtp: v,
+                        phone: phoneNumber.text,
+                        firstName: firstName.text,
+                        secondName: secondName.text,
+                        password: passwordSignUp.text,
+                        address: address.text);
                   },
                   onChanged: (value) {},
                   beforeTextPaste: (text) {
@@ -205,7 +202,7 @@ class SignUpPage extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Text(
+                 Text(
                   AppLocalizations.of(context)!.did_not_receive,
                   style: const TextStyle(color: Colors.black54, fontSize: 15),
                 ),
@@ -517,8 +514,7 @@ class SignUpPage extends StatelessWidget {
                     if (passwordSignUp.text == passwordSignUpConf.text) {
                       cubit.sendValidationCode(phoneNumber.text);
                     } else {
-                      EasyLoading.showToast(
-                          AppLocalizations.of(context)!.same_password);
+                      EasyLoading.showToast(AppLocalizations.of(context)!.same_password);
                     }
                   }
                 },

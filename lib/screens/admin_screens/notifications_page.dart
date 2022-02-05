@@ -39,7 +39,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       child: BlocConsumer<AdminCubit, AppStates>(
           listener: (BuildContext context, AppStates state) {},
           builder: (BuildContext context, AppStates state) {
-            //AdminCubit cubit = AdminCubit.get(context);
+            AdminCubit cubit = AdminCubit.get(context);
 
             return Scaffold(
               appBar: AppBar(
@@ -53,8 +53,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   duration: const Duration(milliseconds: 600),
                   //switchOutCurve: Curves.elasticOut,
                   switchInCurve: Curves.elasticOut,
-                  transitionBuilder:
-                      (Widget child, Animation<double> animation) {
+                  transitionBuilder: (Widget child, Animation<double> animation) {
                     return ScaleTransition(scale: animation, child: child);
                   },
                   child: notifications.isEmpty
@@ -103,10 +102,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                 color: Colors.green,
                                                 fontSize: 15),
                                           ),
-                                          title: Text(
-                                              notifications[index]['text']!),
-                                          subtitle: Text(notifications[index]
-                                              ['category']!),
+                                          title:
+                                              Text(notifications[index]['text']!),
+                                          subtitle: Text(
+                                              notifications[index]['category']!),
                                         ),
                                         onDismissed: (direction) {
                                           setState(() {
@@ -129,9 +128,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     foregroundColor: MaterialStateProperty.all(
                                         Colors.redAccent)),
                                 onPressed: () {
-                                  for (int i = notifications.length;
-                                      i > 0;
-                                      i--) {
+                                  for (int i = notifications.length; i > 0; i--) {
                                     setState(() {
                                       notifications.removeAt(i - 1);
                                     });

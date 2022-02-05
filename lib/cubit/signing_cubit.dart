@@ -5,7 +5,6 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:pharmacyapp/contsants/values.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
 import 'package:pharmacyapp/models/user_model.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
@@ -69,7 +68,8 @@ class SigningCubit extends Cubit<AppStates> {
       String? firstName,
       String? secondName,
       String? address,
-      String photo = defaultUserImage,
+      String photo =
+          "https://firebasestorage.googleapis.com/v0/b/pharmacy-app-ffac0.appspot.com/o/avatar.jpg?alt=media&token=231f9a7e-0dd8-496d-9d4f-7f068484dde4",
       required String password,
       bool create = true}) async {
     EasyLoading.show(status: 'creating user..');

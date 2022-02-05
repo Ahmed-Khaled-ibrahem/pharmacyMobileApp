@@ -3,6 +3,7 @@ class Drug {
   late String? scientificName;
   late List<String> companies;
   late String? picture;
+  late String? details;
   late double price;
   late int id;
   late bool isFav;
@@ -10,13 +11,12 @@ class Drug {
   Drug({required Map<String, dynamic> drugData}) {
     name = drugData['name'];
     id = drugData['id'];
-    price = double.parse(drugData['price'].toString());
-    scientificName = drugData['scientific_name'] == "Null"
-        ? null
-        : drugData['scientific_name'];
-    picture = drugData['picture'] == "Null" ? null : drugData['picture'];
+    price = drugData['price'];
+    scientificName = drugData['scientific_name'];
     companies = drugData['companies'].toString().split(",");
-    isFav = false;
+    picture = drugData['picture'];
+    details = drugData['details'];
+    isFav = drugData['favorite'] == 1;
   }
 }
 

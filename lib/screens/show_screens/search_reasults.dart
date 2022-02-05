@@ -64,53 +64,49 @@ class SearchResultsScreen extends StatelessWidget {
                         )),
                     Expanded(
                       child: loadAgain
-                          ? text == null
-                              ? const Center(child: Text("no data"))
-                              : FutureBuilder<List<Drug>>(
-                                  future: cubit.findInDataBase(subName: text),
-                                  builder: (BuildContext context,
-                                      AsyncSnapshot<List<Drug>> snapshot) {
-                                    switch (snapshot.connectionState) {
-                                      case ConnectionState.waiting:
-                                        return const Center(
-                                          child: CircularProgressIndicator(),
-                                        );
-                                      default:
-                                        if (snapshot.hasError) {
-                                          return const Center(
-                                              child: Text('Error'));
-                                        } else if (snapshot.data != null &&
-                                            snapshot.data!.isNotEmpty) {
-                                          loadAgain = false;
-                                          oldList = snapshot.data!;
-                                          return list(
-                                              context, snapshot.data!, cubit);
-                                        } else {
-                                          return Center(
-                                            child: Column(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.center,
-                                              children: const [
-                                                Icon(
-                                                  Icons.shopping_bag_outlined,
-                                                  color: Colors.grey,
-                                                  size: 100,
-                                                ),
-                                                Text(
-                                                  'No items',
-                                                  style: TextStyle(
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.grey),
-                                                )
-                                              ],
+                          ? FutureBuilder<List<Drug>>(
+                              future: cubit.findInDataBase(subName: text),
+                              builder: (BuildContext context,
+                                  AsyncSnapshot<List<Drug>> snapshot) {
+                                switch (snapshot.connectionState) {
+                                  case ConnectionState.waiting:
+                                    return const Center(
+                                      child: CircularProgressIndicator(),
+                                    );
+                                  default:
+                                    if (snapshot.hasError) {
+                                      return const Center(child: Text('Error'));
+                                    } else if (snapshot.data != null &&
+                                        snapshot.data!.isNotEmpty) {
+                                      loadAgain = false;
+                                      oldList = snapshot.data!;
+                                      return list(
+                                          context, snapshot.data!, cubit);
+                                    } else {
+                                      return Center(
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: const [
+                                            Icon(
+                                              Icons.shopping_bag_outlined,
+                                              color: Colors.grey,
+                                              size: 100,
                                             ),
-                                          );
-                                        }
+                                            Text(
+                                              'No items',
+                                              style: TextStyle(
+                                                  fontSize: 20,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.grey),
+                                            )
+                                          ],
+                                        ),
+                                      );
                                     }
-                                  },
-                                )
+                                }
+                              },
+                            )
                           : list(context, oldList, cubit),
                     ),
                   ],
