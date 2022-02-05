@@ -14,6 +14,7 @@ import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:pharmacyapp/contsants/values.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/message_model.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
@@ -25,6 +26,7 @@ import 'package:pharmacyapp/screens/signing/login_screen.dart';
 import 'package:pharmacyapp/shared/fcm/dio_helper.dart';
 import 'package:pharmacyapp/shared/fcm/fire_message.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
+import 'package:pharmacyapp/shared/sub_/base_helper.dart';
 import 'package:sqflite/sqflite.dart';
 import 'states.dart';
 
@@ -35,6 +37,7 @@ class AppCubit extends Cubit<AppStates> {
   static AppCubit get(context) => BlocProvider.of(context);
 
   late Database _dataBase; // SQL-LITE database object
+  final SubBaseHelper _subBase = SubBaseHelper();
   final FirebaseFirestore _fireStore =
       FirebaseFirestore.instance; // fire-store database object
   final DatabaseReference _fireBase =
@@ -142,11 +145,7 @@ class AppCubit extends Cubit<AppStates> {
     orderImages.removeAt(index);
     emit(AddCartItemState());
     _saveCartLocal();
-    FirebaseStorage.instance
-        .refFromURL(orderImages[index])
-        .delete()
-        .then((value) => print("deleted successful"))
-        .catchError((err) => print(err));
+    deleteFile(orderImages[index]);
   }
 
   void addToCart(Drug drug) {
@@ -517,14 +516,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
-    List<Map<String, dynamic>> queryData;
-    if (subName != null) {
-      queryData =
-          await _dataBase.query("data", where: "name LIKE  \"%$subName%\"");
-    } else {
-      queryData = await _dataBase.query("data", where: "id =  $id");
-    }
-    return queryData.map((e) => Drug(drugData: e)).toList();
+    return _subBase.getDrugs(subName: subName, id: id);
   }
 
   /// helper for make order
@@ -547,6 +539,16 @@ class AppCubit extends Cubit<AppStates> {
     String link = await task.ref.getDownloadURL();
     EasyLoading.dismiss();
     return link;
+  }
+
+  void deleteFile(String url) {
+    if (url != defaultUserImage) {
+      FirebaseStorage.instance
+          .refFromURL(url)
+          .delete()
+          .then((value) => print("deleted successful"))
+          .catchError((err) => print(err));
+    }
   }
 
   Future<String?> determinePosition({bool latLan = false}) async {

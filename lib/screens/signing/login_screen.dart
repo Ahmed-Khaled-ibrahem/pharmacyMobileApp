@@ -63,8 +63,9 @@ class LoginScreenState extends State<LoginScreen>
                 backgroundColor: themeColor,
                 elevation: 0,
                 title: Text(
-                    AppLocalizations.of(context)!.login_c,
-                  style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  AppLocalizations.of(context)!.login_c,
+                  style: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
                 )),
             body: Stack(
               children: [
@@ -117,13 +118,15 @@ class LoginScreenState extends State<LoginScreen>
                                 controller: username,
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return AppLocalizations.of(context)!.error_user_name;
+                                    return AppLocalizations.of(context)!
+                                        .error_user_name;
                                   } else {
                                     return null;
                                   }
                                 },
                                 decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context)!.mobile_phone,
+                                    labelText: AppLocalizations.of(context)!
+                                        .mobile_phone,
                                     prefixIcon: const Icon(Icons.person),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -145,14 +148,16 @@ class LoginScreenState extends State<LoginScreen>
                                 },
                                 validator: (value) {
                                   if (value!.isEmpty) {
-                                    return AppLocalizations.of(context)!.error_password;
+                                    return AppLocalizations.of(context)!
+                                        .error_password;
                                   } else {
                                     return null;
                                   }
                                 },
                                 obscureText: showPassword,
                                 decoration: InputDecoration(
-                                    labelText: AppLocalizations.of(context)!.password,
+                                    labelText:
+                                        AppLocalizations.of(context)!.password,
                                     prefixIcon: const Icon(Icons.lock),
                                     enabledBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
@@ -179,7 +184,8 @@ class LoginScreenState extends State<LoginScreen>
                                       navigateTo(
                                           context, ForgetPassPage(), true);
                                     },
-                                    child: Text(AppLocalizations.of(context)!.forget_pass)),
+                                    child: Text(AppLocalizations.of(context)!
+                                        .forget_pass)),
                               ],
                             ),
                             defaultSpaceH(20),
@@ -198,16 +204,19 @@ class LoginScreenState extends State<LoginScreen>
                                           rememberMe = value!;
                                         });
                                       },
-                                      fillColor: MaterialStateProperty.all(themeColor),
-                                      shape:  const CircleBorder(),
+                                      fillColor:
+                                          MaterialStateProperty.all(themeColor),
+                                      shape: const CircleBorder(),
                                     ),
                                   ),
                                 ),
-                                Text(AppLocalizations.of(context)!.remember_me,style: TextStyle(fontSize: 12))
+                                Text(AppLocalizations.of(context)!.remember_me,
+                                    style: const TextStyle(fontSize: 12))
                               ],
                             ),
                             ElevatedButton.icon(
-                                label:  Text(AppLocalizations.of(context)!.login_s),
+                                label:
+                                    Text(AppLocalizations.of(context)!.login_s),
                                 icon: const Icon(Icons.double_arrow),
                                 style: ElevatedButton.styleFrom(
                                     primary: themeColor,
@@ -227,7 +236,8 @@ class LoginScreenState extends State<LoginScreen>
                             defaultSpaceH(50),
                             InkWell(
                               onTap: () {
-                                navigateTo(context, const AdminMainScreen(), false);
+                                navigateTo(
+                                    context, const AdminMainScreen(), false);
                                 /*
                                 AppCubit.userData = AppUser(
                                     "dev account",
@@ -257,7 +267,8 @@ class LoginScreenState extends State<LoginScreen>
                                 },
                                 child: Text(
                                   AppLocalizations.of(context)!.signup,
-                                  style: const TextStyle(fontWeight: FontWeight.bold),
+                                  style: const TextStyle(
+                                      fontWeight: FontWeight.bold),
                                 )),
                           ],
                         ),

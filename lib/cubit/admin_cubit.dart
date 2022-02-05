@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/shared/pref_helper.dart';
 import 'package:sqflite/sqflite.dart';
@@ -13,7 +11,6 @@ class AdminCubit extends Cubit<AppStates> {
   static AdminCubit get(context) => BlocProvider.of(context);
 
   late TabController controller;
-
 
   late Database _dataBase;
   List<OrderItem> cartItems = [];
@@ -30,13 +27,11 @@ class AdminCubit extends Cubit<AppStates> {
     emit(GeneralState());
   }
 
-
-
   Future<List<Drug>> findInDataBase({String? subName, int? id}) async {
     List<Map<String, dynamic>> queryData;
     if (subName != null) {
       queryData =
-      await _dataBase.query("data", where: "name LIKE  \"%$subName%\"");
+          await _dataBase.query("data", where: "name LIKE  \"%$subName%\"");
     } else {
       queryData = await _dataBase.query("data", where: "id =  $id");
     }
@@ -55,6 +50,7 @@ class AdminCubit extends Cubit<AppStates> {
       _saveCartLocal();
     }
   }
+
   void _saveCartLocal() {
     List<Map<String, dynamic>> orderDrugs = cartItems
         .map((e) => {"id": e.drug.id, "quantity": e.quantity})
@@ -66,6 +62,4 @@ class AdminCubit extends Cubit<AppStates> {
     PreferenceHelper.putDataInSharedPreference(
         key: "cartData", value: cartData);
   }
-
-
 }
