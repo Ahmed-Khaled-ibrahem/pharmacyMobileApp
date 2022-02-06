@@ -130,5 +130,7 @@
     "no_drug_selected": "No drug selected",
     "delete": "Delete",
     "add_new_offer": "Add new Offer",
-    "clear_offers": "Clear Offers"
+    "clear_offers": "Clear Offers",
+    "warning" : "Warning",
+    "offer_delete" : "The offer will be deleted !"
 }

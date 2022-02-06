@@ -184,14 +184,15 @@ class MainScreen extends StatelessWidget {
                                             child: Column(
                                               mainAxisAlignment:
                                                   MainAxisAlignment.center,
-                                              children:  [
+                                              children: [
                                                 const Icon(
                                                   Icons.redeem,
                                                   size: 50,
                                                   color: Colors.black,
                                                 ),
                                                 Text(
-                                                  AppLocalizations.of(context)!.no_offers_now,
+                                                  AppLocalizations.of(context)!
+                                                      .no_offers_now,
                                                   style: const TextStyle(
                                                     fontSize: 25,
                                                     color: Colors.black,
@@ -200,7 +201,9 @@ class MainScreen extends StatelessWidget {
                                                 SizedBox(
                                                     width: 250,
                                                     child: Text(
-                                                      AppLocalizations.of(context)!.we_will_notify_you_about_new_offers,
+                                                      AppLocalizations.of(
+                                                              context)!
+                                                          .we_will_notify_you_about_new_offers,
                                                       textAlign:
                                                           TextAlign.center,
                                                       style: const TextStyle(
@@ -224,12 +227,13 @@ class MainScreen extends StatelessWidget {
                                     options: CarouselOptions(
                                         height: 200.0,
                                         autoPlay: true,
-                                        enableInfiniteScroll: true),
-                                    items: [0, 1, 2].map((i) {
+                                        enableInfiniteScroll:
+                                            cubit.offersList.length != 1),
+                                    items: cubit.offersList.map((e) {
+                                      print(e.drug.name);
                                       return Builder(
                                         builder: (BuildContext context) {
-                                          return offerCard(cubit.offersList[i],
-                                              context, cubit);
+                                          return offerCard(e, context, cubit);
                                         },
                                       );
                                     }).toList(),
@@ -412,7 +416,7 @@ class MainScreen extends StatelessWidget {
                   child: Text(
                     items.percentage
                         ? "${items.offer} % "
-                        : "${items.offer} "+AppLocalizations.of(context)!.le,
+                        : "${items.offer} " + AppLocalizations.of(context)!.le,
                     style: TextStyle(
                         fontSize: items.percentage ? 18 : 15,
                         color: Colors.white,

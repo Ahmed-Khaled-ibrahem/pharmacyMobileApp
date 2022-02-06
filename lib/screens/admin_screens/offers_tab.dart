@@ -11,6 +11,7 @@ import 'package:pharmacyapp/models/drug_model.dart';
 import 'package:pharmacyapp/models/offer_model.dart';
 import 'package:pharmacyapp/reusable/components.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:pharmacyapp/reusable/funcrions.dart';
 
 class OffersTab extends StatefulWidget {
   const OffersTab({Key? key}) : super(key: key);
@@ -68,7 +69,9 @@ class _OffersTabState extends State<OffersTab> {
                             return ListTile(
                               minLeadingWidth: 25,
                               title: Text(drug.name),
-                              subtitle: Text(AppLocalizations.of(context)!.price+" : ${drug.price}"),
+                              subtitle: Text(
+                                  AppLocalizations.of(context)!.price +
+                                      " : ${drug.price}"),
                               leading: SizedBox(
                                 width: 25,
                                 child: drug.picture
@@ -125,7 +128,9 @@ class _OffersTabState extends State<OffersTab> {
                         ),
                         defaultSpaceH(40),
                         Text(
-                          newDrug != null ? newDrug!.name : AppLocalizations.of(context)!.choose_drug_first,
+                          newDrug != null
+                              ? newDrug!.name
+                              : AppLocalizations.of(context)!.choose_drug_first,
                           style: TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
@@ -143,7 +148,7 @@ class _OffersTabState extends State<OffersTab> {
                                 });
                               },
                             ),
-                             Text(AppLocalizations.of(context)!.percentage),
+                            Text(AppLocalizations.of(context)!.percentage),
                             Radio<bool>(
                                 groupValue: radioValue,
                                 value: false,
@@ -152,7 +157,7 @@ class _OffersTabState extends State<OffersTab> {
                                     radioValue = value ?? false;
                                   });
                                 }),
-                             Text(AppLocalizations.of(context)!.real_value)
+                            Text(AppLocalizations.of(context)!.real_value)
                           ],
                         ),
                         Row(
@@ -185,8 +190,8 @@ class _OffersTabState extends State<OffersTab> {
                                   );
                                 },
                                 child: !radioValue
-                                    ?  Text(
-                                  AppLocalizations.of(context)!.le,
+                                    ? Text(
+                                        AppLocalizations.of(context)!.le,
                                         style: const TextStyle(
                                             fontSize: 25,
                                             fontWeight: FontWeight.bold),
@@ -207,7 +212,8 @@ class _OffersTabState extends State<OffersTab> {
                             width: 170,
                             height: 50,
                             child: ElevatedButton.icon(
-                              label:  Text(AppLocalizations.of(context)!.confirm),
+                              label:
+                                  Text(AppLocalizations.of(context)!.confirm),
                               icon: const Icon(Icons.done),
                               style: ElevatedButton.styleFrom(
                                 primary: themeColor,
@@ -220,7 +226,9 @@ class _OffersTabState extends State<OffersTab> {
                                         isPercentage: radioValue));
                                     cubit.writeOffers();
                                   } else {
-                                    EasyLoading.showToast(AppLocalizations.of(context)!.no_drug_selected);
+                                    EasyLoading.showToast(
+                                        AppLocalizations.of(context)!
+                                            .no_drug_selected);
                                   }
                                   setState(() {
                                     switcher = false;
@@ -252,11 +260,20 @@ class _OffersTabState extends State<OffersTab> {
                                     SlidableAction(
                                       flex: 3,
                                       onPressed: (BuildContext context) {
-                                        cubit.offersList.removeAt(index);
-                                        cubit.writeOffers();
+                                        customChoiceDialog(context,
+                                            title: AppLocalizations.of(context)!
+                                                .warning,
+                                            content:
+                                                AppLocalizations.of(context)!
+                                                    .offer_delete,
+                                            yesFunction: () {
+                                          cubit.offersList.removeAt(index);
+                                          cubit.writeOffers();
+                                        });
                                       },
                                       icon: Icons.delete,
-                                      label: AppLocalizations.of(context)!.delete,
+                                      label:
+                                          AppLocalizations.of(context)!.delete,
                                     ),
                                   ],
                                 ),
@@ -294,7 +311,10 @@ class _OffersTabState extends State<OffersTab> {
                                               Text(
                                                 item.percentage
                                                     ? "${item.offer}%"
-                                                    : "${item.offer} "+ AppLocalizations.of(context)!.le,
+                                                    : "${item.offer} " +
+                                                        AppLocalizations.of(
+                                                                context)!
+                                                            .le,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
                                                 style: const TextStyle(
@@ -328,7 +348,8 @@ class _OffersTabState extends State<OffersTab> {
                         mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           ElevatedButton.icon(
-                            label:  Text(AppLocalizations.of(context)!.add_new_offer),
+                            label: Text(
+                                AppLocalizations.of(context)!.add_new_offer),
                             icon: const Icon(Icons.add_circle_sharp),
                             style: ElevatedButton.styleFrom(
                               primary: themeColor,
@@ -340,15 +361,22 @@ class _OffersTabState extends State<OffersTab> {
                             },
                           ),
                           ElevatedButton.icon(
-                            label:  Text(AppLocalizations.of(context)!.clear_offers),
+                            label: Text(
+                                AppLocalizations.of(context)!.clear_offers),
                             icon: const Icon(Icons.clear),
                             style: ElevatedButton.styleFrom(
                               primary: themeColor,
                             ),
                             onPressed: () {
                               setState(() {
-                                cubit.offersList = [];
-                                cubit.writeOffers();
+                                customChoiceDialog(context,
+                                    title:
+                                        AppLocalizations.of(context)!.warning,
+                                    content: AppLocalizations.of(context)!
+                                        .offer_delete, yesFunction: () {
+                                  cubit.offersList = [];
+                                  cubit.writeOffers();
+                                });
                               });
                             },
                           ),

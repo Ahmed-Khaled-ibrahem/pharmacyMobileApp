@@ -8,7 +8,6 @@ import 'package:pharmacyapp/cubit/states.dart';
 import 'package:pharmacyapp/reusable/components.dart';
 import 'package:pharmacyapp/reusable/funcrions.dart';
 import 'package:pharmacyapp/reusable/view_photo.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 // ignore: must_be_immutable
 class OrderList extends StatelessWidget {
@@ -25,7 +24,7 @@ class OrderList extends StatelessWidget {
               child: CircularProgressIndicator(),
             )
           : PageView.builder(
-physics: const BouncingScrollPhysics(),
+              physics: const BouncingScrollPhysics(),
               itemCount: 2,
               itemBuilder: (_, index) {
                 switch (index) {
@@ -191,7 +190,7 @@ physics: const BouncingScrollPhysics(),
                                   physics: const BouncingScrollPhysics(),
                                   itemCount: cubit.orderImages.length,
                                   separatorBuilder: (_, index) =>
-                                       defaultSpaceH(10),
+                                      defaultSpaceH(10),
                                   itemBuilder: (_, index) => Center(
                                         child: Stack(
                                           alignment: Alignment.topRight,

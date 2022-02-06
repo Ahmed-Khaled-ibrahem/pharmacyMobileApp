@@ -45,7 +45,8 @@ class AppCubit extends Cubit<AppStates> {
       FirebaseDatabase.instance.ref(); // real time firebase object
   static late AppUser userData; // userId
 
-  String languageState = 'English'; // all states is 'English' - 'Arabic' - 'System'
+  String languageState =
+      'English'; // all states is 'English' - 'Arabic' - 'System'
   String themeState = 'Light'; // all states is 'Light' - 'Dark' - 'System'
 
   bool newMessage = false;
@@ -56,7 +57,6 @@ class AppCubit extends Cubit<AppStates> {
   List<OrderItem> cartItems = [];
   List<String> orderImages = [];
   List<OfferItem> offersList = [];
-
 
   bool locationIsDone = false;
   // start function
@@ -116,9 +116,11 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   void _readOffers() {
+    print("reading offer");
     _fireStore.collection("global").doc("offers").get().then((value) async {
       List<dynamic> offersData = value['offer'];
       for (var element in offersData) {
+        print(element['id']);
         OfferItem item = OfferItem((await findInDataBase(id: element['id']))[0],
             (element['offer'] * 1.0),
             isPercentage: element['isPercentage']);
@@ -680,7 +682,8 @@ class AppCubit extends Cubit<AppStates> {
   void logout(BuildContext context) {
     customChoiceDialog(context,
         title: AppLocalizations.of(context)!.logout,
-        content: AppLocalizations.of(context)!.are_you_sure_want_logout, yesFunction: () {
+        content: AppLocalizations.of(context)!.are_you_sure_want_logout,
+        yesFunction: () {
       EasyLoading.show(status: AppLocalizations.of(context)!.logging_out);
       try {
         if (userData.phone != "notYet") {
@@ -696,11 +699,13 @@ class AppCubit extends Cubit<AppStates> {
           emit(UserLogOut());
           navigateTo(context, const LoginScreen(), false);
         } else {
-          EasyLoading.showToast(AppLocalizations.of(context)!.you_must_login_first);
+          EasyLoading.showToast(
+              AppLocalizations.of(context)!.you_must_login_first);
         }
       } catch (err) {
         if (err.toString().contains("LateInitializationError")) {
-          EasyLoading.showToast(AppLocalizations.of(context)!.you_must_login_first);
+          EasyLoading.showToast(
+              AppLocalizations.of(context)!.you_must_login_first);
         } else {
           EasyLoading.showToast(AppLocalizations.of(context)!.error);
         }

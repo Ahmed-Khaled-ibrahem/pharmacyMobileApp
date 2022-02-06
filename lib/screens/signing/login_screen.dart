@@ -243,10 +243,8 @@ class LoginScreenState extends State<LoginScreen>
                                         false);
                                     stopAnimation();
                                   },
-                                  child: SizedBox(
-                                      height: 40,
-                                      child: Image.asset(
-                                          "assets/images/googleIcon.png")),
+                                  child: const SizedBox(
+                                      height: 40, child: Text("A")),
                                 ),
                                 InkWell(
                                   onTap: () {
@@ -256,10 +254,8 @@ class LoginScreenState extends State<LoginScreen>
                                         password: "12345");
                                     stopAnimation();
                                   },
-                                  child: SizedBox(
-                                      height: 40,
-                                      child: Image.asset(
-                                          "assets/images/googleIcon.png")),
+                                  child: const SizedBox(
+                                      height: 40, child: Text("U")),
                                 ),
                               ],
                             ),

@@ -130,5 +130,7 @@
   "no_drug_selected": "لم يتم تحديد عنصر",
   "delete": "حذف",
   "add_new_offer": "اضافة عرض جديد",
-  "clear_offers": "حذف جميع العروض"
+  "clear_offers": "حذف جميع العروض",
+  "warning" : "تحذير",
+  "offer_delete" : "سيتم مسح العرض !"
 }
