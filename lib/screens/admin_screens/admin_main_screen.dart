@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:pharmacyapp/contsants/themes.dart';
 import 'package:pharmacyapp/contsants/widgets.dart';
 import 'package:pharmacyapp/cubit/admin_cubit.dart';
 import 'package:pharmacyapp/cubit/operation_cubit.dart';
@@ -26,12 +27,13 @@ class _AdminMainScreenState extends State<AdminMainScreen>
   @override
   Widget build(BuildContext context) {
     TabController _tabController = TabController(length: 4, vsync: this);
-    if( AppCubit.get(context).languageState == 'English'){
-      _tabController.animateTo(2);
-    }
-    else{
-      _tabController.animateTo(1);
-    }
+    //if( AppCubit.get(context).languageState == 'English'){
+    //  _tabController.animateTo(1);
+    //}
+    //else{
+
+    //}
+    _tabController.animateTo(1);
 
     return BlocProvider(
       create: (BuildContext context) => AdminCubit()..startAdminProcess(),
@@ -60,7 +62,7 @@ class _AdminMainScreenState extends State<AdminMainScreen>
                       //overlayColor: MaterialStateProperty.all(themeColor.withOpacity(0.5)),
                       //automaticIndicatorColorAdjustment: true,
                       //labelStyle: TextStyle(color: Colors.blue),
-                      indicatorColor: Colors.redAccent,
+                      indicatorColor: themeColorBlue,
                       //indicatorSize: TabBarIndicatorSize.label,
                       isScrollable: true,
                       indicatorWeight: 3,
@@ -96,7 +98,7 @@ class _AdminMainScreenState extends State<AdminMainScreen>
     return (await showDialog(
           context: context,
           builder: (context) => AlertDialog(
-            title: Text(AppLocalizations.of(context)!.are_you_sure),
+            title: Text(AppLocalizations.of(context)!.are_you_sure,style: Theme.of(context).textTheme.headline4,),
             content: Text(AppLocalizations.of(context)!.do_you_want_to_exit),
             actions: <Widget>[
               TextButton(

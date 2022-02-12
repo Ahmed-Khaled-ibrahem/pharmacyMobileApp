@@ -144,6 +144,7 @@ Widget optionsWidget(BuildContext context) {
   String logoutText = AppLocalizations.of(context)!.logout;
 
   return PopupMenuButton<String>(
+    color: themeColorGray,
     onSelected: (index) {
       if (index == setText) {
         navigateTo(context, SettingsScreen(false), true);
@@ -182,7 +183,6 @@ Widget optionsWidget(BuildContext context) {
 
 AppBar myAppBar(
     {required String text,
-    Color color = themeColor,
     required BuildContext context,
     Widget? actionIcon,
     PreferredSizeWidget? bottomBar}) {
@@ -192,15 +192,6 @@ AppBar myAppBar(
         actionIcon ?? Container(),
         optionsWidget(context),
       ],
-      centerTitle: true,
-      toolbarHeight: 60,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(
-          bottom: Radius.circular(30),
-        ),
-      ),
-      backgroundColor: color,
-      elevation: 0,
       title: Text(
         text,
         style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),

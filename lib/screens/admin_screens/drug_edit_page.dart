@@ -122,10 +122,7 @@ class DrugsInfoEditScreen extends StatelessWidget {
                           width: double.infinity,
                           child: ElevatedButton.icon(
                               icon: const Icon(Icons.cloud_upload_rounded),
-                              style: ButtonStyle(
-                                backgroundColor:
-                                    MaterialStateProperty.all(themeColor),
-                              ),
+                              style: Theme.of(context).elevatedButtonTheme.style,
                               onPressed: () {
                                 if(formKey.currentState!.validate()){
                                   

@@ -121,26 +121,23 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                 ExpansionPanel(
                                   canTapOnHeader: true,
                                   backgroundColor: _activeMeterIndex == i
-                                      ? Colors.teal.withOpacity(0.5)
-                                      : null,
+                                      ? themeColorGray
+                                      : themeColor,
                                   isExpanded: _activeMeterIndex == i,
                                   headerBuilder:
                                       (BuildContext context, bool isExpanded) =>
                                           ListTile(
-                                    horizontalTitleGap: 20,
-                                    style: ListTileStyle.list,
+                                    horizontalTitleGap: 5,
+                                    style: ListTileStyle.drawer,
                                     trailing: Text(allOrdersData[i]['distance']+' '+AppLocalizations.of(context)!.km,
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            color: Colors.green,
-                                            fontWeight: FontWeight.bold)),
+                                        style: Theme.of(context).textTheme.subtitle2,),
                                     leading: CircleAvatar(
                                       backgroundColor:
                                           Theme.of(context).primaryColor,
                                       radius: 30,
                                       child: ClipRRect(
                                         borderRadius:
-                                            BorderRadius.circular(100),
+                                            BorderRadius.circular(80),
                                         child: CachedNetworkImage(
                                           width: 60,
                                           height: 60,
@@ -157,9 +154,8 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                       ),
                                     ),
                                     subtitle: Text(allOrdersData[i]['number'],
-                                        style: const TextStyle(
-                                            fontWeight: FontWeight.bold)),
-                                    title: Text(allOrdersData[i]['name']),
+                                        style:  Theme.of(context).textTheme.headline5,),
+                                    title: Text(allOrdersData[i]['name'],style: Theme.of(context).textTheme.headline5,),
                                   ),
                                   body: Padding(
                                     padding: const EdgeInsets.all(15),
@@ -175,12 +171,9 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                           children: [
                                              Text(
                                               AppLocalizations.of(context)!.time+'  ',
-                                              style: const TextStyle(
-                                                  color: Colors.cyan,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
+                                              style: Theme.of(context).textTheme.overline,
                                             ),
-                                            Text(allOrdersData[i]['time']),
+                                            Text(allOrdersData[i]['time'],style: Theme.of(context).textTheme.headline5,),
                                           ],
                                         ),
                                         Row(
@@ -189,15 +182,11 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                           children: [
                                              Text(
                                               AppLocalizations.of(context)!.address+'  ',
-                                              style: const TextStyle(
-                                                  color: Colors.cyan,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
+                                              style: Theme.of(context).textTheme.overline,
                                             ),
                                             SizedBox(
-                                                width: 220,
-                                                child: Text(allOrdersData[i]
-                                                    ['address'])),
+                                                width: 200,
+                                                child: Text(allOrdersData[i]['address'],style: Theme.of(context).textTheme.headline5,)),
                                           ],
                                         ),
                                         Row(
@@ -207,16 +196,8 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                             ElevatedButton.icon(
                                                 icon: const Icon(
                                                     Icons.location_on),
-                                                label:  Text(AppLocalizations.of(context)!.open_location_in_map),
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: themeColor,
-                                                    //fixedSize: const Size(250, 35.0),
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        80))),
+                                                label:  Text(AppLocalizations.of(context)!.open_location_in_map,style: Theme.of(context).textTheme.headline5,),
+                                                style: Theme.of(context).elevatedButtonTheme.style,
                                                 onPressed: () {
                                                   openMap(allOrdersData[i]
                                                       ['location']);
@@ -224,14 +205,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                             ElevatedButton(
                                                 child: const Icon(
                                                     Icons.chat_rounded),
-                                                style: ElevatedButton.styleFrom(
-                                                    primary: themeColor,
-                                                    shape:
-                                                        RoundedRectangleBorder(
-                                                            borderRadius:
-                                                                BorderRadius
-                                                                    .circular(
-                                                                        80))),
+                                                style:Theme.of(context).elevatedButtonTheme.style,
                                                 onPressed: () {
                                                   cubit.controller.animateTo(
                                                     0,
@@ -244,10 +218,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                         ),
                                          Text(
                                           AppLocalizations.of(context)!.items_list,
-                                          style: const TextStyle(
-                                              color: Colors.cyan,
-                                              fontSize: 20,
-                                              fontWeight: FontWeight.bold),
+                                          style: Theme.of(context).textTheme.overline,
                                         ),
                                         Center(
                                           child: Column(
@@ -267,11 +238,12 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                                         children: [
                                                           Text(
                                                               "${(allOrdersData[i]['itemsList'] as List).indexOf(e) + 1}. "
-                                                              "${e['name']}   "),
+                                                              "${e['name']}   ",style: Theme.of(context).textTheme.headline5,),
                                                           const Spacer(),
                                                           Text(
                                                               "${e['quantity']} *"
-                                                              " ${e['price']} "+AppLocalizations.of(context)!.le),
+                                                              " ${e['price']} "+AppLocalizations.of(context)!.le
+                                                              ,style: Theme.of(context).textTheme.headline5,),
                                                         ],
                                                       ),
                                                     )
@@ -280,14 +252,11 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                               Text("+ 10 "+
                                                   AppLocalizations.of(context)!.le+
                                                   " "+
-                                                  AppLocalizations.of(context)!.delivery_taxes),
+                                                  AppLocalizations.of(context)!.delivery_taxes,
+                                              style: Theme.of(context).textTheme.headline5,),
                                               Text(
                                                   AppLocalizations.of(context)!.total_price+" = ${calcSum(i).toString()} "+AppLocalizations.of(context)!.le,
-                                                  style: const TextStyle(
-                                                      color: Colors.cyan,
-                                                      fontSize: 20,
-                                                      fontWeight:
-                                                          FontWeight.bold)),
+                                                  style: Theme.of(context).textTheme.overline,),
                                             ],
                                           ),
                                         ),
@@ -296,14 +265,7 @@ class _DeliveryTabState extends State<DeliveryTab> {
                                               label: Text(AppLocalizations.of(context)!.done_delivered),
                                               icon: const Icon(
                                                   Icons.done_outline_rounded),
-                                              style: ElevatedButton.styleFrom(
-                                                  primary: themeColor,
-                                                  fixedSize:
-                                                      const Size(250, 35.0),
-                                                  shape: RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              80))),
+                                              style: Theme.of(context).elevatedButtonTheme.style,
                                               onPressed: () {
                                                 setState(() {
                                                   _activeMeterIndex = 1000;

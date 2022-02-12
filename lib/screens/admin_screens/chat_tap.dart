@@ -165,13 +165,11 @@ class _ChatTapState extends State<ChatTap> {
                                     width: 150,
                                     child: Text(
                                       currentChatData['name'],
-                                      style: const TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold),
+                                      style: Theme.of(context).textTheme.headline5,
                                       overflow: TextOverflow.ellipsis,
                                     ),
                                   ),
-                                  Text(currentChatData['number']),
+                                  Text(currentChatData['number'] ,style: Theme.of(context).textTheme.headline5,),
                                 ],
                               ),
                             ],
@@ -271,9 +269,7 @@ class _ChatTapState extends State<ChatTap> {
                                           width: 150,
                                           child: Text(
                                             chatList[index]['name'],
-                                            style: const TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.bold),
+                                            style: Theme.of(context).textTheme.subtitle1,
                                             overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
@@ -296,10 +292,7 @@ class _ChatTapState extends State<ChatTap> {
                                               ),
                                         Text(
                                           chatList[index]['time'],
-                                          style: const TextStyle(
-                                              color: Colors.blue,
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold),
+                                          style: Theme.of(context).textTheme.caption,
                                         ),
                                       ],
                                     ),

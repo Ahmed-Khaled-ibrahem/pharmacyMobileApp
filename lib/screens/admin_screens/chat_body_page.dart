@@ -221,8 +221,8 @@ class _ChatBodyScreenState extends State<ChatBodyScreen> {
           onAvatarTap: (img) {
             navigateTo(context, ViewPhoto(img.imageUrl.toString()), true);
           },
-          theme: cubit.themeState == "Light"
-              ?  const DefaultChatTheme(
+          theme: Theme.of(context).brightness == Brightness.light
+          ?  const DefaultChatTheme(
                   primaryColor: themeColor,
                   inputBackgroundColor: themeColor,
                 )

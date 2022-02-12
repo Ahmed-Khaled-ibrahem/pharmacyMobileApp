@@ -45,7 +45,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
             return Scaffold(
               appBar: AppBar(
                 elevation: 0,
-                title:  Text(AppLocalizations.of(context)!.notifications),
+                title:  Text(AppLocalizations.of(context)!.notifications,style: Theme.of(context).textTheme.headline4,),
                 backgroundColor: Theme.of(context).canvasColor,
               ),
               body: Padding(

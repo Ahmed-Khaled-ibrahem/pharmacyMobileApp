@@ -259,8 +259,8 @@ class SettingsScreen extends StatelessWidget {
                               ExpansionPanel(
                                   canTapOnHeader: true,
                                   backgroundColor: _activeMeterIndex == i
-                                      ? Colors.cyan
-                                      : null,
+                                      ? themeColorBlue
+                                      : themeColorGray,
                                   isExpanded: _activeMeterIndex == i,
                                   headerBuilder: (BuildContext context,
                                           bool isExpanded) =>
@@ -438,14 +438,14 @@ class SettingsScreen extends StatelessWidget {
           Image.asset(
             "assets/images/HomationLogo.png",
             height: 25,
-            color: themeColor,
+            color: themeColorBlue,
           ),
           defaultSpaceW(10),
           SizedBox(
-            height: 45,
+            height: 35,
             child: Column(
               children: [
-                Text(AppLocalizations.of(context)!.powered_by_homation),
+                Text(AppLocalizations.of(context)!.powered_by_homation,style: Theme.of(context).textTheme.headline5,),
                 Text(
                   AppLocalizations.of(context)!.version + " 1.0.0",
                   style: const TextStyle(fontSize: 10),

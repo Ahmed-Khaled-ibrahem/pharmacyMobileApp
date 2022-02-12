@@ -23,137 +23,136 @@ class _MainTapState extends State<MainTap> {
     'Voltaren 100 SR ',
     'Antinal syrup'
   ];
+
+
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: ElevatedButton(
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all(themeColor),
-              ),
-              onPressed: () {
-                showSearch(context: context, delegate: CustomSearchDelegate());
-                //navigateTo(context, SearchResultsScreen(), true);
-              },
-              child: SizedBox(
-                width: double.infinity,
-                child: Row(
-                  children: [
-                    const Icon(Icons.search),
-                    defaultSpaceW(5),
-                    Text(AppLocalizations.of(context)!.search),
-                    const Spacer(),
-                    const Icon(Icons.local_pharmacy_rounded),
-                  ],
+    return Stack(
+      children: [
+        ListView(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 15.0),
+              child: ElevatedButton(
+                onPressed: () {
+                  showSearch(context: context, delegate: CustomSearchDelegate());
+                },
+                child: SizedBox(
+                  width: double.infinity,
+                  child: Row(
+                    children: [
+                      const Icon(Icons.search),
+                      defaultSpaceW(5),
+                      Text(AppLocalizations.of(context)!.search),
+                      const Spacer(),
+                      const Icon(Icons.local_pharmacy_rounded),
+                    ],
+                  ),
                 ),
               ),
             ),
-          ),
-          /*
-          SizedBox(
-            width: double.infinity,
-            height: 100,
-            child: ListWheelScrollViewX(
-              scrollDirection: Axis.horizontal,
-              itemExtent: 170,
-              diameterRatio: 2,
-              offAxisFraction: 0.5,
+            /*
+            SizedBox(
+              width: double.infinity,
+              height: 100,
+              child: ListWheelScrollViewX(
+                scrollDirection: Axis.horizontal,
+                itemExtent: 170,
+                diameterRatio: 2,
+                offAxisFraction: 0.5,
+                children: [
+                  cardDesign('Followers',200.toString()),
+                  cardDesign('Orders',10.toString()),
+                  cardDesign('Chat',1.toString()),
+                  cardDesign('Offers',6.toString()),
+                ],
+              ),
+            ),
+             */
+            Wrap(
+              crossAxisAlignment: WrapCrossAlignment.center,
+              alignment: WrapAlignment.center,
               children: [
-                cardDesign('Followers',200.toString()),
-                cardDesign('Orders',10.toString()),
-                cardDesign('Chat',1.toString()),
-                cardDesign('Offers',6.toString()),
+                cardDesign(AppLocalizations.of(context)!.followers, 200.toString()),
+                cardDesign(AppLocalizations.of(context)!.orders, 2.toString()),
+                cardDesign(AppLocalizations.of(context)!.chat, 1.toString()),
+                cardDesign(AppLocalizations.of(context)!.offers, 6.toString()),
+                cardDesign(AppLocalizations.of(context)!.all_day_orders, 15.toString()),
               ],
             ),
-          ),
-           */
-          Wrap(
-            crossAxisAlignment: WrapCrossAlignment.center,
-            alignment: WrapAlignment.center,
-            children: [
-              cardDesign(AppLocalizations.of(context)!.followers, 200.toString()),
-              cardDesign(AppLocalizations.of(context)!.orders, 2.toString()),
-              cardDesign(AppLocalizations.of(context)!.chat, 1.toString()),
-              cardDesign(AppLocalizations.of(context)!.offers, 6.toString()),
-              cardDesign(AppLocalizations.of(context)!.all_day_orders, 15.toString()),
-            ],
-          ),
-          defaultSpaceH(10),
-          Row(
-            children: [
-              defaultSpaceW(15),
-               Text(
-                AppLocalizations.of(context)!.the_most_ordered_list, textAlign: TextAlign.start,
-                style: const TextStyle(color: themeColor, fontSize: 20),
-                //style: Theme.of(context).textTheme.button,
-              ),
-            ],
-          ),
-          SizedBox(
-            height: 120,
-            child: ListView.separated(
-                padding: const EdgeInsets.all(15),
-                itemBuilder: (BuildContext context, int index) {
-                  return Row(
-                    children: [
-                      Text('${index + 1} . ${mostWanted[index]}'),
-                    ],
-                  );
-                },
-                separatorBuilder: (BuildContext context, int index) {
-                  return const Divider();
-                },
-                itemCount: mostWanted.length),
-          ),
-          //const Spacer(),
-           Text(
-            AppLocalizations.of(context)!.timing_of_delivery,
-            style: const TextStyle(fontSize: 20),
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-               Text(
-                AppLocalizations.of(context)!.from,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              defaultSpaceW(5),
-              InkWell(
-                  onTap: () {
-                    _selectTime(context, false);
+            defaultSpaceH(10),
+            Row(
+              children: [
+                defaultSpaceW(15),
+                 Text(
+                  AppLocalizations.of(context)!.the_most_ordered_list, textAlign: TextAlign.start,
+                  style: Theme.of(context).textTheme.overline,
+                ),
+              ],
+            ),
+            SizedBox(
+              height: 120,
+              child: ListView.separated(
+                  padding: const EdgeInsets.all(15),
+                  itemBuilder: (BuildContext context, int index) {
+                    return Row(
+                      children: [
+                        Text('${index + 1} . ${mostWanted[index]}',
+                        style: Theme.of(context).textTheme.headline5,),
+                      ],
+                    );
                   },
-                  child: Text(
-                    selectedTimeFrom.format(context).toString(),
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange),
-                  )),
-              defaultSpaceW(5),
-               Text(
-                AppLocalizations.of(context)!.to,
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-              ),
-              defaultSpaceW(5),
-              InkWell(
-                  onTap: () {
-                    _selectTime(context, true);
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider();
                   },
-                  child: Text(
-                    selectedTimeTo.format(context).toString(),
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.orange),
-                  )),
-            ],
-          ),
-          AnimatedSwitcher(
+                  itemCount: mostWanted.length),
+            ),
+            defaultSpaceH(20),
+             Align(
+               alignment: Alignment.center,
+               child: Text(
+                AppLocalizations.of(context)!.timing_of_delivery,
+                style: Theme.of(context).textTheme.headline5,
+            ),
+             ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                 Text(
+                  AppLocalizations.of(context)!.from,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                defaultSpaceW(5),
+                InkWell(
+                    onTap: () {
+                      _selectTime(context, false);
+                    },
+                    child: Text(
+                      selectedTimeFrom.format(context).toString(),
+                      style: Theme.of(context).textTheme.button,
+                    )),
+                defaultSpaceW(5),
+                 Text(
+                  AppLocalizations.of(context)!.to,
+                  style: Theme.of(context).textTheme.subtitle1,
+                ),
+                defaultSpaceW(5),
+                InkWell(
+                    onTap: () {
+                      _selectTime(context, true);
+                    },
+                    child: Text(
+                      selectedTimeTo.format(context).toString(),
+                      style: Theme.of(context).textTheme.button,
+                    )),
+              ],
+            ),
+            defaultSpaceH(80),
+          ],
+        ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: AnimatedSwitcher(
             duration: const Duration(milliseconds: 1000),
             reverseDuration: const Duration(milliseconds: 500),
             switchInCurve: Curves.elasticOut,
@@ -168,63 +167,54 @@ class _MainTapState extends State<MainTap> {
               );
             },
             child: ordersIsEnabled
-                ? Card(
-                    color: themeColor,
-                    key: const Key('enabledCard'),
-                    margin: const EdgeInsets.all(20),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          ordersIsEnabled = false;
-                        });
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          const Icon(
-                            Icons.delivery_dining_rounded,
-                            size: 60,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)!.orders_enabled,
-                            style: const TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
-                  )
-                : Card(
-                    color: Colors.red,
-                    key: const Key('disabledCard'),
-                    margin: const EdgeInsets.all(20),
-                    child: InkWell(
-                      onTap: () {
-                        setState(() {
-                          ordersIsEnabled = true;
-                        });
-                      },
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children:  [
-                          const Icon(
-                            Icons.disabled_by_default_rounded,
-                            size: 60,
-                          ),
-                          Text(
-                            AppLocalizations.of(context)!.orders_disabled,
-                            style: const TextStyle(
-                                fontSize: 30, fontWeight: FontWeight.w500),
-                          ),
-                        ],
-                      ),
-                    ),
+                ? ElevatedButton(
+              key: const Key('enabledCard'),
+              //margin: const EdgeInsets.all(20),
+              onPressed: () {   setState(() {
+                ordersIsEnabled = false;
+              });},
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(
+                    Icons.delivery_dining_rounded,
+                    size: 60,
                   ),
+                  Text(
+                    AppLocalizations.of(context)!.orders_enabled,
+                    style: const TextStyle(
+                        fontSize: 25, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            )
+                : ElevatedButton(
+              style: Theme.of(context).elevatedButtonTheme.style,
+              key: const Key('disabledCard'),
+              //margin: const EdgeInsets.all(20),
+              onPressed: () {   setState(() {
+                ordersIsEnabled = true;
+              });},
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:  [
+                  const Icon(
+                    Icons.disabled_by_default_rounded,
+                    size: 60,
+                    color: Colors.orange,
+                  ),
+                  Text(
+                    AppLocalizations.of(context)!.orders_disabled,
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                ],
+              ),
+            ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -251,24 +241,16 @@ class _MainTapState extends State<MainTap> {
 
   Widget cardDesign(String title, String value) {
     return Card(
-      elevation: 3,
-      shadowColor: Colors.amber,
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              title,
-              style: const TextStyle(fontWeight: FontWeight.w300, fontSize: 25),
-            ),
+            Text(title,),
             Text(
               value,
-              style: const TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
-                  color: Colors.orangeAccent),
+              style: Theme.of(context).textTheme.bodyText1
             ),
           ],
         ),

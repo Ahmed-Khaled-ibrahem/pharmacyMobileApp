@@ -78,6 +78,9 @@ dependencies:
   carousel_slider: ^4.0.0
   easy_dynamic_theme: ^2.2.0
   pull_to_refresh: ^2.0.0
+  #icons
+  google_fonts: ^2.2.0
+  font_awesome_flutter: ^9.2.0
   #chat
   dash_chat: ^1.1.16
   flutter_chat_types: ^3.2.2

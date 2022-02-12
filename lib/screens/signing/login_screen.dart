@@ -32,9 +32,9 @@ class LoginScreenState extends State<LoginScreen>
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance
-        ?.addPostFrameCallback((_) => animationController.repeat());
+    WidgetsBinding.instance?.addPostFrameCallback((_) => animationController.repeat());
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -184,8 +184,8 @@ class LoginScreenState extends State<LoginScreen>
                                       navigateTo(
                                           context, ForgetPassPage(), true);
                                     },
-                                    child: Text(AppLocalizations.of(context)!
-                                        .forget_pass)),
+                                    child: Text(AppLocalizations.of(context)!.forget_pass,
+                                    style: Theme.of(context).textTheme.button,)),
                               ],
                             ),
                             defaultSpaceH(20),
@@ -239,8 +239,7 @@ class LoginScreenState extends State<LoginScreen>
                               children: [
                                 InkWell(
                                   onTap: () {
-                                    navigateTo(context, const AdminMainScreen(),
-                                        false);
+                                    navigateTo(context, const AdminMainScreen(), false);
                                     stopAnimation();
                                   },
                                   child: const SizedBox(
@@ -260,12 +259,8 @@ class LoginScreenState extends State<LoginScreen>
                               ],
                             ),
                             defaultSpaceH(5),
-                            const Text(
-                              "Gmail",
-                              style: TextStyle(fontWeight: FontWeight.bold),
-                            ),
                             defaultSpaceH(30),
-                            Text(AppLocalizations.of(context)!.havent_account),
+                            Text(AppLocalizations.of(context)!.havent_account,style: Theme.of(context).textTheme.headline5,),
                             TextButton(
                                 onPressed: () {
                                   navigateTo(context, SignUpPage(), true);

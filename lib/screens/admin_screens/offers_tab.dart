@@ -88,9 +88,7 @@ class _OffersTabState extends State<OffersTab> {
                                                   : drug.name
                                                       .toString()
                                                       .substring(0, 2),
-                                              style: const TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 8),
+                                              style:Theme.of(context).textTheme.headline3,
                                             ),
                                           );
                                         },
@@ -103,8 +101,7 @@ class _OffersTabState extends State<OffersTab> {
                                               : drug.name
                                                   .toString()
                                                   .substring(0, 2),
-                                          style: const TextStyle(
-                                              color: Colors.white, fontSize: 8),
+                                          style: Theme.of(context).textTheme.headline6,
                                         ),
                                       ),
                               ),
@@ -131,11 +128,7 @@ class _OffersTabState extends State<OffersTab> {
                           newDrug != null
                               ? newDrug!.name
                               : AppLocalizations.of(context)!.choose_drug_first,
-                          style: TextStyle(
-                            fontSize: 25,
-                            fontWeight: FontWeight.bold,
-                            color: newDrug == null ? Colors.blue : null,
-                          ),
+                          style: Theme.of(context).textTheme.overline,
                         ),
                         Row(
                           children: [
@@ -148,7 +141,7 @@ class _OffersTabState extends State<OffersTab> {
                                 });
                               },
                             ),
-                            Text(AppLocalizations.of(context)!.percentage),
+                            Text(AppLocalizations.of(context)!.percentage,style: Theme.of(context).textTheme.headline5,),
                             Radio<bool>(
                                 groupValue: radioValue,
                                 value: false,
@@ -157,7 +150,7 @@ class _OffersTabState extends State<OffersTab> {
                                     radioValue = value ?? false;
                                   });
                                 }),
-                            Text(AppLocalizations.of(context)!.real_value)
+                            Text(AppLocalizations.of(context)!.real_value,style: Theme.of(context).textTheme.headline5,)
                           ],
                         ),
                         Row(
@@ -215,9 +208,7 @@ class _OffersTabState extends State<OffersTab> {
                               label:
                                   Text(AppLocalizations.of(context)!.confirm),
                               icon: const Icon(Icons.done),
-                              style: ElevatedButton.styleFrom(
-                                primary: themeColor,
-                              ),
+                              style: Theme.of(context).elevatedButtonTheme.style,
                               onPressed: () {
                                 if (formKey.currentState!.validate()) {
                                   if (newDrug != null) {
@@ -300,9 +291,7 @@ class _OffersTabState extends State<OffersTab> {
                                                   maxLines: 1,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  style: const TextStyle(
-                                                    fontSize: 18,
-                                                  ),
+                                                  style: Theme.of(context).textTheme.headline5,
                                                 ),
                                               ),
                                               const SizedBox(
@@ -317,10 +306,7 @@ class _OffersTabState extends State<OffersTab> {
                                                             .le,
                                                 maxLines: 1,
                                                 overflow: TextOverflow.ellipsis,
-                                                style: const TextStyle(
-                                                    fontSize: 20,
-                                                    fontWeight:
-                                                        FontWeight.w900),
+                                                style: Theme.of(context).textTheme.subtitle1,
                                               ),
                                             ],
                                           ),
@@ -349,11 +335,10 @@ class _OffersTabState extends State<OffersTab> {
                         children: [
                           ElevatedButton.icon(
                             label: Text(
-                                AppLocalizations.of(context)!.add_new_offer),
+                                AppLocalizations.of(context)!.add_new_offer,
+                            style: Theme.of(context).textTheme.headline5,),
                             icon: const Icon(Icons.add_circle_sharp),
-                            style: ElevatedButton.styleFrom(
-                              primary: themeColor,
-                            ),
+                            style: Theme.of(context).elevatedButtonTheme.style,
                             onPressed: () {
                               setState(() {
                                 switcher = true;
@@ -362,11 +347,10 @@ class _OffersTabState extends State<OffersTab> {
                           ),
                           ElevatedButton.icon(
                             label: Text(
-                                AppLocalizations.of(context)!.clear_offers),
+                                AppLocalizations.of(context)!.clear_offers,
+                              style: Theme.of(context).textTheme.headline5,),
                             icon: const Icon(Icons.clear),
-                            style: ElevatedButton.styleFrom(
-                              primary: themeColor,
-                            ),
+                            style: Theme.of(context).elevatedButtonTheme.style,
                             onPressed: () {
                               setState(() {
                                 customChoiceDialog(context,
